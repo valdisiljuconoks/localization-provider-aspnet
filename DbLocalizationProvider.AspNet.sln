@@ -30,6 +30,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbLocalizationProvider.Admi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbLocalizationProvider.Xliff", "src\DbLocalizationProvider.Xliff\DbLocalizationProvider.Xliff.csproj", "{1B38B864-FFA5-498B-93BC-39F17B604202}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{7C04A49C-39C4-4F42-8ACD-90DBCC385FAE}"
+	ProjectSection(SolutionItems) = preProject
+		docs\getting-started-net.md = docs\getting-started-net.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +81,7 @@ Global
 		{9467E0EE-9750-4211-8964-F8731C09BFC0} = {805807CA-32A9-4098-8A88-96A6562EC482}
 		{78C3B303-08D5-4F40-AE7D-16A23D9E8694} = {805807CA-32A9-4098-8A88-96A6562EC482}
 		{7A0103A4-9273-4EDD-8FCC-118E230638A7} = {805807CA-32A9-4098-8A88-96A6562EC482}
+		{7C04A49C-39C4-4F42-8ACD-90DBCC385FAE} = {E1AD382E-CF73-4008-94BE-80F2DA58EE6B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBE709DD-8006-400C-89BA-8F1247C17346}

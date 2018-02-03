@@ -12,7 +12,7 @@ Localization Provider consists from few components:
 Installation nowadays can't be more simpler as just adding NuGet package(s).
 
 ```
-PM> Install-Package LocalizationProvider
+PM> Install-Package LocalizationProvider.AspNet
 ```
 
 Execute this line to install administration user interface:
