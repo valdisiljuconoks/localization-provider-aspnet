@@ -2,7 +2,7 @@
 
 Database driven localization provider for .Net Core applications.
 
-
+[<img src="https://tech-fellow-consulting.visualstudio.com/_apis/public/build/definitions/70e95aed-5f16-4125-b7bb-60aeea07539d/10/badge"/>](https://tech-fellow-consulting.visualstudio.com/localization-provider-aspnet/_build/index?definitionId=10)
 
 ## What is the LocalizationProvider project?
 
