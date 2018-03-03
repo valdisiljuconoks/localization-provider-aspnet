@@ -14,8 +14,8 @@
     <copyright>Copyright 2018 (c) Valdis Iljuconoks, Tech Fellow</copyright>
     <tags>Localization Provider DbLocalization DbLocalizationProvider LocalizationProvider Xliff Export Import</tags>
     <dependencies>
-      <dependency id="DbLocalizationProvider.Abstractions" version="4.1.0" />
-      <dependency id="DbLocalizationProvider" version="4.1.0" />
+      <dependency id="DbLocalizationProvider.Abstractions" version="4.2.0" />
+      <dependency id="DbLocalizationProvider" version="4.2.0" />
     </dependencies>
   </metadata>
 </package>
