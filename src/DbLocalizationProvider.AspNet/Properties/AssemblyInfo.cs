@@ -10,3 +10,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyInformationalVersion("4.2.2")]
 
 [assembly:InternalsVisibleTo("DbLocalizationProvider.Tests")]
+[assembly:InternalsVisibleTo("DbLocalizationProvider.AspNet.Tests")]

@@ -25,7 +25,7 @@ namespace DbLocalizationProvider.AspNet.Json
             return Convert(filteredResources, languageName, ConfigurationContext.Current.EnableInvariantCultureFallback);
         }
 
-        private JObject Convert(ICollection<LocalizationResource> resources, string language, bool invariantCultureFallback)
+        internal JObject Convert(ICollection<LocalizationResource> resources, string language, bool invariantCultureFallback)
         {
             var result = new JObject();
 
