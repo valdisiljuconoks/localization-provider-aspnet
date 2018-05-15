@@ -99,7 +99,9 @@
     <Compile Include="Commands\DeleteResourceHandler.cs" />
     <Compile Include="HtmlHelperExtensions.cs" />
     <Compile Include="Import\ResourceImportWorkflow.cs" />
+    <Compile Include="Json\JsonConverter.cs" />
     <Compile Include="LanguageEntities.cs" />
+    <Compile Include="LocalizationProviderExtensions.cs" />
     <Compile Include="Migrations\201602162151204_InitialCreate.cs" />
     <Compile Include="Migrations\201602162151204_InitialCreate.Designer.cs">
       <DependentUpon>201602162151204_InitialCreate.cs</DependentUpon>

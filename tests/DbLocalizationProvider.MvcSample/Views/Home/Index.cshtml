@@ -1,7 +1,9 @@
 ﻿@using DbLocalizationProvider
 @using DbLocalizationProvider.MvcSample.Resources
 @model DbLocalizationProvider.MvcSample.Models.HomeViewModel
-
+@{
+    var resourceClassInstance = new TranslatedResourceClass();
+}
 <!DOCTYPE html>
 
 <html>
@@ -12,6 +14,8 @@
 <div>
     UICulture : @UICulture <br/>
     <h1>@Html.Translate(() => HomePageResources.Header)</h1>
+    <h3>FromTranslate&lt;T&gt;(): @ViewData["FromTranslateObject"]</h3>
+    <h3>GetString(TranslatedResourceClass.SomeProperty): @LocalizationProvider.Current.GetString(() => resourceClassInstance.SomeProperty)</h3>
     <h4>@Html.TranslateFor(m => m.CustomMessage)</h4>
 </div>
 <div>

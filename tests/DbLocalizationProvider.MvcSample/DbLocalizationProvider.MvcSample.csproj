@@ -156,6 +156,7 @@
     <Compile Include="Resources\ForeignResources.cs" />
     <Compile Include="Resources\HomePageResources.cs" />
     <Compile Include="Resources\SecretResources.cs" />
+    <Compile Include="Resources\TranslatedResourceClass.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="TableHeaderTitleAttribute.cs" />
   </ItemGroup>
