@@ -16,7 +16,7 @@
     <dependencies>
       <dependency id="LocalizationProvider.Abstractions" version="4.2.2" />
       <dependency id="LocalizationProvider" version="4.2.2" />
-      <dependency id="LocalizationProvider.AspNet" version="4.2.2" />
+      <dependency id="LocalizationProvider.AspNet" version="4.2.3" />
     </dependencies>
   </metadata>
 </package>
