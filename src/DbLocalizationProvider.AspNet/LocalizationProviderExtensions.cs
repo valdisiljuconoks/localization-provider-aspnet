@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using DbLocalizationProvider.AspNet.Json;
 using Newtonsoft.Json;
 using JsonConverter = DbLocalizationProvider.AspNet.Json.JsonConverter;
 
@@ -25,7 +26,10 @@ namespace DbLocalizationProvider.AspNet
             if(jsonToken == null)
                 return default(T);
 
-            return JsonConvert.DeserializeObject<T>(jsonToken.ToString());
+            return JsonConvert.DeserializeObject<T>(jsonToken.ToString(), new JsonSerializerSettings
+                                                                          {
+                                                                              ContractResolver = new StaticPropertyContractResolver()
+                                                                          });
         }
     }
 }

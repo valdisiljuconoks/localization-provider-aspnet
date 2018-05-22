@@ -99,6 +99,7 @@
     <Compile Include="Commands\DeleteResourceHandler.cs" />
     <Compile Include="HtmlHelperExtensions.cs" />
     <Compile Include="Import\ResourceImportWorkflow.cs" />
+    <Compile Include="Json\StaticPropertyContractResolver.cs" />
     <Compile Include="Json\JsonConverter.cs" />
     <Compile Include="LanguageEntities.cs" />
     <Compile Include="LocalizationProviderExtensions.cs" />
