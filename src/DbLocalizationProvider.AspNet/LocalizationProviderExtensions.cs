@@ -17,7 +17,7 @@ namespace DbLocalizationProvider.AspNet
             var converter = new JsonConverter();
             var className = typeof(T).FullName;
 
-            var json = converter.GetJson(className, language.Name);
+            var json = converter.GetJson(className, language.Name, false);
 
             // get the actual class Json representation (we need to select token through FQN of the class)
             // to supported nested classes - we need to fix a bit resource key name
