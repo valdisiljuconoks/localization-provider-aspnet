@@ -41,7 +41,7 @@ namespace DbLocalizationProvider.AspNet.Tests
 
             var sut = new Json.JsonConverter();
 
-            var resourcesAsJson = sut.Convert(resources, "en", true);
+            var resourcesAsJson = sut.Convert(resources, "en", true, false);
 
             Assert.Equal("this is english", resourcesAsJson["This"]["Is"]["Resource"]["Key"]);
 
@@ -78,7 +78,7 @@ namespace DbLocalizationProvider.AspNet.Tests
             };
             var sut = new Json.JsonConverter();
 
-            var resourcesAsJson = sut.Convert(resources, "en", false);
+            var resourcesAsJson = sut.Convert(resources, "en", false, false);
 
             Assert.Equal(0, resourcesAsJson.Count);
         }
@@ -140,7 +140,7 @@ namespace DbLocalizationProvider.AspNet.Tests
                 }
             };
 
-            var resourcesAsJson = sut.Convert(resources, "en", true);
+            var resourcesAsJson = sut.Convert(resources, "en", true, false);
 
             Assert.Equal("this is english", resourcesAsJson["This"]["Is"]["Resource"]["Key"]);
         }
@@ -170,9 +170,39 @@ namespace DbLocalizationProvider.AspNet.Tests
                 }
             };
 
-            var resourcesAsJson = sut.Convert(resources, "no", true);
+            var resourcesAsJson = sut.Convert(resources, "no", true, false);
 
             Assert.Equal("this is norsk", resourcesAsJson["This"]["Is"]["Resource"]["Key"]);
+        }
+
+        [Fact]
+        public void Resourece_SerializeWithCamelCase()
+        {
+            var sut = new Json.JsonConverter();
+
+            var resources = new List<LocalizationResource>
+            {
+                new LocalizationResource("This.Is.TheResource.Key")
+                {
+                    Translations = new List<LocalizationResourceTranslation>
+                    {
+                        new LocalizationResourceTranslation
+                        {
+                            Language = "en",
+                            Value = "this is english"
+                        },
+                        new LocalizationResourceTranslation
+                        {
+                            Language = "no",
+                            Value = "this is norsk"
+                        }
+                    }
+                }
+            };
+
+            var resourcesAsJson = sut.Convert(resources, "en", true, true);
+
+            Assert.Equal("this is english", resourcesAsJson["this"]["is"]["theResource"]["key"]);
         }
     }
 }
