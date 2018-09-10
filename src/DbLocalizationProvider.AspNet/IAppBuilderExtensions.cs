@@ -56,7 +56,6 @@ namespace DbLocalizationProvider
             if(setup != null)
                 ConfigurationContext.Setup(setup);
 
-            // DbContext connectionstring
             ConfigurationContext.Current.DbContextConnectionString = ConfigurationManager.ConnectionStrings[ConfigurationContext.Current.Connection].ConnectionString;
 
             var synchronizer = new ResourceSynchronizer();
