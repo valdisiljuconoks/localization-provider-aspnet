@@ -36,7 +36,7 @@ namespace DbLocalizationProvider.Xliff
             if(toLanguage == null)
                 throw new ArgumentNullException(nameof(toLanguage));
 
-            // NOTE: legacy reosurces could not be exported as they contain illegal characters in keys
+            // NOTE: legacy resources could not be exported as they contain illegal characters in keys
             // also some more modern resources cannot be exported as-is (nested classes)
             var exportableResources = resources.Where(r => !r.ResourceKey.StartsWith("/"))
                                                .ForEach(r => r.ResourceKey = r.ResourceKey.Replace("+", "---"));
