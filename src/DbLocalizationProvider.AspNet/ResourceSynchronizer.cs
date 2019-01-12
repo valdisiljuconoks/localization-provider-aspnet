@@ -65,8 +65,7 @@ namespace DbLocalizationProvider.Sync
             Parallel.Invoke(() => RegisterDiscoveredResources(discoveredResources, allResources),
                             () => RegisterDiscoveredResources(discoveredModels, allResources));
 
-            if(ConfigurationContext.Current.PopulateCacheOnStartup)
-                PopulateCache();
+            StoreKnownResourcesAndPopulateCache();
         }
 
         public void RegisterManually(IEnumerable<ManualResource> resources)
@@ -82,17 +81,24 @@ namespace DbLocalizationProvider.Sync
             }
         }
 
-        private void PopulateCache()
+        private void StoreKnownResourcesAndPopulateCache()
         {
-            var c = new ClearCache.Command();
-            c.Execute();
-
             var allResources = new GetAllResources.Query().Execute();
 
-            foreach(var resource in allResources)
+            if(ConfigurationContext.Current.PopulateCacheOnStartup)
             {
-                var key = CacheKeyHelper.BuildKey(resource.ResourceKey);
-                ConfigurationContext.Current.CacheManager.Insert(key, resource);
+                new ClearCache.Command().Execute();
+
+                foreach(var resource in allResources)
+                {
+                    var key = CacheKeyHelper.BuildKey(resource.ResourceKey);
+                    ConfigurationContext.Current.CacheManager.Insert(key, resource);
+                }
+            }
+            else
+            {
+                // just store resource cache keys
+                allResources.ForEach(r => ConfigurationContext.Current.BaseCacheManager.StoreKnownKey(r.ResourceKey));
             }
         }
 

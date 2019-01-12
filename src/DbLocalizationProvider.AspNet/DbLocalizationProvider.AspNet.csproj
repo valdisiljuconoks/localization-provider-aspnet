@@ -132,8 +132,10 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\AvailableLanguagesHandler.cs" />
+    <Compile Include="Queries\CachedGetAllResourcesHandler.cs" />
     <Compile Include="Queries\GetAllResourcesHandler.cs" />
     <Compile Include="Queries\GetAllTranslationsHandler.cs" />
+    <Compile Include="Queries\GetResourceHandler.cs" />
     <Compile Include="Queries\GetTranslationHandler.cs" />
     <Compile Include="ResourceSynchronizer.cs" />
   </ItemGroup>

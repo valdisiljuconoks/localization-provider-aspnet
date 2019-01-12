@@ -274,7 +274,7 @@ namespace DbLocalizationProvider.AdminUI
         private List<ResourceListItem> GetAllResources()
         {
             var result = new List<ResourceListItem>();
-            var resources = new GetAllResources.Query().Execute().OrderBy(r => r.ResourceKey);
+            var resources = new GetAllResources.Query(true).Execute().OrderBy(r => r.ResourceKey);
 
             foreach (var resource in resources)
             {

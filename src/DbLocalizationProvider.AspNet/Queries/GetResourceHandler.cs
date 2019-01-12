@@ -18,19 +18,25 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
+using System.Data.Entity;
+using System.Linq;
 using DbLocalizationProvider.Abstractions;
-using DbLocalizationProvider.Cache;
+using DbLocalizationProvider.Queries;
 
-namespace DbLocalizationProvider.AspNet.Cache
+namespace DbLocalizationProvider.AspNet.Queries
 {
-    public class ClearCacheHandler : ICommandHandler<ClearCache.Command>
+    public class GetResourceHandler : IQueryHandler<GetResource.Query, LocalizationResource>
     {
-        public void Execute(ClearCache.Command command)
+        public LocalizationResource Execute(GetResource.Query query)
         {
-            var manager = ConfigurationContext.Current.CacheManager;
-            foreach(var key in ConfigurationContext.Current.BaseCacheManager.KnownResourceKeys.Keys)
-                if(manager.Get(key) != null)
-                    manager.Remove(key);
+            using(var db = new LanguageEntities())
+            {
+                var resource = db.LocalizationResources
+                                 .Include(r => r.Translations)
+                                 .FirstOrDefault(r => r.ResourceKey == query.ResourceKey);
+
+                return resource;
+            }
         }
     }
 }

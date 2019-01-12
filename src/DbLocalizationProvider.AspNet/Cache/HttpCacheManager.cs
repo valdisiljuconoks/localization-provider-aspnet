@@ -27,17 +27,17 @@ namespace DbLocalizationProvider.AspNet.Cache
     {
         public void Insert(string key, object value)
         {
-            HttpRuntime.Cache.Insert(key, value);
+            HttpRuntime.Cache?.Insert(key, value);
         }
 
         public object Get(string key)
         {
-            return HttpRuntime.Cache.Get(key);
+            return HttpRuntime.Cache?.Get(key);
         }
 
         public void Remove(string key)
         {
-            HttpRuntime.Cache.Remove(key);
+            HttpRuntime.Cache?.Remove(key);
         }
 
         public event CacheEventHandler OnInsert;

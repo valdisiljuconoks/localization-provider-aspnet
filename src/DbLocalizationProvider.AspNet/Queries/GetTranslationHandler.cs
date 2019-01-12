@@ -18,16 +18,13 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Data.Entity;
-using System.Linq;
 using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.Cache;
 using DbLocalizationProvider.Queries;
 
 namespace DbLocalizationProvider.AspNet.Queries
 {
-    public class GetTranslationHandler : GetTranslation.GetTranslationHandlerBase,
-        IQueryHandler<GetTranslation.Query, string>
+    public class GetTranslationHandler : GetTranslation.GetTranslationHandlerBase, IQueryHandler<GetTranslation.Query, string>
     {
         public string Execute(GetTranslation.Query query)
         {
@@ -42,7 +39,7 @@ namespace DbLocalizationProvider.AspNet.Queries
             if(localizationResource != null)
                 return GetTranslationFromAvailableList(localizationResource.Translations, language, query.UseFallback)?.Value;
 
-            var resource = GetResourceFromDb(key);
+            var resource = new GetResource.Query(key).Execute();
             LocalizationResourceTranslation localization = null;
 
             if(resource == null)
@@ -52,18 +49,6 @@ namespace DbLocalizationProvider.AspNet.Queries
 
             ConfigurationContext.Current.CacheManager.Insert(cacheKey, resource);
             return localization?.Value;
-        }
-
-        protected virtual LocalizationResource GetResourceFromDb(string key)
-        {
-            using(var db = new LanguageEntities())
-            {
-                var resource = db.LocalizationResources
-                    .Include(r => r.Translations)
-                    .FirstOrDefault(r => r.ResourceKey == key);
-
-                return resource;
-            }
         }
     }
 }
