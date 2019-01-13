@@ -1,4 +1,5 @@
 ﻿@using DbLocalizationProvider
+@using DbLocalizationProvider.AspNet
 @using DbLocalizationProvider.MvcSample.Resources
 @model DbLocalizationProvider.MvcSample.Models.HomeViewModel
 @{
@@ -12,7 +13,7 @@
 </head>
 <body>
 <div>
-    UICulture : @UICulture <br/>
+    <h4>UICulture : @UICulture <br/></h4>
     <h1>@Html.Translate(() => HomePageResources.Header)</h1>
     <h3>FromTranslate&lt;T&gt;(): @ViewData["FromTranslateObject"]</h3>
     <h3>GetString(TranslatedResourceClass.SomeProperty): @LocalizationProvider.Current.GetString(() => resourceClassInstance.SomeProperty)</h3>
