@@ -35,7 +35,7 @@ namespace DbLocalizationProvider.AdminUI
             var availableLanguagesQuery = new AvailableLanguages.Query { IncludeInvariant = true };
             var languages = availableLanguagesQuery.Execute();
 
-            var getResourcesQuery = new GetAllResources.Query();
+            var getResourcesQuery = new GetAllResources.Query(true);
             var resources = getResourcesQuery.Execute().OrderBy(r => r.ResourceKey).ToList();
 
             var user = RequestContext.Principal;

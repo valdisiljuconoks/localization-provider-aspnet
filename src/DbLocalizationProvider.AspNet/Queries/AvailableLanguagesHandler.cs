@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Valdis Iljuconoks.
+﻿// Copyright (c) 2019 Valdis Iljuconoks.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Web;
 using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.Cache;
 using DbLocalizationProvider.Queries;
@@ -33,11 +34,11 @@ namespace DbLocalizationProvider.AspNet.Queries
         {
             var cacheKey = CacheKeyHelper.BuildKey($"AvailableLanguages_{query.IncludeInvariant}");
 
-            if(ConfigurationContext.Current.CacheManager.Get(cacheKey) is IEnumerable<CultureInfo> cachedLanguages)
+            if(HttpRuntime.Cache?.Get(cacheKey) is IEnumerable<CultureInfo> cachedLanguages)
                 return cachedLanguages;
 
             var languages = GetAvailableLanguages(query.IncludeInvariant);
-            ConfigurationContext.Current.CacheManager.Insert(cacheKey, languages);
+            HttpRuntime.Cache?.Insert(cacheKey, languages);
 
             return languages;
         }

@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using System.Threading;
 using System.Web.Mvc;
-using DbLocalizationProvider.AspNet;
 using DbLocalizationProvider.MvcSample.Models;
 using DbLocalizationProvider.MvcSample.Resources;
 

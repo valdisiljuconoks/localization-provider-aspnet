@@ -60,9 +60,11 @@ namespace DbLocalizationProvider.AspNet.Queries
                 {
                     // failed to get from cache, should call database
                     var resourceFromDb = new GetResource.Query(key).Execute();
-                    ConfigurationContext.Current.CacheManager.Insert(cacheKey, resourceFromDb);
-
-                    result.Add(resourceFromDb);
+                    if(resourceFromDb != null)
+                    {
+                        ConfigurationContext.Current.CacheManager.Insert(cacheKey, resourceFromDb);
+                        result.Add(resourceFromDb);
+                    }
                 }
             }
 
