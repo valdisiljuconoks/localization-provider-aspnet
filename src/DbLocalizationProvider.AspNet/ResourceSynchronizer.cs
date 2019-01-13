@@ -83,7 +83,7 @@ namespace DbLocalizationProvider.Sync
 
         private void StoreKnownResourcesAndPopulateCache()
         {
-            var allResources = new GetAllResources.Query().Execute();
+            var allResources = new GetAllResources.Query(true).Execute();
 
             if(ConfigurationContext.Current.PopulateCacheOnStartup)
             {
