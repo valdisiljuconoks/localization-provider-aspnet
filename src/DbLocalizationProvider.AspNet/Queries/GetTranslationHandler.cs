@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Valdis Iljuconoks.
+﻿// Copyright (c) 2019 Valdis Iljuconoks.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -18,6 +18,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
+using System.Collections.Generic;
 using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.Cache;
 using DbLocalizationProvider.Queries;
@@ -39,8 +40,22 @@ namespace DbLocalizationProvider.AspNet.Queries
             if(localizationResource != null)
                 return GetTranslationFromAvailableList(localizationResource.Translations, language, query.UseFallback)?.Value;
 
-            var resource = new GetResource.Query(key).Execute();
             LocalizationResourceTranslation localization = null;
+            LocalizationResource resource;
+
+            try
+            {
+                resource = new GetResource.Query(key).Execute();
+            }
+            catch(KeyNotFoundException)
+            {
+                // this can be a case when Episerver initialization infrastructure calls localization provider way too early
+                // and there is no registration for the GetResourceHandler - so we can fallback to default implementation
+                // TODO: maybe we should just have default mapping (even if init has not been called)
+                // (before any of the setup code in the provider is executed). this happens if you have DisplayChannels in codebase
+
+                resource = new GetResourceHandler().Execute(new GetResource.Query(query.Key));
+            }
 
             if(resource == null)
                 resource = LocalizationResource.CreateNonExisting(key);
