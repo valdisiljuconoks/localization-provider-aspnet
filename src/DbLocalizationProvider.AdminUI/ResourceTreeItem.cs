@@ -5,7 +5,7 @@ namespace DbLocalizationProvider.AdminUI
 {
     public class ResourceTreeItem
     {
-        public ResourceTreeItem(long id, long? parentId, string keyFragment, string resourceKey, bool isLeaf, ICollection<ResourceItem> translations, bool allowDelete, bool isHidden, string path)
+        public ResourceTreeItem(long id, long? parentId, string keyFragment, string resourceKey, bool isLeaf, ICollection<ResourceItem> translations, bool allowDelete, bool isHidden, bool isModified, string path)
         {
             Id = id;
             ParentId = parentId;
@@ -15,6 +15,7 @@ namespace DbLocalizationProvider.AdminUI
             Translations = translations;
             AllowDelete = allowDelete;
             IsHidden = isHidden;
+            IsModified = isModified;
             Path = path;
         }
 
@@ -31,6 +32,7 @@ namespace DbLocalizationProvider.AdminUI
         public bool AllowDelete { get; }
 
         public bool IsHidden { get; set; }
+        public bool IsModified { get; }
 
         public string Path { get; }
 

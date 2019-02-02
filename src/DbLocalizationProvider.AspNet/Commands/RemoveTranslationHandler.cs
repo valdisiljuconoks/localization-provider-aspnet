@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Valdis Iljuconoks.
+﻿// Copyright (c) 2019 Valdis Iljuconoks.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -20,35 +20,32 @@
 
 using System;
 using System.Linq;
+using System.Data.Entity;
 using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.Cache;
 using DbLocalizationProvider.Commands;
 
 namespace DbLocalizationProvider.AspNet.Commands
 {
-    public class DeleteResourceHandler : ICommandHandler<DeleteResource.Command>
+    public class RemoveTranslationHandler : ICommandHandler<RemoveTranslation.Command>
     {
-        public void Execute(DeleteResource.Command command)
+        public void Execute(RemoveTranslation.Command command)
         {
-            if(string.IsNullOrEmpty(command.Key))
-                throw new ArgumentNullException(nameof(command.Key));
-
             using(var db = new LanguageEntities())
             {
-                var existingResource = db.LocalizationResources.FirstOrDefault(r => r.ResourceKey == command.Key);
-
+                var existingResource = db.LocalizationResources.Include(r => r.Translations).FirstOrDefault(r => r.ResourceKey == command.Key);
                 if(existingResource == null)
-                {
                     return;
-                }
 
-                if(existingResource.FromCode)
+                if(!existingResource.IsModified.HasValue || !existingResource.IsModified.Value)
+                    throw new InvalidOperationException($"Cannot delete translation for unmodified resource `{command.Key}`");
+
+                var t = existingResource.Translations.FirstOrDefault(_ => _.Language == command.Language.Name);
+                if(t != null)
                 {
-                    throw new InvalidOperationException($"Cannot delete resource `{command.Key}` that is synced with code");
+                    db.LocalizationResourceTranslations.Remove(t);
+                    db.SaveChanges();
                 }
-
-                db.LocalizationResources.Remove(existingResource);
-                db.SaveChanges();
             }
 
             ConfigurationContext.Current.CacheManager.Remove(CacheKeyHelper.BuildKey(command.Key));

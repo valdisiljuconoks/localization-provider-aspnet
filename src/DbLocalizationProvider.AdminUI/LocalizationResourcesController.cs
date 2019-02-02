@@ -131,6 +131,17 @@ namespace DbLocalizationProvider.AdminUI
         }
 
         [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult Remove([Bind(Prefix = "pk")] string resourceKey,
+                                 [Bind(Prefix = "name")] string language)
+        {
+            var c = new RemoveTranslation.Command(resourceKey, new CultureInfo(language));
+            c.Execute();
+
+            return Json("");
+        }
+
+        [HttpPost]
         public ActionResult UpdateLanguages(string[] languages)
         {
             // issue cookie to store selected languages
@@ -284,7 +295,8 @@ namespace DbLocalizationProvider.AdminUI
                                                                                       t.Value,
                                                                                       new CultureInfo(t.Language))).ToList(),
                                                 !resource.FromCode,
-                                                resource.IsHidden.HasValue && resource.IsHidden.Value));
+                                                resource.IsHidden.HasValue && resource.IsHidden.Value,
+                                                resource.IsModified.HasValue && resource.IsModified.Value));
             }
 
             return result;

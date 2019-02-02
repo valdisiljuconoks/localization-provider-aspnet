@@ -53,6 +53,7 @@ namespace DbLocalizationProvider.AdminUI
                                                         defragmented.Length == ix + 1 ? resource.Value : null,
                                                         resource.AllowDelete,
                                                         resource.IsHidden,
+                                                        resource.IsModified,
                                                         path));
 
                         _id++;
