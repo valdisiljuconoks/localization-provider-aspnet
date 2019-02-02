@@ -37,7 +37,8 @@ namespace DbLocalizationProvider.AdminUI.Tests
                                                                                            new CultureInfo("en"))
                                                                       }),
                                                true,
-                                               false));
+                                               false,
+                                               true));
             }
 
             var result = sut.BuildTree(model, isLegacyMode);
@@ -62,7 +63,8 @@ namespace DbLocalizationProvider.AdminUI.Tests
                                                                                              new CultureInfo("en"))
                                                                         }),
                                                  true,
-                                                 false)
+                                                 false,
+                                                 true)
                         };
 
             var result = sut.BuildTree(model, isLegacyModeEnabled);
@@ -115,7 +117,8 @@ namespace DbLocalizationProvider.AdminUI.Tests
                                                                                            new CultureInfo("en"))
                                                                       }),
                                                true,
-                                               visibilityFlags[i]));
+                                               visibilityFlags[i],
+                                               true));
             }
 
             var result = sut.BuildTree(model, isLecagyMode);
@@ -175,7 +178,8 @@ namespace DbLocalizationProvider.AdminUI.Tests
                                                                                            new CultureInfo("en"))
                                                                       }),
                                                true,
-                                               visibilityFlags[i]));
+                                               visibilityFlags[i],
+                                               true));
             }
 
             var result = sut.BuildTree(model, isLecagyMode);
@@ -230,7 +234,8 @@ namespace DbLocalizationProvider.AdminUI.Tests
                                                                                            new CultureInfo("en"))
                                                                       }),
                                                true,
-                                               visibilityFlags[i]));
+                                               visibilityFlags[i],
+                                               true));
             }
 
             var result = sut.BuildTree(model, isLegacyMode);
@@ -271,7 +276,8 @@ namespace DbLocalizationProvider.AdminUI.Tests
                                                                                            new CultureInfo("en"))
                                                                       }),
                                                true,
-                                               false));
+                                               false,
+                                               true));
             }
 
             var result = sut.BuildTree(model, isLegacyMode);
@@ -310,7 +316,8 @@ namespace DbLocalizationProvider.AdminUI.Tests
                                                                                            new CultureInfo("en"))
                                                                       }),
                                                true,
-                                               false));
+                                               false,
+                                               true));
             }
 
             var result = sut.BuildTree(model, isLegacyMode);

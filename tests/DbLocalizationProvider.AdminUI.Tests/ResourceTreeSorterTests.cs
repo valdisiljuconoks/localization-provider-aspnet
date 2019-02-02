@@ -23,7 +23,8 @@ namespace DbLocalizationProvider.AdminUI.Tests
                                                                                              new CultureInfo("en"))
                                                                         }),
                                                  true,
-                                                 false),
+                                                 false,
+                                                 true),
                             new ResourceListItem("MyNamespace.MyProject.AnotherResource",
                                                  new List<ResourceItem>(new[]
                                                                         {
@@ -32,7 +33,8 @@ namespace DbLocalizationProvider.AdminUI.Tests
                                                                                              new CultureInfo("en"))
                                                                         }),
                                                  true,
-                                                 false)
+                                                 false,
+                                                 true)
                         };
 
             var result = sut.Sort(builder.BuildTree(model)).ToList();
@@ -59,7 +61,8 @@ namespace DbLocalizationProvider.AdminUI.Tests
                                                                                              new CultureInfo("en"))
                                                                         }),
                                                  true,
-                                                 false),
+                                                 false,
+                                                 true),
                             new ResourceListItem("MyNamespace.MyProject.AnotherResource",
                                                  new List<ResourceItem>(new[]
                                                                         {
@@ -68,7 +71,8 @@ namespace DbLocalizationProvider.AdminUI.Tests
                                                                                              new CultureInfo("en"))
                                                                         }),
                                                  true,
-                                                 false),
+                                                 false,
+                                                 true),
 
                             new ResourceListItem("OtherNamespace.MyProject.OtherResource",
                                                  new List<ResourceItem>(new[]
@@ -78,7 +82,8 @@ namespace DbLocalizationProvider.AdminUI.Tests
                                                                                              new CultureInfo("en"))
                                                                         }),
                                                  true,
-                                                 false)
+                                                 false,
+                                                 true)
                         };
 
             var result = sut.Sort(builder.BuildTree(model)).ToList();
