@@ -40,7 +40,7 @@ namespace DbLocalizationProvider.MvcSample
                                               ctx.TypeFactory.ForQuery<AvailableLanguages.Query>().SetHandler<SampleAvailableLanguagesHandler>();
                                           });
 
-            app.Map("/localization-admin", b => b.UseDbLocalizationProviderAdminUI());
+            app.Map("/localization-admin", b => b.UseDbLocalizationProviderAdminUI(_ => { _.ShowInvariantCulture = true; }));
 
             var inst2 = LocalizationProvider.Current;
         }
@@ -50,14 +50,18 @@ namespace DbLocalizationProvider.MvcSample
 
     public class SampleAvailableLanguagesHandler : IQueryHandler<AvailableLanguages.Query, IEnumerable<CultureInfo>>
     {
-        private static readonly CultureInfo[] _cultureInfos = {
-                                                                  new CultureInfo("en"),
-                                                                  new CultureInfo("no"),
-                                                                  new CultureInfo("lv"),
-                                                              };
+        private static readonly List<CultureInfo> _cultureInfos = new List<CultureInfo>
+                                                                  {
+                                                                      new CultureInfo("en"),
+                                                                      new CultureInfo("no"),
+                                                                      new CultureInfo("lv")
+                                                                  };
 
         public IEnumerable<CultureInfo> Execute(AvailableLanguages.Query query)
         {
+            if(query.IncludeInvariant && !_cultureInfos.Contains(CultureInfo.InvariantCulture))
+                _cultureInfos.Insert(0, CultureInfo.InvariantCulture);
+
             return _cultureInfos;
         }
     }

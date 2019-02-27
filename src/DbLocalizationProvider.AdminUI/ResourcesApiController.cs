@@ -5,9 +5,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using DbLocalizationProvider.AdminUI.ApiModels;
+using DbLocalizationProvider.AdminUI.Models;
 using DbLocalizationProvider.Commands;
 using DbLocalizationProvider.Queries;
-using Newtonsoft.Json;
 
 namespace DbLocalizationProvider.AdminUI
 {
@@ -32,7 +32,7 @@ namespace DbLocalizationProvider.AdminUI
 
         private LocalizationResourceApiModel PrepareViewModel()
         {
-            var availableLanguagesQuery = new AvailableLanguages.Query { IncludeInvariant = true };
+            var availableLanguagesQuery = new AvailableLanguages.Query { IncludeInvariant = UiConfigurationContext.Current.ShowInvariantCulture };
             var languages = availableLanguagesQuery.Execute();
 
             var getResourcesQuery = new GetAllResources.Query(true);
@@ -57,18 +57,5 @@ namespace DbLocalizationProvider.AdminUI
                                                      },
                                                      StringSplitOptions.RemoveEmptyEntries);
         }
-    }
-
-    [JsonObject]
-    public class CreateOrUpdateTranslationRequestModel
-    {
-        [JsonProperty("key")]
-        public string Key { get; set; }
-
-        [JsonProperty("language")]
-        public string Language { get; set; }
-
-        [JsonProperty("newTranslation")]
-        public string Translation { get; set; }
     }
 }
