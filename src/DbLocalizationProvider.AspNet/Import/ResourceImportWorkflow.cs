@@ -118,7 +118,7 @@ namespace DbLocalizationProvider.Import
                 var existing = existingResources.FirstOrDefault(r => r.ResourceKey == incomingResource.ResourceKey);
                 if(existing != null)
                 {
-                    var comparer = new TranslationComparer();
+                    var comparer = new TranslationComparer(true);
                     var differences = incomingResource.Translations.Except(existing.Translations, comparer)
                                                       .ToList();
 

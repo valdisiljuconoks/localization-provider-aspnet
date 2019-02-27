@@ -153,7 +153,7 @@ namespace DbLocalizationProvider.AdminUI
         public FileResult ExportResources(string format = "json")
         {
             var exporter = ConfigurationContext.Current.Export.Providers.FindById(format);
-            var resources = new GetAllResources.Query().Execute();
+            var resources = new GetAllResources.Query(true).Execute();
             var result = exporter.Export(resources.ToList(), Request.Params);
 
             var stream = new MemoryStream();
@@ -253,7 +253,7 @@ namespace DbLocalizationProvider.AdminUI
 
                 if (previewImport.HasValue && previewImport.Value)
                 {
-                    var changes = workflow.DetectChanges(parseResult.Resources, new GetAllResources.Query().Execute());
+                    var changes = workflow.DetectChanges(parseResult.Resources, new GetAllResources.Query(true).Execute());
                     var changedLanguages = changes.SelectMany(c => c.ChangedLanguages).Distinct().Select(l => new CultureInfo(l));
 
                     var previewModel = new PreviewImportResourcesViewModel(changes, showMenu ?? false, changedLanguages);
