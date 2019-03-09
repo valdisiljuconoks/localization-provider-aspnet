@@ -12,6 +12,6 @@ namespace DbLocalizationProvider.MvcSample.Resources
         }
 
         [TranslationForCulture("Okk!", "no")]
-        public static string Ok => "Ok2";
+        public static string Ok => "Ok";
     }
 }
