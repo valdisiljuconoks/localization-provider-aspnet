@@ -60,7 +60,7 @@ namespace DbLocalizationProvider.Sync
             }
 
             ResetSyncStatus();
-            var allResources = new GetAllResources.Query().Execute();
+            var allResources = new GetAllResources.Query(true).Execute();
 
             Parallel.Invoke(() => RegisterDiscoveredResources(discoveredResources, allResources),
                             () => RegisterDiscoveredResources(discoveredModels, allResources));
