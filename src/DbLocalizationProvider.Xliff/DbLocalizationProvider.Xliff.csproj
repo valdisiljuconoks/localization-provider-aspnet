@@ -50,7 +50,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="Xliff.OM, Version=1.0.3.0, Culture=neutral, PublicKeyToken=e24b5062d4cb23b0, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xliff.OM-Signed.1.0.3\lib\portable40-net45+sl5+win8+wp8+wpa81\Xliff.OM.dll</HintPath>
+      <HintPath>$(SolutionDir)\packages\Xliff.OM-Signed.1.0.3\lib\portable40-net45+sl5+win8+wp8+wpa81\Xliff.OM.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
