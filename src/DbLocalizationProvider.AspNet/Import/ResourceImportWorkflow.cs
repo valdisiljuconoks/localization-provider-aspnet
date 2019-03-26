@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Valdis Iljuconoks.
+﻿// Copyright (c) 2019 Valdis Iljuconoks.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -119,15 +119,28 @@ namespace DbLocalizationProvider.Import
                 if(existing != null)
                 {
                     var comparer = new TranslationComparer(true);
-                    var differences = incomingResource.Translations.Except(existing.Translations, comparer)
-                                                      .ToList();
+                    var differences = incomingResource.Translations.Except(existing.Translations, comparer).ToList();
 
                     // some of the translations are different - so marking this resource as potential update
                     if(differences.Any())
-                        result.Add(new DetectedImportChange(ChangeType.Update, incomingResource, existing)
-                                   {
-                                       ChangedLanguages = differences.Select(t => t.Language).Distinct().ToList()
-                                   });
+                    {
+                        // here we need to check whether incoming resource is overriding existing translation (exists translation in given language)
+                        // or we are maybe importing exported language that had no translations
+                        // this could happen if you export language with no translations in xliff format
+                        // then new exported target language will have translation as empty string
+                        // these cases we need to filter out
+
+                        var detectedChangedLanguages = differences.Select(t => t.Language).Distinct().ToList();
+                        var existingLanguages = existing.Translations.Select(t => t.Language).Distinct().ToList();
+
+                        if(!differences.All(r => string.IsNullOrEmpty(r.Value)) || !detectedChangedLanguages.Except(existingLanguages).Any())
+                        {
+                            result.Add(new DetectedImportChange(ChangeType.Update, incomingResource, existing)
+                                       {
+                                           ChangedLanguages = detectedChangedLanguages
+                                       });
+                        }
+                    }
                 }
                 else
                 {
