@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using DbLocalizationProvider.Import;
 using Localization.Xliff.OM.Core;
 using Localization.Xliff.OM.Serialization;
@@ -32,9 +33,7 @@ namespace DbLocalizationProvider.Xliff
                 {
                     foreach(var resource in container.Resources)
                     {
-                        // NOTE: some more modern resources cannot be imported as-is (nested classes)
-                        // this might be a dependency on export comp. - knowing how substitution works over there, but yeah..
-                        result.Add(new LocalizationResource(resource.Id.Replace("---", "+"))
+                        result.Add(new LocalizationResource(XmlConvert.DecodeName(resource.Id))
                                    {
                                        Translations = new List<LocalizationResourceTranslation>
                                                       {

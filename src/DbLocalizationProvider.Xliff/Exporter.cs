@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
-using System.Linq;
+using System.Xml;
 using DbLocalizationProvider.Export;
-using DbLocalizationProvider.Internal;
 using Localization.Xliff.OM.Core;
 using Localization.Xliff.OM.Serialization;
 using File = Localization.Xliff.OM.Core.File;
@@ -36,11 +35,6 @@ namespace DbLocalizationProvider.Xliff
             if(toLanguage == null)
                 throw new ArgumentNullException(nameof(toLanguage));
 
-            // NOTE: legacy resources could not be exported as they contain illegal characters in keys
-            // also some more modern resources cannot be exported as-is (nested classes)
-            var exportableResources = resources.Where(r => !r.ResourceKey.StartsWith("/"))
-                                               .ForEach(r => r.ResourceKey = r.ResourceKey.Replace("+", "---"));
-
             var doc = new XliffDocument(fromLanguage.Name)
                       {
                           TargetLanguage = toLanguage.Name
@@ -52,16 +46,16 @@ namespace DbLocalizationProvider.Xliff
             var unit = new Unit("u1");
             file.Containers.Add(unit);
 
-            foreach(var resource in exportableResources)
+            foreach(var resource in resources)
             {
-                var segment = new Segment(resource.ResourceKey)
+                var segment = new Segment(XmlConvert.EncodeNmToken(resource.ResourceKey))
                               {
                                   Source = new Source(),
                                   Target = new Target()
                               };
 
-                segment.Source.Text.Add(new CDataTag(resource.Translations.ByLanguage(fromLanguage)));
-                segment.Target.Text.Add(new CDataTag(resource.Translations.ByLanguage(toLanguage)));
+                segment.Source.Text.Add(new CDataTag(resource.Translations.ByLanguage(fromLanguage.Name, false)));
+                segment.Target.Text.Add(new CDataTag(resource.Translations.ByLanguage(toLanguage.Name, false)));
 
                 unit.Resources.Add(segment);
             }

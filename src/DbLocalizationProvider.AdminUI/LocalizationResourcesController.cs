@@ -247,7 +247,7 @@ namespace DbLocalizationProvider.AdminUI
                 var differentLanguages = parseResult.DetectedLanguages.Except(allLanguages);
                 if(differentLanguages.Any())
                 {
-                    ModelState.AddModelError("file", $"Importing language `{string.Join(", ", differentLanguages.Select(c => c.Name))}` is not availabe in current EPiServer installation");
+                    ModelState.AddModelError("file", $"Importing language `{string.Join(", ", differentLanguages.Select(c => c.Name))}` is not available in current EPiServer installation");
                     return View("ImportResources", model);
                 }
 
