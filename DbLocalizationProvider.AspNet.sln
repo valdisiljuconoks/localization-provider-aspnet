@@ -37,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{7C04A49C-3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbLocalizationProvider.AspNet.Tests", "tests\DbLocalizationProvider.AspNet.Tests\DbLocalizationProvider.AspNet.Tests.csproj", "{31E60906-0D56-465A-B9C6-3C6DB2E0EB59}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbLocalizationProvider.JsResourceHandler", "src\DbLocalizationProvider.JsResourceHandler\DbLocalizationProvider.JsResourceHandler.csproj", "{4CE9BFFA-754B-435C-A11C-F0C1A6E236F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{31E60906-0D56-465A-B9C6-3C6DB2E0EB59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31E60906-0D56-465A-B9C6-3C6DB2E0EB59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31E60906-0D56-465A-B9C6-3C6DB2E0EB59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CE9BFFA-754B-435C-A11C-F0C1A6E236F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CE9BFFA-754B-435C-A11C-F0C1A6E236F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CE9BFFA-754B-435C-A11C-F0C1A6E236F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CE9BFFA-754B-435C-A11C-F0C1A6E236F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

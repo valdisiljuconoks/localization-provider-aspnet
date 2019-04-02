@@ -1,5 +1,6 @@
 ﻿@using DbLocalizationProvider
 @using DbLocalizationProvider.AspNet
+@using DbLocalizationProvider.JsResourceHandler
 @using DbLocalizationProvider.MvcSample.Resources
 @model DbLocalizationProvider.MvcSample.Models.HomeViewModel
 @{
@@ -76,5 +77,18 @@
 <div>
     UseResource (m.Ok => CommonResourcesOk): @Html.TranslateFor(m => m.Ok)
 </div>
+<hr/>
+<div>
+    Placeholder value is set by JS ($t('CommonResources.Ok')): <span id="placeholderForJS"></span>
+</div>
+
+@Html.GetTranslations(typeof(CommonResources))
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('placeholderForJS').innerHTML =
+            window.jsl10n.DbLocalizationProvider.MvcSample.Resources.CommonResources.Ok;
+    }, false);
+</script>
 </body>
 </html>

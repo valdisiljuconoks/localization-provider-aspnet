@@ -3,6 +3,7 @@ using System.Globalization;
 using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.AdminUI;
 using DbLocalizationProvider.Cache;
+using DbLocalizationProvider.JsResourceHandler;
 using DbLocalizationProvider.MvcSample;
 using DbLocalizationProvider.MvcSample.Resources;
 using DbLocalizationProvider.Queries;
@@ -43,6 +44,8 @@ namespace DbLocalizationProvider.MvcSample
             app.Map("/localization-admin", b => b.UseDbLocalizationProviderAdminUI(_ => { _.ShowInvariantCulture = true; }));
 
             var inst2 = LocalizationProvider.Current;
+
+            app.UseDbLocalizationProviderJsHandler();
         }
 
         private void CacheManagerOnOnRemove(CacheEventArgs args) { }

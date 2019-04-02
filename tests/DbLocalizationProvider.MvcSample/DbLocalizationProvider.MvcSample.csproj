@@ -193,6 +193,10 @@
       <Project>{8f0618d8-8200-45e9-9d1e-b268e98e0a84}</Project>
       <Name>DbLocalizationProvider.AdminUI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\DbLocalizationProvider.JsResourceHandler\DbLocalizationProvider.JsResourceHandler.csproj">
+      <Project>{4ce9bffa-754b-435c-a11c-f0c1a6e236f0}</Project>
+      <Name>DbLocalizationProvider.JsResourceHandler</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
