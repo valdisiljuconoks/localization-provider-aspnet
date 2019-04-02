@@ -19,6 +19,7 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Web;
+using DbLocalizationProvider.Queries;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using JsonConverter = DbLocalizationProvider.Json.JsonConverter;
@@ -45,7 +46,7 @@ namespace DbLocalizationProvider.JsResourceHandler
             var camelCase = context.Request.QueryString["camel"] != null;
             var alias = string.IsNullOrEmpty(context.Request.QueryString["alias"]) ? "jsl10n" : context.Request.QueryString["alias"];
             var languageName = string.IsNullOrEmpty(context.Request.QueryString["lang"])
-                                   ? ConfigurationContext.Current.DefaultResourceCulture.Name
+                                   ? new DetermineDefaultCulture.Query().Execute()
                                    : context.Request.QueryString["lang"];
             var cacheKey = CacheKeyHelper.GenerateKey(filename, languageName, debugMode);
 
