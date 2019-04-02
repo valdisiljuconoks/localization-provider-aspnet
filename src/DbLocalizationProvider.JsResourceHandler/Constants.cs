@@ -20,10 +20,10 @@
 
 namespace DbLocalizationProvider.JsResourceHandler
 {
-    internal class Constants
+    public class Constants
     {
-        internal const string PathBase = "jsl10n";
-        internal const string DeepMergeScriptName = "deep-merge.js";
-        internal const string IgnoreRoute = PathBase + "/" + "{*path}";
+        public const string PathBase = "jsl10n";
+        public const string DeepMergeScriptName = "deep-merge.js";
+        public const string IgnoreRoute = PathBase + "/" + "{*path}";
     }
 }

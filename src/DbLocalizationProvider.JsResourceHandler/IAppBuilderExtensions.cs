@@ -19,7 +19,6 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Threading;
-using System.Web.Mvc;
 using System.Web.Routing;
 using Microsoft.Owin.BuilderProperties;
 using Owin;
@@ -30,8 +29,8 @@ namespace DbLocalizationProvider.JsResourceHandler
     {
         public static IAppBuilder UseDbLocalizationProviderJsHandler(this IAppBuilder builder)
         {
-            //RouteTable.Routes.IgnoreRoute(Constants.IgnoreRoute);
-
+            // this is required to make like this is because if you add ignore route *after* ordinal ones - this one will not be invoked at all
+            // so it must appear before in the routing list (and RouteTable.Routes.IgnoreRoute() does not expose index to insert route at)
             RouteTable.Routes.Insert(0, new IgnoreRoute(Constants.IgnoreRoute));
 
             ConfigurationContext.Current.CacheManager.OnRemove += CacheInvalidationService.CacheManagerOnOnRemove;
@@ -46,12 +45,5 @@ namespace DbLocalizationProvider.JsResourceHandler
 
             return builder;
         }
-    }
-
-    internal class IgnoreRoute : Route
-    {
-        public IgnoreRoute(string url) : base(url, new StopRoutingHandler()) { }
-
-        public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary routeValues) => null;
     }
 }

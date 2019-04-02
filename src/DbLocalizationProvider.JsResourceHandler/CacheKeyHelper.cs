@@ -22,7 +22,7 @@ using System;
 
 namespace DbLocalizationProvider.JsResourceHandler
 {
-    internal class CacheKeyHelper
+    public class CacheKeyHelper
     {
         private static readonly string _separator = "_|_";
 
