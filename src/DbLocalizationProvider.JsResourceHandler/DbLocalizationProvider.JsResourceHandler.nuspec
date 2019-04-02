@@ -17,7 +17,7 @@
     <dependencies>
       <dependency id="LocalizationProvider.Abstractions" version="[5.5.0, 6.0.0)" />
       <dependency id="LocalizationProvider" version="[5.5.0, 6.0.0)" />
-      <dependency id="LocalizationProvider.AspNet" version="[5.4.0, 6.0.0)" />
+      <dependency id="LocalizationProvider.AspNet" version="[5.5.0, 6.0.0)" />
       <dependency id="Newtonsoft.Json" version="9.0.1" />
       <dependency id="Microsoft.Owin" version="3.0.1" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
