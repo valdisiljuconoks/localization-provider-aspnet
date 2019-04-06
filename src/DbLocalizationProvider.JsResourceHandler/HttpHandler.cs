@@ -19,6 +19,7 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Web;
+using DbLocalizationProvider.Queries;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using JsonConverter = DbLocalizationProvider.Json.JsonConverter;
