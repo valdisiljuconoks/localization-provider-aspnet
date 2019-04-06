@@ -26,9 +26,9 @@ namespace DbLocalizationProvider.JsResourceHandler
     {
         private static readonly string _separator = "_|_";
 
-        public static string GenerateKey(string filename, string language, bool isDebugMode)
+        public static string GenerateKey(string filename, string language, bool isDebugMode, bool camelCase)
         {
-            return $"{filename}{_separator}{language}__{(isDebugMode ? "debug" : "release")}";
+            return $"{filename}{_separator}{language}__{(isDebugMode ? "debug" : "release")}__{camelCase}";
         }
 
         public static string GetContainerName(string key)

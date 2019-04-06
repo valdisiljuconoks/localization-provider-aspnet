@@ -44,17 +44,24 @@ namespace DbLocalizationProvider.JsResourceHandler
             var debugMode = context.Request.QueryString["debug"] != null;
             var camelCase = context.Request.QueryString["camel"] != null;
             var alias = string.IsNullOrEmpty(context.Request.QueryString["alias"]) ? "jsl10n" : context.Request.QueryString["alias"];
-            var languageName = string.IsNullOrEmpty(context.Request.QueryString["lang"])
-                                   ? ConfigurationContext.Current.DefaultResourceCulture.Name
-                                   : context.Request.QueryString["lang"];
-            var cacheKey = CacheKeyHelper.GenerateKey(filename, languageName, debugMode);
+            var languageName = string.IsNullOrEmpty(context.Request.QueryString["lang"]) ? ConfigurationContext.Current.DefaultResourceCulture.Name : context.Request.QueryString["lang"];
+            var windowAlias = context.Request.QueryString["json"] == null;
+            var cacheKey = CacheKeyHelper.GenerateKey(filename, languageName, debugMode, camelCase);
+            var cache = ConfigurationContext.Current.CacheManager;
 
-            if(!(ConfigurationContext.Current.CacheManager.Get(cacheKey) is string responseObject))
+            if(!(cache.Get(cacheKey) is string responseObject))
             {
                 responseObject = GetJson(filename, context, languageName, debugMode, camelCase);
-                responseObject = $"window.{alias} = jsResourceHandler.deepmerge(window.{alias} || {{}}, {responseObject})";
+                cache.Insert(cacheKey, responseObject);
+            }
 
-                ConfigurationContext.Current.CacheManager.Insert(cacheKey, responseObject);
+            if(windowAlias)
+            {
+                responseObject = $"window.{alias} = jsResourceHandler.deepmerge(window.{alias} || {{}}, {responseObject})";
+            }
+            else
+            {
+                context.Response.ContentType = "application/json";
             }
 
             context.Response.Write(responseObject);
