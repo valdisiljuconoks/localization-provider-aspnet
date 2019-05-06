@@ -144,7 +144,10 @@ namespace DbLocalizationProvider.Import
                 }
                 else
                 {
-                    result.Add(new DetectedImportChange(ChangeType.Insert, incomingResource, LocalizationResource.CreateNonExisting(incomingResource.ResourceKey)));
+                    result.Add(new DetectedImportChange(ChangeType.Insert, incomingResource, LocalizationResource.CreateNonExisting(incomingResource.ResourceKey))
+                               {
+                                   ChangedLanguages = incomingResource.Translations.Select(t => t.Language).ToList()
+                               });
                 }
             }
 
@@ -175,6 +178,9 @@ namespace DbLocalizationProvider.Import
                     insert.ImportingResource.ModificationDate = DateTime.UtcNow;
                     insert.ImportingResource.Author = "import";
                     insert.ImportingResource.IsModified = false;
+
+                    // fix incoming resource translation invariant language (if any)
+                    insert.ImportingResource.Translations.ForEach(t => t.Language = t.Language ?? "");
 
                     AddNewResource(db, insert.ImportingResource);
                     inserts++;
