@@ -18,6 +18,8 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
+using System;
+using System.Linq;
 using System.Web;
 using DbLocalizationProvider.Queries;
 using Newtonsoft.Json;
@@ -46,9 +48,26 @@ namespace DbLocalizationProvider.JsResourceHandler
             var camelCase = context.Request.QueryString["camel"] != null;
             var alias = string.IsNullOrEmpty(context.Request.QueryString["alias"]) ? "jsl10n" : context.Request.QueryString["alias"];
             var languageName = string.IsNullOrEmpty(context.Request.QueryString["lang"]) ? ConfigurationContext.Current.DefaultResourceCulture.Name : context.Request.QueryString["lang"];
-            var windowAlias = context.Request.QueryString["json"] == null;
             var cacheKey = CacheKeyHelper.GenerateKey(filename, languageName, debugMode, camelCase);
             var cache = ConfigurationContext.Current.CacheManager;
+            var windowAlias = true;
+
+            // try to guess whether response should be made in JSON
+            if(context.Request.QueryString["json"] != null && context.Request.QueryString["json"].Equals("true", StringComparison.InvariantCultureIgnoreCase))
+            {
+                windowAlias = false;
+            }
+            else
+            {
+                if(context.Request.Headers.AllKeys.Contains("X-Requested-With") && context.Request.Headers["X-Requested-With"].Equals("XMLHttpRequest", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    windowAlias = false;
+                }
+                else if(context.Request.AcceptTypes != null && context.Request.AcceptTypes.Contains("application/json"))
+                {
+                    windowAlias = false;
+                }
+            }
 
             if(!(cache.Get(cacheKey) is string responseObject))
             {
