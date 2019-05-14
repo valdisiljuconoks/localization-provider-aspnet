@@ -154,6 +154,21 @@ namespace DbLocalizationProvider.AdminUI
         {
             var exporter = ConfigurationContext.Current.Export.Providers.FindById(format);
             var resources = new GetAllResources.Query(true).Execute();
+            var languages = new AvailableLanguages.Query().Execute();
+
+            foreach(var resource in resources)
+            {
+                var exportableTranslations = new List<LocalizationResourceTranslation> { resource.Translations.FindByLanguage(CultureInfo.InvariantCulture) };
+                foreach(var language in languages)
+                {
+                    var t = resource.Translations.FindByLanguage(language);
+                    if(t != null)
+                        exportableTranslations.Add(t);
+                }
+
+                resource.Translations = exportableTranslations;
+            }
+
             var result = exporter.Export(resources.ToList(), Request.Params);
 
             var stream = new MemoryStream();
