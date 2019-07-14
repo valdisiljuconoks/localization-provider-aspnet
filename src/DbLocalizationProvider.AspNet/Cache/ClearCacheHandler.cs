@@ -29,8 +29,11 @@ namespace DbLocalizationProvider.AspNet.Cache
         {
             var manager = ConfigurationContext.Current.CacheManager;
             foreach(var key in ConfigurationContext.Current.BaseCacheManager.KnownResourceKeys.Keys)
-                if(manager.Get(key) != null)
-                    manager.Remove(key);
+            {
+                var cachedKey = CacheKeyHelper.BuildKey(key);
+                if(manager.Get(cachedKey) != null)
+                    manager.Remove(cachedKey);
+            }
         }
     }
 }
