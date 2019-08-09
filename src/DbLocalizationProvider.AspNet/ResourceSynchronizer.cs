@@ -173,9 +173,19 @@ end
                                          var invariantTranslation = property.Translations.First(t => t.Culture == string.Empty);
                                          sb.AppendLine($"update LocalizationResourceTranslations set [Value] = N'{invariantTranslation.Translation.Replace("'", "''")}' where ResourceId={existingResource.Id} and [Language]='{invariantTranslation.Culture}'");
 
+                                         // check whether we do have Invariant language translation in database
+                                         // TODO: update this to extension method once main library is updated (via git submodule)
+                                         if(existingResource.Translations.FirstOrDefault(_ => _.Language == string.Empty) == null
+                                            && property.Translations.FirstOrDefault(_ => _.Culture == string.Empty) != null)
+                                         {
+                                             // we don't have Invariant translation in database - must create one regardless of modified state of the resource
+                                             AddTranslationScript(existingResource, sb, property.Translations.First(_ => _.Culture == string.Empty));
+                                         }
+
                                          if(existingResource.IsModified.HasValue && !existingResource.IsModified.Value)
                                          {
-                                             foreach(var propertyTranslation in property.Translations)
+                                             // process all other languages except Invariant
+                                             foreach(var propertyTranslation in property.Translations.Where(_ => _.Culture != string.Empty))
                                                  AddTranslationScript(existingResource, sb, propertyTranslation);
                                          }
                                      }

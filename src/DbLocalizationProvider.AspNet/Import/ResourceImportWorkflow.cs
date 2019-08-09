@@ -206,7 +206,7 @@ namespace DbLocalizationProvider.Import
                         continue;
                     }
 
-                    foreach(var translation in update.ImportingResource.Translations)
+                    foreach(var translation in update.ImportingResource.Translations.Where(_ => _.Value != null))
                     {
                         var existingTranslation = existingResource.Translations.FirstOrDefault(t => t.Language == translation.Language);
 
