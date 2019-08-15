@@ -158,7 +158,11 @@ namespace DbLocalizationProvider.AdminUI
 
             foreach(var resource in resources)
             {
-                var exportableTranslations = new List<LocalizationResourceTranslation> { resource.Translations.FindByLanguage(CultureInfo.InvariantCulture) };
+                var exportableTranslations = new List<LocalizationResourceTranslation>();
+                var invariantTranslation = resource.Translations.FindByLanguage(CultureInfo.InvariantCulture);
+                if(invariantTranslation != null)
+                    exportableTranslations.Add(invariantTranslation);
+
                 foreach(var language in languages)
                 {
                     var t = resource.Translations.FindByLanguage(language);

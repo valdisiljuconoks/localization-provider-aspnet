@@ -119,7 +119,8 @@ namespace DbLocalizationProvider.Import
                 if(existing != null)
                 {
                     var comparer = new TranslationComparer(true);
-                    var differences = incomingResource.Translations.Except(existing.Translations, comparer).ToList();
+                    var existingTranslations = existing.Translations.Where(_ => _ != null).ToList();
+                    var differences = incomingResource.Translations.Except(existingTranslations, comparer).Where(_ => _ != null).ToList();
 
                     // some of the translations are different - so marking this resource as potential update
                     if(differences.Any())
@@ -130,8 +131,8 @@ namespace DbLocalizationProvider.Import
                         // then new exported target language will have translation as empty string
                         // these cases we need to filter out
 
-                        var detectedChangedLanguages = differences.Select(t => t.Language).Distinct().ToList();
-                        var existingLanguages = existing.Translations.Select(t => t.Language).Distinct().ToList();
+                        var detectedChangedLanguages = differences.Select(_ => _.Language).Distinct().ToList();
+                        var existingLanguages = existingTranslations.Select(_ => _.Language).Distinct().ToList();
 
                         if(!differences.All(r => string.IsNullOrEmpty(r.Value)) || !detectedChangedLanguages.Except(existingLanguages).Any())
                         {
