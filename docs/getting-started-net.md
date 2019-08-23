@@ -33,7 +33,7 @@ public class Startup
     {
         appBuilder.UseDbLocalizationProvider(c =>
                                              {
-                                                 c.ConnectionName = "MyConnectionString";
+                                                 c.Connection = "MyConnectionString";
                                              });
     }
 }
