@@ -21,7 +21,6 @@
 using System;
 using System.Linq;
 using System.Web;
-using DbLocalizationProvider.Queries;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using JsonConverter = DbLocalizationProvider.Json.JsonConverter;
@@ -30,7 +29,12 @@ namespace DbLocalizationProvider.JsResourceHandler
 {
     public class HttpHandler : IHttpHandler
     {
-        private readonly JsonConverter _converter = new JsonConverter();
+        private readonly JsonConverter _converter;
+
+        public HttpHandler()
+        {
+            _converter = new JsonConverter();
+        }
 
         public void ProcessRequest(HttpContext context)
         {
