@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using DbLocalizationProvider.Commands;
 using DbLocalizationProvider.Export;
 using DbLocalizationProvider.Import;
+using DbLocalizationProvider.Internal;
 using DbLocalizationProvider.Queries;
 
 namespace DbLocalizationProvider.AdminUI
@@ -222,8 +223,15 @@ namespace DbLocalizationProvider.AdminUI
 
             try
             {
+                // prepare incoming model a bit
+                // if change is selected and translation is `null` -> most probably this means that translation was empty but Mvc model binder set it to `null`
+                // we need to fix this to get functionality to set empty translations via import process
                 var importer = new ResourceImportWorkflow();
-                var result = importer.ImportChanges(changes.Where(c => c.Selected).ToList());
+                var detectedImportChanges = changes.Where(c => c.Selected)
+                                                   .ForEach(c => c.ImportingResource.Translations.ForEach(t => t.Value = t.Value ?? (t.Value = string.Empty)))
+                                                   .ToList();
+
+                var result = importer.ImportChanges(detectedImportChanges);
 
                 ViewData["LocalizationProvider_ImportResult"] = string.Join("<br/>", result);
             }
