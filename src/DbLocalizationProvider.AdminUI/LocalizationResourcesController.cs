@@ -156,12 +156,12 @@ namespace DbLocalizationProvider.AdminUI
         }
 
         [HttpPost]
-        public ActionResult UpdateLanguages(string[] languages)
+        public ActionResult UpdateLanguages(string[] languages, bool? showMenu)
         {
             // issue cookie to store selected languages
             WriteSelectedLanguages(languages);
 
-            return RedirectToAction("Index");
+            return RedirectToAction(showMenu.HasValue && showMenu.Value ? "Main" : "Index");
         }
 
         public FileResult ExportResources(string format = "json")
