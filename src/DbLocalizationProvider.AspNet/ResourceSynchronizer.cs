@@ -52,18 +52,87 @@ namespace DbLocalizationProvider.Sync
             }
 
             // initialize db structures first (issue #53)
-            using(var ctx = new LanguageEntities())
-            {
-                var tmp = ctx.LocalizationResources.FirstOrDefault();
-            }
+            //using(var ctx = new LanguageEntities())
+            //{
+            //    var tmp = ctx.LocalizationResources.FirstOrDefault();
+            //}
 
             ResetSyncStatus();
             var allResources = new GetAllResources.Query(true).Execute();
 
-            Parallel.Invoke(() => RegisterDiscoveredResources(discoveredResources, allResources),
-                            () => RegisterDiscoveredResources(discoveredModels, allResources));
+            var l1 = Enumerable.Empty<DiscoveredResource>();
+            var l2 = Enumerable.Empty<DiscoveredResource>();
 
-            StoreKnownResourcesAndPopulateCache();
+            Parallel.Invoke(() => l1 = RegisterDiscoveredResources(discoveredResources, allResources),
+                            () => l2 = RegisterDiscoveredResources(discoveredModels, allResources));
+
+            StoreKnownResourcesAndPopulateCache(MergeLists(allResources, l1.ToList(), l2.ToList()));
+        }
+
+        internal IEnumerable<LocalizationResource> MergeLists(IEnumerable<LocalizationResource> databaseResources, List<DiscoveredResource> discoveredResources, List<DiscoveredResource> discoveredModels)
+        {
+            if(discoveredResources == null || discoveredModels == null || !discoveredResources.Any() || !discoveredModels.Any()) return databaseResources;
+
+
+            var result = new List<LocalizationResource>(databaseResources);
+            var dic = result.ToDictionary(r => r.ResourceKey, r => r);
+
+            // run through resources
+            NewMethod(ref discoveredResources, dic, ref result);
+            NewMethod(ref discoveredModels, dic, ref result);
+
+            return result;
+        }
+
+        private static void NewMethod(ref List<DiscoveredResource> discoveredResources, Dictionary<string, LocalizationResource> dic, ref List<LocalizationResource> result)
+        {
+            while (discoveredResources.Count > 0)
+            {
+                var discoveredResource = discoveredResources[0];
+                if (!dic.ContainsKey(discoveredResource.Key))
+                {
+                    // there is no resource by this key in db - we can safely insert
+                    result.Add(new LocalizationResource(discoveredResource.Key)
+                    {
+                        Translations = discoveredResource.Translations.Select(t => new LocalizationResourceTranslation { Language = t.Culture, Value = t.Translation }).ToList()
+                    });
+                }
+                else
+                {
+                    // resource exists in db - we need to merge only unmodified translations
+                    var existingRes = dic[discoveredResource.Key];
+                    if (!existingRes.IsModified.HasValue || !existingRes.IsModified.Value)
+                    {
+                        // resource is unmodified in db - overwrite
+                        foreach (var translation in discoveredResource.Translations)
+                        {
+                            var t = existingRes.Translations.FindByLanguage(translation.Culture);
+                            if (t == null)
+                            {
+                                existingRes.Translations.Add(new LocalizationResourceTranslation { Language = translation.Culture, Value = translation.Translation });
+                            }
+                            else
+                            {
+                                t.Language = translation.Culture;
+                                t.Value = translation.Translation;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // resource exists in db, is modified - we need to update only invariant translation
+                        var t = existingRes.Translations.FindByLanguage(CultureInfo.InvariantCulture);
+                        var invariant = discoveredResource.Translations.FirstOrDefault(t2 => t.Language == string.Empty);
+                        if (t != null && invariant != null)
+                        {
+                            t.Language = invariant.Culture;
+                            t.Value = invariant.Translation;
+                        }
+                    }
+                }
+
+                discoveredResources.Remove(discoveredResource);
+            }
         }
 
         public void RegisterManually(IEnumerable<ManualResource> resources)
@@ -79,15 +148,15 @@ namespace DbLocalizationProvider.Sync
             }
         }
 
-        private void StoreKnownResourcesAndPopulateCache()
+        private void StoreKnownResourcesAndPopulateCache(IEnumerable<LocalizationResource> mergeLists)
         {
-            var allResources = new GetAllResources.Query(true).Execute();
+            //var allResources = new GetAllResources.Query(true).Execute();
 
             if(ConfigurationContext.Current.PopulateCacheOnStartup)
             {
                 new ClearCache.Command().Execute();
 
-                foreach(var resource in allResources)
+                foreach(var resource in mergeLists)
                 {
                     var key = CacheKeyHelper.BuildKey(resource.ResourceKey);
                     ConfigurationContext.Current.CacheManager.Insert(key, resource);
@@ -96,7 +165,7 @@ namespace DbLocalizationProvider.Sync
             else
             {
                 // just store resource cache keys
-                allResources.ForEach(r => ConfigurationContext.Current.BaseCacheManager.StoreKnownKey(r.ResourceKey));
+                mergeLists.ForEach(r => ConfigurationContext.Current.BaseCacheManager.StoreKnownKey(r.ResourceKey));
             }
         }
 
@@ -112,7 +181,7 @@ namespace DbLocalizationProvider.Sync
             }
         }
 
-        private void RegisterDiscoveredResources(IEnumerable<Type> types, IEnumerable<LocalizationResource> allResources)
+        private IEnumerable<DiscoveredResource> RegisterDiscoveredResources(IEnumerable<Type> types, IEnumerable<LocalizationResource> allResources)
         {
             var helper = new TypeDiscoveryHelper();
             var properties = types.SelectMany(type => helper.ScanResources(type)).DistinctBy(r => r.Key);
@@ -203,6 +272,8 @@ end
                                      conn.Close();
                                  }
                              });
+
+            return properties;
         }
 
         private static void AddTranslationScript(LocalizationResource existingResource, StringBuilder buffer, DiscoveredTranslation resource)

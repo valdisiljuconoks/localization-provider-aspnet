@@ -31,11 +31,11 @@ namespace DbLocalizationProvider
 
         public LanguageEntities(string connectionString) : base(connectionString)
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<LanguageEntities, Configuration>());
-            Configuration.LazyLoadingEnabled = false;
-            Configuration.ProxyCreationEnabled = false;
+            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<LanguageEntities, Configuration>());
+            //Configuration.LazyLoadingEnabled = false;
+            //Configuration.ProxyCreationEnabled = false;
 
-            Database.Initialize(false);
+            //Database.Initialize(false);
         }
 
         public virtual DbSet<LocalizationResource> LocalizationResources { get; set; }
