@@ -1,3 +1,6 @@
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Licensed under Apache-2.0. See the LICENSE file in the project root for more information
+
 using System;
 using System.Collections.Generic;
 
@@ -5,7 +8,8 @@ namespace DbLocalizationProvider.AdminUI
 {
     public class ResourceTreeItem
     {
-        public ResourceTreeItem(long id, long? parentId, string keyFragment, string resourceKey, bool isLeaf, ICollection<ResourceItem> translations, bool allowDelete, bool isHidden, bool isModified, string path)
+        public ResourceTreeItem(long id, long? parentId, string keyFragment, string resourceKey, bool isLeaf,
+            ICollection<ResourceItem> translations, bool allowDelete, bool isHidden, bool isModified, string path)
         {
             Id = id;
             ParentId = parentId;
@@ -32,6 +36,7 @@ namespace DbLocalizationProvider.AdminUI
         public bool AllowDelete { get; }
 
         public bool IsHidden { get; set; }
+
         public bool IsModified { get; }
 
         public string Path { get; }

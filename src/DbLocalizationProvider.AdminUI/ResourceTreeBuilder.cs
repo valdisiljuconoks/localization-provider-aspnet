@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Licensed under Apache-2.0. See the LICENSE file in the project root for more information
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,8 +35,7 @@ namespace DbLocalizationProvider.AdminUI
                 {
                     path = !string.IsNullOrEmpty(path) ? string.Join(separator, path, defragmented[ix]) : defragmented[ix];
 
-                    if(ix > 0)
-                        parentPath = !string.IsNullOrEmpty(parentPath)
+                    if(ix > 0) parentPath = !string.IsNullOrEmpty(parentPath)
                                          ? string.Join(separator, parentPath, defragmented[ix - 1])
                                          : defragmented[ix - 1];
 
@@ -68,10 +70,10 @@ namespace DbLocalizationProvider.AdminUI
 
         private string[] SplitResourceKey(ResourceListItem resource, bool isLegacyResource)
         {
-            if(!isLegacyResource)
-                return resource.Key.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries);
+            if(!isLegacyResource) return resource.Key.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries);
 
             var key = resource.Key.Remove(0, 1);
+
             return key.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
         }
 
@@ -83,9 +85,7 @@ namespace DbLocalizationProvider.AdminUI
             {
                 var path = string.Join(separator, defragmented.Take(ix));
                 var item = result.FirstOrDefault(r => r.Path == path);
-
-                if(item != null && !resource.IsHidden)
-                    item.IsHidden = resource.IsHidden;
+                if(item != null && !resource.IsHidden) item.IsHidden = resource.IsHidden;
             }
         }
     }

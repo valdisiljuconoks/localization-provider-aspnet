@@ -1,22 +1,5 @@
-﻿// Copyright (c) 2019 Valdis Iljuconoks.
-// Permission is hereby granted, free of charge, to any person
-// obtaining a copy of this software and associated documentation
-// files (the "Software"), to deal in the Software without
-// restriction, including without limitation the rights to use,
-// copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the
-// Software is furnished to do so, subject to the following
-// conditions:
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System.Collections.Generic;
 using DbLocalizationProvider.Abstractions;
@@ -29,16 +12,14 @@ namespace DbLocalizationProvider.AspNet.Queries
     {
         public string Execute(GetTranslation.Query query)
         {
-            if(!ConfigurationContext.Current.EnableLocalization())
-                return query.Key;
+            if(!ConfigurationContext.Current.EnableLocalization()) return query.Key;
 
             var key = query.Key;
             var language = query.Language;
             var cacheKey = CacheKeyHelper.BuildKey(key);
             var localizationResource = ConfigurationContext.Current.CacheManager.Get(cacheKey) as LocalizationResource;
 
-            if(localizationResource != null)
-                return GetTranslationFromAvailableList(localizationResource.Translations, language, query.UseFallback)?.Value;
+            if(localizationResource != null) return GetTranslationFromAvailableList(localizationResource.Translations, language, query.UseFallback)?.Value;
 
             LocalizationResourceTranslation localization = null;
             LocalizationResource resource;
@@ -57,12 +38,11 @@ namespace DbLocalizationProvider.AspNet.Queries
                 resource = new GetResourceHandler().Execute(new GetResource.Query(query.Key));
             }
 
-            if(resource == null)
-                resource = LocalizationResource.CreateNonExisting(key);
-            else
-                localization = GetTranslationFromAvailableList(resource.Translations, language, query.UseFallback);
+            if(resource == null) resource = LocalizationResource.CreateNonExisting(key);
+            else localization = GetTranslationFromAvailableList(resource.Translations, language, query.UseFallback);
 
             ConfigurationContext.Current.CacheManager.Insert(cacheKey, resource, true);
+
             return localization?.Value;
         }
     }

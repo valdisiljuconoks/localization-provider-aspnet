@@ -1,3 +1,6 @@
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Licensed under Apache-2.0. See the LICENSE file in the project root for more information
+
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -6,12 +9,13 @@ namespace DbLocalizationProvider.AdminUI
 {
     public class LocalizationResourceViewModel
     {
-        public LocalizationResourceViewModel(List<ResourceListItem> resources, IEnumerable<CultureInfo> languages, IEnumerable<string> selectedLanguages, int maxLength)
+        public LocalizationResourceViewModel(List<ResourceListItem> resources, IEnumerable<CultureInfo> languages,
+            IEnumerable<string> selectedLanguages, int maxLength)
         {
             Resources = resources;
             Languages = languages;
             SelectedLanguages = selectedLanguages?.Select(l => new CultureInfo(l == "__invariant" ? string.Empty : l))
-                                                  .Where(sl => languages.Any(al => sl.EnglishName == al.EnglishName)) ?? languages;
+                                    .Where(sl => languages.Any(al => sl.EnglishName == al.EnglishName)) ?? languages;
 
             Resources.ForEach(r =>
             {

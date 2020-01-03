@@ -1,3 +1,6 @@
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Licensed under Apache-2.0. See the LICENSE file in the project root for more information
+
 using System;
 using System.Collections.Generic;
 
@@ -34,13 +37,11 @@ namespace DbLocalizationProvider.AdminUI
         /// <param name="view"></param>
         public void DisableView(ResourceListView view)
         {
-            if(view == ResourceListView.None)
-                throw new ArgumentException("Cannot disable `None` view");
+            if(view == ResourceListView.None) throw new ArgumentException("Cannot disable `None` view");
 
             if(view == ResourceListView.Table)
             {
-                if(IsTreeViewDisabled)
-                    throw new ArgumentException("Cannot disable both views");
+                if(IsTreeViewDisabled) throw new ArgumentException("Cannot disable both views");
 
                 IsTableViewDisabled = true;
             }
@@ -48,8 +49,7 @@ namespace DbLocalizationProvider.AdminUI
 
             if(view == ResourceListView.Tree)
             {
-                if(IsTableViewDisabled)
-                    throw new ArgumentException("Cannot disable both views");
+                if(IsTableViewDisabled) throw new ArgumentException("Cannot disable both views");
 
                 IsTreeViewDisabled = true;
             }

@@ -1,22 +1,5 @@
-﻿// Copyright © 2017 Valdis Iljuconoks.
-// Permission is hereby granted, free of charge, to any person
-// obtaining a copy of this software and associated documentation
-// files (the "Software"), to deal in the Software without
-// restriction, including without limitation the rights to use,
-// copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the
-// Software is furnished to do so, subject to the following
-// conditions:
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
 using System.Globalization;
@@ -32,19 +15,15 @@ namespace DbLocalizationProvider
     {
         public static MvcHtmlString Translate(this HtmlHelper helper, Expression<Func<object>> model, params object[] formatArguments)
         {
-            if(model == null)
-                throw new ArgumentNullException(nameof(model));
+            if(model == null) throw new ArgumentNullException(nameof(model));
 
             return new MvcHtmlString(LocalizationProvider.Current.GetStringByCulture(model, CultureInfo.CurrentUICulture, formatArguments));
         }
 
         public static MvcHtmlString TranslateByCulture(this HtmlHelper helper, Expression<Func<object>> model, CultureInfo culture, params object[] formatArguments)
         {
-            if(model == null)
-                throw new ArgumentNullException(nameof(model));
-
-            if(culture == null)
-                throw new ArgumentNullException(nameof(culture));
+            if(model == null) throw new ArgumentNullException(nameof(model));
+            if(culture == null) throw new ArgumentNullException(nameof(culture));
 
             return new MvcHtmlString(LocalizationProvider.Current.GetStringByCulture(model, culture, formatArguments));
         }
@@ -56,17 +35,10 @@ namespace DbLocalizationProvider
 
         public static MvcHtmlString TranslateByCulture(this HtmlHelper helper, Expression<Func<object>> model, Type customAttribute, CultureInfo culture, params object[] formatArguments)
         {
-            if(model == null)
-                throw new ArgumentNullException(nameof(model));
-
-            if(customAttribute == null)
-                throw new ArgumentNullException(nameof(customAttribute));
-
-            if(culture == null)
-                throw new ArgumentNullException(nameof(culture));
-
-            if(!typeof(Attribute).IsAssignableFrom(customAttribute))
-                throw new ArgumentException($"Given type `{customAttribute.FullName}` is not of type `System.Attribute`");
+            if(model == null) throw new ArgumentNullException(nameof(model));
+            if(customAttribute == null) throw new ArgumentNullException(nameof(customAttribute));
+            if(culture == null) throw new ArgumentNullException(nameof(culture));
+            if(!typeof(Attribute).IsAssignableFrom(customAttribute)) throw new ArgumentException($"Given type `{customAttribute.FullName}` is not of type `System.Attribute`");
 
             var resourceKey = ResourceKeyBuilder.BuildResourceKey(ExpressionHelper.GetFullMemberName(model), customAttribute);
 
@@ -117,22 +89,16 @@ namespace DbLocalizationProvider
                                                                  CultureInfo culture,
                                                                  params object[] formatArguments)
         {
-            if(customAttribute == null)
-                throw new ArgumentNullException(nameof(customAttribute));
-
-            if(culture == null)
-                throw new ArgumentNullException(nameof(culture));
-
-            if(!typeof(Attribute).IsAssignableFrom(customAttribute))
-                throw new ArgumentException($"Given type `{customAttribute.FullName}` is not of type `System.Attribute`");
+            if(customAttribute == null) throw new ArgumentNullException(nameof(customAttribute));
+            if(culture == null) throw new ArgumentNullException(nameof(culture));
+            if(!typeof(Attribute).IsAssignableFrom(customAttribute)) throw new ArgumentException($"Given type `{customAttribute.FullName}` is not of type `System.Attribute`");
 
             var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
 
             var pi = metadata.ContainerType.GetProperty(metadata.PropertyName);
             if(pi != null)
             {
-                if(pi.GetCustomAttribute(customAttribute) == null)
-                    return MvcHtmlString.Empty;
+                if(pi.GetCustomAttribute(customAttribute) == null) return MvcHtmlString.Empty;
             }
 
             return new MvcHtmlString(LocalizationProvider.Current.GetStringByCulture(ResourceKeyBuilder.BuildResourceKey(metadata.ContainerType,
