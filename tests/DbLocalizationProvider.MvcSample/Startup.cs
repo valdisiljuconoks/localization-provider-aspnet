@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Globalization;
 using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.AdminUI;
@@ -41,7 +41,9 @@ namespace DbLocalizationProvider.MvcSample
                                               ctx.TypeFactory.ForQuery<AvailableLanguages.Query>().SetHandler<SampleAvailableLanguagesHandler>();
                                           });
 
-            app.Map("/localization-admin", b => b.UseDbLocalizationProviderAdminUI(_ => { _.ShowInvariantCulture = true; }));
+            app.UseDbLocalizationProviderAdminUI("/localization-admin", _ => { _.ShowInvariantCulture = true; });
+
+            //app.Map("/localization-admin", b => b.UseDbLocalizationProviderAdminUI(_ => { _.ShowInvariantCulture = true; }));
 
             var inst2 = LocalizationProvider.Current;
 

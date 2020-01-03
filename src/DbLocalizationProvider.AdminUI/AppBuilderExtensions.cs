@@ -13,7 +13,14 @@ namespace DbLocalizationProvider.AdminUI
 {
     public static class AppBuilderExtensions
     {
-        public static IAppBuilder UseDbLocalizationProviderAdminUI(this IAppBuilder builder, Action<UiConfigurationContext> setup = null, Action<IAppBuilder> additionalSetup = null)
+        public static IAppBuilder UseDbLocalizationProviderAdminUI(this IAppBuilder builder, string path, Action<UiConfigurationContext> setup = null, Action<IAppBuilder> additionalSetup = null)
+        {
+            builder.Map(path, b => b.RegisterAdminUI(setup, additionalSetup));
+
+            return builder;
+        }
+
+        internal static IAppBuilder RegisterAdminUI(this IAppBuilder builder, Action<UiConfigurationContext> setup = null, Action<IAppBuilder> additionalSetup = null)
         {
             setup?.Invoke(UiConfigurationContext.Current);
             additionalSetup?.Invoke(builder);
