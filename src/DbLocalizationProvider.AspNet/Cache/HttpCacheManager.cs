@@ -25,7 +25,7 @@ namespace DbLocalizationProvider.AspNet.Cache
 {
     public class HttpCacheManager : ICacheManager
     {
-        public void Insert(string key, object value)
+        public void Insert(string key, object value, bool insertIntoKnownResourceKeys)
         {
             HttpRuntime.Cache?.Insert(key, value);
         }

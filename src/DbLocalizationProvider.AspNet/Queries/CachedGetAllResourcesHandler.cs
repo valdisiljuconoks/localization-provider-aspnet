@@ -62,7 +62,7 @@ namespace DbLocalizationProvider.AspNet.Queries
                     var resourceFromDb = new GetResource.Query(key).Execute();
                     if(resourceFromDb != null)
                     {
-                        ConfigurationContext.Current.CacheManager.Insert(cacheKey, resourceFromDb);
+                        ConfigurationContext.Current.CacheManager.Insert(cacheKey, resourceFromDb, true);
                         result.Add(resourceFromDb);
                     }
                 }

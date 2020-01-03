@@ -76,7 +76,7 @@ namespace DbLocalizationProvider.JsResourceHandler
             if(!(cache.Get(cacheKey) is string responseObject))
             {
                 responseObject = GetJson(filename, context, languageName, debugMode, camelCase);
-                cache.Insert(cacheKey, responseObject);
+                cache.Insert(cacheKey, responseObject, false);
             }
 
             if(windowAlias)

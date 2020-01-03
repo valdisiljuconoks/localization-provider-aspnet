@@ -159,7 +159,7 @@ namespace DbLocalizationProvider.Sync
                 foreach(var resource in mergeLists)
                 {
                     var key = CacheKeyHelper.BuildKey(resource.ResourceKey);
-                    ConfigurationContext.Current.CacheManager.Insert(key, resource);
+                    ConfigurationContext.Current.CacheManager.Insert(key, resource, true);
                 }
             }
             else

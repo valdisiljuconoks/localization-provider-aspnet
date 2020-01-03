@@ -62,7 +62,7 @@ namespace DbLocalizationProvider.AspNet.Queries
             else
                 localization = GetTranslationFromAvailableList(resource.Translations, language, query.UseFallback);
 
-            ConfigurationContext.Current.CacheManager.Insert(cacheKey, resource);
+            ConfigurationContext.Current.CacheManager.Insert(cacheKey, resource, true);
             return localization?.Value;
         }
     }
