@@ -7,7 +7,7 @@ using DbLocalizationProvider.JsResourceHandler;
 using DbLocalizationProvider.MvcSample;
 using DbLocalizationProvider.MvcSample.Resources;
 using DbLocalizationProvider.Queries;
-using DbLocalizationProvider.Storage.MsSql;
+using DbLocalizationProvider.Storage.SqlServer;
 using Microsoft.Owin;
 using Owin;
 

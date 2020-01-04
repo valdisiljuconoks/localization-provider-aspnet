@@ -7,7 +7,7 @@ using System.Linq;
 using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.Queries;
 
-namespace DbLocalizationProvider.Storage.MsSql
+namespace DbLocalizationProvider.Storage.SqlServer.Handlers
 {
     public class GetAllResourcesHandler : IQueryHandler<GetAllResources.Query, IEnumerable<LocalizationResource>>
     {

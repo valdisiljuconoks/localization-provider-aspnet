@@ -7,8 +7,8 @@
     <ProjectGuid>{D99587DD-E34F-4655-963F-53671865DED1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DbLocalizationProvider.Storage.MsSql.Tests</RootNamespace>
-    <AssemblyName>DbLocalizationProvider.Storage.MsSql.Tests</AssemblyName>
+    <RootNamespace>DbLocalizationProvider.Storage.SqlServer.Tests</RootNamespace>
+    <AssemblyName>DbLocalizationProvider.Storage.SqlServer.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -69,7 +69,7 @@
       <Project>{28910be9-70c9-4a1d-a12d-57ffb0464432}</Project>
       <Name>DbLocalizationProvider</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\DbLocalizationProvider.Storage.MsSql\DbLocalizationProvider.Storage.MsSql.csproj">
+    <ProjectReference Include="..\..\src\DbLocalizationProvider.Storage.SqlServer\DbLocalizationProvider.Storage.SqlServer.csproj">
       <Project>{27481e9d-74ba-4182-93a5-61ff969ab666}</Project>
       <Name>DbLocalizationProvider.Storage.MsSql</Name>
     </ProjectReference>

@@ -7,8 +7,8 @@
     <ProjectGuid>{27481E9D-74BA-4182-93A5-61FF969AB666}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DbLocalizationProvider.Storage.MsSql</RootNamespace>
-    <AssemblyName>DbLocalizationProvider.Storage.MsSql</AssemblyName>
+    <RootNamespace>DbLocalizationProvider.Storage.SqlServer</RootNamespace>
+    <AssemblyName>DbLocalizationProvider.Storage.SqlServer</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -56,13 +56,13 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AvailableLanguagesHandler.cs" />
+    <Compile Include="Handlers\AvailableLanguagesHandler.cs" />
     <Compile Include="ConfigurationContextExtensions.cs" />
-    <Compile Include="CreateNewResourceHandler.cs" />
-    <Compile Include="CreateOrUpdateTranslationHandler.cs" />
-    <Compile Include="DeleteResourceHandler.cs" />
-    <Compile Include="GetAllResourcesHandler.cs" />
-    <Compile Include="GetResourceHandler.cs" />
+    <Compile Include="Handlers\CreateNewResourceHandler.cs" />
+    <Compile Include="Handlers\CreateOrUpdateTranslationHandler.cs" />
+    <Compile Include="Handlers\DeleteResourceHandler.cs" />
+    <Compile Include="Handlers\GetAllResourcesHandler.cs" />
+    <Compile Include="Handlers\GetResourceHandler.cs" />
     <Compile Include="LanguageEntities.cs" />
     <Compile Include="Migrations\201602162151204_InitialCreate.cs" />
     <Compile Include="Migrations\201602162151204_InitialCreate.Designer.cs">
@@ -86,7 +86,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RemoveTranslationHandler.cs" />
+    <Compile Include="Handlers\RemoveTranslationHandler.cs" />
     <Compile Include="ResourceSynchronizer.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
@@ -121,5 +121,6 @@
       <DependentUpon>201702192145132_AddResourceKeyIndex.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

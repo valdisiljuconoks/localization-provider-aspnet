@@ -8,7 +8,7 @@ using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.Cache;
 using DbLocalizationProvider.Queries;
 
-namespace DbLocalizationProvider.Storage.MsSql
+namespace DbLocalizationProvider.Storage.SqlServer.Handlers
 {
     public class AvailableLanguagesHandler : IQueryHandler<AvailableLanguages.Query, IEnumerable<CultureInfo>>
     {

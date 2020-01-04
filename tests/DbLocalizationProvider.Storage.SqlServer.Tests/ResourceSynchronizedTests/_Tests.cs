@@ -4,7 +4,7 @@ using System.Linq;
 using DbLocalizationProvider.Sync;
 using Xunit;
 
-namespace DbLocalizationProvider.Storage.MsSql.Tests.ResourceSynchronizedTests
+namespace DbLocalizationProvider.Storage.SqlServer.Tests.ResourceSynchronizedTests
 {
     public class Tests
     {

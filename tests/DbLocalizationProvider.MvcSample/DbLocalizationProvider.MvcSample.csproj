@@ -197,7 +197,7 @@
       <Project>{4ce9bffa-754b-435c-a11c-f0c1a6e236f0}</Project>
       <Name>DbLocalizationProvider.JsResourceHandler</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\DbLocalizationProvider.Storage.MsSql\DbLocalizationProvider.Storage.MsSql.csproj">
+    <ProjectReference Include="..\..\src\DbLocalizationProvider.Storage.SqlServer\DbLocalizationProvider.Storage.SqlServer.csproj">
       <Project>{27481e9d-74ba-4182-93a5-61ff969ab666}</Project>
       <Name>DbLocalizationProvider.Storage.MsSql</Name>
     </ProjectReference>

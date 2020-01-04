@@ -1,4 +1,4 @@
-namespace DbLocalizationProvider.Storage.MsSql
+namespace DbLocalizationProvider.Storage.SqlServer
 {
     internal static class Settings
     {

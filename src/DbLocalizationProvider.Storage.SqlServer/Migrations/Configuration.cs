@@ -1,6 +1,6 @@
 using System.Data.Entity.Migrations;
 
-namespace DbLocalizationProvider.Migrations
+namespace DbLocalizationProvider.Storage.SqlServer.Migrations
 {
     internal sealed class Configuration : DbMigrationsConfiguration<LanguageEntities>
     {

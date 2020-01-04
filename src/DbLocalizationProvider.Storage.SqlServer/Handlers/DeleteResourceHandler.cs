@@ -7,7 +7,7 @@ using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.Cache;
 using DbLocalizationProvider.Commands;
 
-namespace DbLocalizationProvider.Storage.MsSql
+namespace DbLocalizationProvider.Storage.SqlServer.Handlers
 {
     public class DeleteResourceHandler : ICommandHandler<DeleteResource.Command>
     {

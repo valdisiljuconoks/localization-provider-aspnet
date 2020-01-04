@@ -8,7 +8,7 @@ using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.Cache;
 using DbLocalizationProvider.Commands;
 
-namespace DbLocalizationProvider.Storage.MsSql
+namespace DbLocalizationProvider.Storage.SqlServer.Handlers
 {
     public class RemoveTranslationHandler : ICommandHandler<RemoveTranslation.Command>
     {

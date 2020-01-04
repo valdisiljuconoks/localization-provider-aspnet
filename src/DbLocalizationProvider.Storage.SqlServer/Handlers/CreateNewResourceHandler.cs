@@ -6,7 +6,7 @@ using System.Linq;
 using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.Commands;
 
-namespace DbLocalizationProvider.Storage.MsSql
+namespace DbLocalizationProvider.Storage.SqlServer.Handlers
 {
     public class CreateNewResourceHandler : ICommandHandler<CreateNewResource.Command>
     {

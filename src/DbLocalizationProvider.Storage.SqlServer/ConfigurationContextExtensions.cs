@@ -5,9 +5,10 @@ using System;
 using System.Configuration;
 using DbLocalizationProvider.Commands;
 using DbLocalizationProvider.Queries;
+using DbLocalizationProvider.Storage.SqlServer.Handlers;
 using DbLocalizationProvider.Sync;
 
-namespace DbLocalizationProvider.Storage.MsSql
+namespace DbLocalizationProvider.Storage.SqlServer
 {
     public static class ConfigurationContextExtensions
     {

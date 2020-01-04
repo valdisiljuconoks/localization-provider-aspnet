@@ -14,7 +14,7 @@ using DbLocalizationProvider.Internal;
 using DbLocalizationProvider.Queries;
 using DbLocalizationProvider.Sync;
 
-namespace DbLocalizationProvider.Storage.MsSql
+namespace DbLocalizationProvider.Storage.SqlServer
 {
     public class ResourceSynchronizer : IQueryHandler<SyncResources.Query, IEnumerable<LocalizationResource>>
     {
