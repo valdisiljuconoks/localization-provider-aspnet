@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using DbLocalizationProvider.Sync;
 using Xunit;
 
-namespace DbLocalizationProvider.AspNet.Tests.ResourceSynchronizedTests
+namespace DbLocalizationProvider.Storage.MsSql.Tests.ResourceSynchronizedTests
 {
     public class Tests
     {

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
@@ -8,7 +8,7 @@ using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.Cache;
 using DbLocalizationProvider.Commands;
 
-namespace DbLocalizationProvider.AspNet.Commands
+namespace DbLocalizationProvider.Storage.MsSql
 {
     public class CreateOrUpdateTranslationHandler : ICommandHandler<CreateOrUpdateTranslation.Command>
     {
@@ -18,11 +18,7 @@ namespace DbLocalizationProvider.AspNet.Commands
             {
                 var resource = db.LocalizationResources.Include(r => r.Translations).FirstOrDefault(r => r.ResourceKey == command.Key);
 
-                if(resource == null)
-                {
-                    // TODO: return some status response obj
-                    return;
-                }
+                if(resource == null) return;
 
                 var translation = resource.Translations.FirstOrDefault(t => t.Language == command.Language.Name);
 

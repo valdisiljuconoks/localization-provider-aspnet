@@ -1,4 +1,4 @@
-﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace DbLocalizationProvider.AspNet.Queries
             if(localizationResource != null) return GetTranslationFromAvailableList(localizationResource.Translations, language, query.UseFallback)?.Value;
 
             LocalizationResourceTranslation localization = null;
-            LocalizationResource resource;
+            LocalizationResource resource = null;
 
             try
             {
@@ -35,7 +35,7 @@ namespace DbLocalizationProvider.AspNet.Queries
                 // TODO: maybe we should just have default mapping (even if init has not been called)
                 // (before any of the setup code in the provider is executed). this happens if you have DisplayChannels in codebase
 
-                resource = new GetResourceHandler().Execute(new GetResource.Query(query.Key));
+                //resource = new GetResourceHandler().Execute(new GetResource.Query(query.Key));
             }
 
             if(resource == null) resource = LocalizationResource.CreateNonExisting(key);

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
@@ -7,7 +7,7 @@ using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.Cache;
 using DbLocalizationProvider.Commands;
 
-namespace DbLocalizationProvider.AspNet.Commands
+namespace DbLocalizationProvider.Storage.MsSql
 {
     public class DeleteResourceHandler : ICommandHandler<DeleteResource.Command>
     {

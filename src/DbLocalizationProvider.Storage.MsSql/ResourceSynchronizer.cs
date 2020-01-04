@@ -1,4 +1,4 @@
-﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
@@ -10,35 +10,39 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using DbLocalizationProvider.Cache;
+using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.Internal;
 using DbLocalizationProvider.Queries;
+using DbLocalizationProvider.Sync;
 
-namespace DbLocalizationProvider.Sync
+namespace DbLocalizationProvider.Storage.MsSql
 {
-    public class ResourceSynchronizer
+    public class ResourceSynchronizer : IQueryHandler<SyncResources.Query, IEnumerable<LocalizationResource>>
     {
-        public void DiscoverAndRegister()
+        public IEnumerable<LocalizationResource> Execute(SyncResources.Query query)
         {
-            if(!ConfigurationContext.Current.DiscoverAndRegisterResources)
-                return;
+            return DiscoverAndRegister();
+        }
 
+        public IEnumerable<LocalizationResource> DiscoverAndRegister()
+        {
             var discoveredTypes = TypeDiscoveryHelper.GetTypes(t => t.GetCustomAttribute<LocalizedResourceAttribute>() != null,
                                                                t => t.GetCustomAttribute<LocalizedModelAttribute>() != null);
 
             var discoveredResources = discoveredTypes[0];
             var discoveredModels = discoveredTypes[1];
             var foreignResources = ConfigurationContext.Current.ForeignResources;
+
             if(foreignResources != null && foreignResources.Any())
             {
                 discoveredResources.AddRange(foreignResources.Select(x => x.ResourceType));
             }
 
             // initialize db structures first (issue #53)
-            //using(var ctx = new LanguageEntities())
-            //{
-            //    var tmp = ctx.LocalizationResources.FirstOrDefault();
-            //}
+            using (var ctx = new LanguageEntities())
+            {
+                var tmp = ctx.LocalizationResources.FirstOrDefault();
+            }
 
             ResetSyncStatus();
             var allResources = new GetAllResources.Query(true).Execute();
@@ -49,7 +53,7 @@ namespace DbLocalizationProvider.Sync
             Parallel.Invoke(() => l1 = RegisterDiscoveredResources(discoveredResources, allResources),
                             () => l2 = RegisterDiscoveredResources(discoveredModels, allResources));
 
-            StoreKnownResourcesAndPopulateCache(MergeLists(allResources, l1.ToList(), l2.ToList()));
+            return MergeLists(allResources, l1.ToList(), l2.ToList());
         }
 
         internal IEnumerable<LocalizationResource> MergeLists(IEnumerable<LocalizationResource> databaseResources, List<DiscoveredResource> discoveredResources, List<DiscoveredResource> discoveredModels)
@@ -123,38 +127,18 @@ namespace DbLocalizationProvider.Sync
             using(var db = new LanguageEntities())
             {
                 var defaultCulture = new DetermineDefaultCulture.Query().Execute();
-
                 foreach(var resource in resources)
+                {
                     RegisterIfNotExist(db, resource.Key, resource.Translation, defaultCulture, "manual");
+                }
 
                 db.SaveChanges();
             }
         }
 
-        private void StoreKnownResourcesAndPopulateCache(IEnumerable<LocalizationResource> mergeLists)
-        {
-            //var allResources = new GetAllResources.Query(true).Execute();
-
-            if(ConfigurationContext.Current.PopulateCacheOnStartup)
-            {
-                new ClearCache.Command().Execute();
-
-                foreach(var resource in mergeLists)
-                {
-                    var key = CacheKeyHelper.BuildKey(resource.ResourceKey);
-                    ConfigurationContext.Current.CacheManager.Insert(key, resource, true);
-                }
-            }
-            else
-            {
-                // just store resource cache keys
-                mergeLists.ForEach(r => ConfigurationContext.Current.BaseCacheManager.StoreKnownKey(r.ResourceKey));
-            }
-        }
-
         private void ResetSyncStatus()
         {
-            using(var conn = new SqlConnection(ConfigurationContext.Current.DbContextConnectionString))
+            using(var conn = new SqlConnection(Settings.DbContextConnectionString))
             {
                 var cmd = new SqlCommand("UPDATE dbo.LocalizationResources SET FromCode = 0", conn);
 
@@ -243,7 +227,7 @@ end
                                      }
                                  }
 
-                                 using(var conn = new SqlConnection(ConfigurationContext.Current.DbContextConnectionString))
+                                 using(var conn = new SqlConnection(Settings.DbContextConnectionString))
                                  {
                                      var cmd = new SqlCommand(sb.ToString(), conn)
                                                {
@@ -337,5 +321,6 @@ update LocalizationResourceTranslations set [Value] = N'{resource.Translation.Re
                 db.LocalizationResources.Add(resource);
             }
         }
+
     }
 }

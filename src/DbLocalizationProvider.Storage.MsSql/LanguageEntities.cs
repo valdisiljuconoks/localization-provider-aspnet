@@ -1,16 +1,16 @@
-﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Annotations;
-using DbLocalizationProvider.Migrations;
+using DbLocalizationProvider.Storage.MsSql;
 
 namespace DbLocalizationProvider
 {
     public class LanguageEntities : DbContext
     {
-        public LanguageEntities() : this(ConfigurationContext.Current.DbContextConnectionString) { }
+        public LanguageEntities() : this(Settings.DbContextConnectionString) { }
 
         public LanguageEntities(string connectionString) : base(connectionString)
         {

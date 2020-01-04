@@ -1,4 +1,4 @@
-﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
@@ -229,12 +229,12 @@ namespace DbLocalizationProvider.AdminUI
                 // prepare incoming model a bit
                 // if change is selected and translation is `null` -> most probably this means that translation was empty but Mvc model binder set it to `null`
                 // we need to fix this to get functionality to set empty translations via import process
-                var importer = new ResourceImportWorkflow();
+                var workflow = new ResourceImportWorkflow();
                 var detectedImportChanges = changes.Where(c => c.Selected)
                                                    .ForEach(c => c.ImportingResource.Translations.ForEach(t => t.Value = t.Value ?? (t.Value = string.Empty)))
                                                    .ToList();
 
-                var result = importer.ImportChanges(detectedImportChanges);
+                var result = workflow.ImportChanges(detectedImportChanges);
 
                 ViewData["LocalizationProvider_ImportResult"] = string.Join("<br/>", result);
             }

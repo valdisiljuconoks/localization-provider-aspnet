@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbLocalizationProvider.JsRe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbLocalizationProvider.Storage.MsSql", "src\DbLocalizationProvider.Storage.MsSql\DbLocalizationProvider.Storage.MsSql.csproj", "{27481E9D-74BA-4182-93A5-61FF969AB666}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbLocalizationProvider.Storage.MsSql.Tests", "tests\DbLocalizationProvider.Storage.MsSql.Tests\DbLocalizationProvider.Storage.MsSql.Tests.csproj", "{D99587DD-E34F-4655-963F-53671865DED1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{27481E9D-74BA-4182-93A5-61FF969AB666}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27481E9D-74BA-4182-93A5-61FF969AB666}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27481E9D-74BA-4182-93A5-61FF969AB666}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D99587DD-E34F-4655-963F-53671865DED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D99587DD-E34F-4655-963F-53671865DED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D99587DD-E34F-4655-963F-53671865DED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D99587DD-E34F-4655-963F-53671865DED1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +107,7 @@ Global
 		{7A0103A4-9273-4EDD-8FCC-118E230638A7} = {805807CA-32A9-4098-8A88-96A6562EC482}
 		{7C04A49C-39C4-4F42-8ACD-90DBCC385FAE} = {E1AD382E-CF73-4008-94BE-80F2DA58EE6B}
 		{31E60906-0D56-465A-B9C6-3C6DB2E0EB59} = {805807CA-32A9-4098-8A88-96A6562EC482}
+		{D99587DD-E34F-4655-963F-53671865DED1} = {805807CA-32A9-4098-8A88-96A6562EC482}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBE709DD-8006-400C-89BA-8F1247C17346}

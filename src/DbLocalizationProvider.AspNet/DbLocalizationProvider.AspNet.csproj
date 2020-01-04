@@ -91,49 +91,20 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Commands\RemoveTranslationHandler.cs" />
     <Compile Include="IAppBuilderExtensions.cs" />
     <Compile Include="Cache\ClearCacheHandler.cs" />
     <Compile Include="Cache\HttpCacheManager.cs" />
-    <Compile Include="Commands\CreateNewResourceHandler.cs" />
-    <Compile Include="Commands\CreateOrUpdateTranslationHandler.cs" />
     <Compile Include="DataAnnotations\CachedLocalizedMetadataProvider.cs" />
     <Compile Include="DataAnnotations\CompositeModelMetadataProvider.cs" />
     <Compile Include="DataAnnotations\LocalizedMetadataProvider.cs" />
     <Compile Include="DataAnnotations\LocalizedModelValidatorProvider.cs" />
-    <Compile Include="Commands\DeleteResourceHandler.cs" />
     <Compile Include="HtmlHelperExtensions.cs" />
     <Compile Include="Import\ResourceImportWorkflow.cs" />
-    <Compile Include="LanguageEntities.cs" />
-    <Compile Include="Migrations\201602162151204_InitialCreate.cs" />
-    <Compile Include="Migrations\201602162151204_InitialCreate.Designer.cs">
-      <DependentUpon>201602162151204_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602162154512_AddedFromCodeColumn.cs" />
-    <Compile Include="Migrations\201602162154512_AddedFromCodeColumn.Designer.cs">
-      <DependentUpon>201602162154512_AddedFromCodeColumn.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603181424379_AddedIsModifiedColumn.cs" />
-    <Compile Include="Migrations\201603181424379_AddedIsModifiedColumn.Designer.cs">
-      <DependentUpon>201603181424379_AddedIsModifiedColumn.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201702192136159_ConvertLanguageColumn.cs" />
-    <Compile Include="Migrations\201702192136159_ConvertLanguageColumn.Designer.cs">
-      <DependentUpon>201702192136159_ConvertLanguageColumn.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201702192145132_AddResourceKeyIndex.cs" />
-    <Compile Include="Migrations\201702192145132_AddResourceKeyIndex.Designer.cs">
-      <DependentUpon>201702192145132_AddResourceKeyIndex.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queries\AvailableLanguagesHandler.cs" />
     <Compile Include="Queries\CachedGetAllResourcesHandler.cs" />
-    <Compile Include="Queries\GetAllResourcesHandler.cs" />
+    <Compile Include="Queries\DefaultAvailableLanguagesHandler.cs" />
     <Compile Include="Queries\GetAllTranslationsHandler.cs" />
-    <Compile Include="Queries\GetResourceHandler.cs" />
     <Compile Include="Queries\GetTranslationHandler.cs" />
-    <Compile Include="ResourceSynchronizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -141,23 +112,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602162151204_InitialCreate.resx">
-      <DependentUpon>201602162151204_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602162154512_AddedFromCodeColumn.resx">
-      <DependentUpon>201602162154512_AddedFromCodeColumn.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603181424379_AddedIsModifiedColumn.resx">
-      <DependentUpon>201603181424379_AddedIsModifiedColumn.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702192136159_ConvertLanguageColumn.resx">
-      <DependentUpon>201702192136159_ConvertLanguageColumn.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702192145132_AddResourceKeyIndex.resx">
-      <DependentUpon>201702192145132_AddResourceKeyIndex.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\lib\localization-provider\src\DbLocalizationProvider.Abstractions\DbLocalizationProvider.Abstractions.csproj">
@@ -170,6 +124,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Commands\" />
     <Folder Include="Storage\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

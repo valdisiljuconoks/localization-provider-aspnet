@@ -7,6 +7,7 @@ using DbLocalizationProvider.JsResourceHandler;
 using DbLocalizationProvider.MvcSample;
 using DbLocalizationProvider.MvcSample.Resources;
 using DbLocalizationProvider.Queries;
+using DbLocalizationProvider.Storage.MsSql;
 using Microsoft.Owin;
 using Owin;
 
@@ -24,7 +25,6 @@ namespace DbLocalizationProvider.MvcSample
 
             app.UseDbLocalizationProvider(ctx =>
                                           {
-                                              ctx.Connection = "MyConnectionString";
                                               ctx.EnableInvariantCultureFallback = true;
                                               ctx.DefaultResourceCulture = CultureInfo.InvariantCulture;
                                               ctx.ModelMetadataProviders.MarkRequiredFields = true;
@@ -39,6 +39,8 @@ namespace DbLocalizationProvider.MvcSample
                                               ctx.ForeignResources.Add(typeof(ForeignResources));
                                               ctx.CacheManager.OnRemove += CacheManagerOnOnRemove;
                                               ctx.TypeFactory.ForQuery<AvailableLanguages.Query>().SetHandler<SampleAvailableLanguagesHandler>();
+
+                                              ctx.UseEntityFramework("MyConnectionString");
                                           });
 
             app.UseDbLocalizationProviderAdminUI("/localization-admin", _ => { _.ShowInvariantCulture = true; });
