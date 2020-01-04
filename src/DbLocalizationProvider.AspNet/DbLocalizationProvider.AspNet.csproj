@@ -105,6 +105,7 @@
     <Compile Include="Queries\DefaultAvailableLanguagesHandler.cs" />
     <Compile Include="Queries\GetAllTranslationsHandler.cs" />
     <Compile Include="Queries\GetTranslationHandler.cs" />
+    <Compile Include="Sync\Synchronizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

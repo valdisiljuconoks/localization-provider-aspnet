@@ -7,7 +7,6 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using DbLocalizationProvider.Abstractions;
@@ -21,22 +20,8 @@ namespace DbLocalizationProvider.Storage.MsSql
     {
         public IEnumerable<LocalizationResource> Execute(SyncResources.Query query)
         {
-            return DiscoverAndRegister();
-        }
-
-        public IEnumerable<LocalizationResource> DiscoverAndRegister()
-        {
-            var discoveredTypes = TypeDiscoveryHelper.GetTypes(t => t.GetCustomAttribute<LocalizedResourceAttribute>() != null,
-                                                               t => t.GetCustomAttribute<LocalizedModelAttribute>() != null);
-
-            var discoveredResources = discoveredTypes[0];
-            var discoveredModels = discoveredTypes[1];
-            var foreignResources = ConfigurationContext.Current.ForeignResources;
-
-            if(foreignResources != null && foreignResources.Any())
-            {
-                discoveredResources.AddRange(foreignResources.Select(x => x.ResourceType));
-            }
+            var discoveredResources = query.DiscoveredResources;
+            var discoveredModels = query.DiscoveredModels;
 
             // initialize db structures first (issue #53)
             using (var ctx = new LanguageEntities())
@@ -45,33 +30,28 @@ namespace DbLocalizationProvider.Storage.MsSql
             }
 
             ResetSyncStatus();
+
             var allResources = new GetAllResources.Query(true).Execute();
+            Parallel.Invoke(() => RegisterDiscoveredResources(discoveredResources, allResources), () => RegisterDiscoveredResources(discoveredModels, allResources));
 
-            var l1 = Enumerable.Empty<DiscoveredResource>();
-            var l2 = Enumerable.Empty<DiscoveredResource>();
-
-            Parallel.Invoke(() => l1 = RegisterDiscoveredResources(discoveredResources, allResources),
-                            () => l2 = RegisterDiscoveredResources(discoveredModels, allResources));
-
-            return MergeLists(allResources, l1.ToList(), l2.ToList());
+            return MergeLists(allResources, discoveredResources.ToList(), discoveredModels.ToList());
         }
 
         internal IEnumerable<LocalizationResource> MergeLists(IEnumerable<LocalizationResource> databaseResources, List<DiscoveredResource> discoveredResources, List<DiscoveredResource> discoveredModels)
         {
             if(discoveredResources == null || discoveredModels == null || !discoveredResources.Any() || !discoveredModels.Any()) return databaseResources;
 
-
             var result = new List<LocalizationResource>(databaseResources);
             var dic = result.ToDictionary(r => r.ResourceKey, r => r);
 
             // run through resources
-            NewMethod(ref discoveredResources, dic, ref result);
-            NewMethod(ref discoveredModels, dic, ref result);
+            CompareAndMerge(ref discoveredResources, dic, ref result);
+            CompareAndMerge(ref discoveredModels, dic, ref result);
 
             return result;
         }
 
-        private static void NewMethod(ref List<DiscoveredResource> discoveredResources, Dictionary<string, LocalizationResource> dic, ref List<LocalizationResource> result)
+        private static void CompareAndMerge(ref List<DiscoveredResource> discoveredResources, Dictionary<string, LocalizationResource> dic, ref List<LocalizationResource> result)
         {
             while (discoveredResources.Count > 0)
             {
@@ -148,11 +128,8 @@ namespace DbLocalizationProvider.Storage.MsSql
             }
         }
 
-        private IEnumerable<DiscoveredResource> RegisterDiscoveredResources(IEnumerable<Type> types, IEnumerable<LocalizationResource> allResources)
+        private void RegisterDiscoveredResources(ICollection<DiscoveredResource> properties, IEnumerable<LocalizationResource> allResources)
         {
-            var helper = new TypeDiscoveryHelper();
-            var properties = types.SelectMany(type => helper.ScanResources(type)).DistinctBy(r => r.Key);
-
             // split work queue by 400 resources each
             var groupedProperties = properties.SplitByCount(400);
 
@@ -239,8 +216,6 @@ end
                                      conn.Close();
                                  }
                              });
-
-            return properties;
         }
 
         private static void AddTranslationScript(LocalizationResource existingResource, StringBuilder buffer, DiscoveredTranslation resource)
@@ -321,6 +296,5 @@ update LocalizationResourceTranslations set [Value] = N'{resource.Translation.Re
                 db.LocalizationResources.Add(resource);
             }
         }
-
     }
 }

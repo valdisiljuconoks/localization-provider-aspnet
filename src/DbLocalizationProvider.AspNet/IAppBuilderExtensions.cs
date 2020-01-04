@@ -2,15 +2,13 @@
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 using DbLocalizationProvider.AspNet.Cache;
 using DbLocalizationProvider.AspNet.Queries;
+using DbLocalizationProvider.AspNet.Sync;
 using DbLocalizationProvider.Cache;
 using DbLocalizationProvider.DataAnnotations;
-using DbLocalizationProvider.Internal;
 using DbLocalizationProvider.Queries;
-using DbLocalizationProvider.Sync;
 using Owin;
 
 namespace DbLocalizationProvider
@@ -41,10 +39,8 @@ namespace DbLocalizationProvider
             // if we need to sync - then it's good time to do it now
             if (ConfigurationContext.Current.DiscoverAndRegisterResources)
             {
-                var syncCommand = new SyncResources.Query();
-                var syncedResources = syncCommand.Execute();
-
-                StoreKnownResourcesAndPopulateCache(syncedResources);
+                var sync = new Synchronizer();
+                sync.SyncResources();
             }
 
             // set model metadata providers
@@ -92,25 +88,6 @@ namespace DbLocalizationProvider
             LocalizationProvider.Initialize();
 
             return builder;
-        }
-
-        private static void StoreKnownResourcesAndPopulateCache(IEnumerable<LocalizationResource> syncedResources)
-        {
-            if (ConfigurationContext.Current.PopulateCacheOnStartup)
-            {
-                new ClearCache.Command().Execute();
-
-                foreach (var resource in syncedResources)
-                {
-                    var key = CacheKeyHelper.BuildKey(resource.ResourceKey);
-                    ConfigurationContext.Current.CacheManager.Insert(key, resource, true);
-                }
-            }
-            else
-            {
-                // just store resource cache keys
-                syncedResources.ForEach(r => ConfigurationContext.Current.BaseCacheManager.StoreKnownKey(r.ResourceKey));
-            }
         }
     }
 }
