@@ -23,7 +23,7 @@ namespace DbLocalizationProvider
         /// <returns>The same app builder instance to support chaining</returns>
         public static IAppBuilder UseDbLocalizationProvider(this IAppBuilder builder, Action<ConfigurationContext> setup = null)
         {
-            // setup default implementations
+            // register default implementations
             ConfigurationContext.Current.TypeFactory.ForQuery<AvailableLanguages.Query>().SetHandler<DefaultAvailableLanguagesHandler>();
             ConfigurationContext.Current.TypeFactory.ForQuery<GetTranslation.Query>().SetHandler<GetTranslationHandler>();
             ConfigurationContext.Current.TypeFactory.ForQuery<GetAllResources.Query>().DecorateWith<CachedGetAllResourcesHandler>();
@@ -41,6 +41,10 @@ namespace DbLocalizationProvider
             {
                 var sync = new Synchronizer();
                 sync.SyncResources();
+            }
+            else
+            {
+                // TODO: add logger adapter and write that sync has been skipped
             }
 
             // set model metadata providers
@@ -73,7 +77,6 @@ namespace DbLocalizationProvider
                 for (var i = 0; i < ModelValidatorProviders.Providers.Count; i++)
                 {
                     var provider = ModelValidatorProviders.Providers[i];
-
                     if (!(provider is DataAnnotationsModelValidatorProvider)) continue;
 
                     ModelValidatorProviders.Providers.RemoveAt(i);

@@ -3,6 +3,7 @@
 
 using System;
 using System.Configuration;
+using System.Linq;
 using DbLocalizationProvider.Commands;
 using DbLocalizationProvider.Queries;
 using DbLocalizationProvider.Storage.SqlServer.Handlers;
@@ -15,6 +16,7 @@ namespace DbLocalizationProvider.Storage.SqlServer
         public static void UseSqlServer(this ConfigurationContext context, string connectionName)
         {
             if (connectionName == null) throw new ArgumentNullException(nameof(connectionName));
+            if (ConfigurationManager.ConnectionStrings.OfType<ConnectionStringSettings>().All(s => s.Name.Equals(connectionName, StringComparison.InvariantCultureIgnoreCase))) throw new ArgumentNullException(nameof(connectionName), $"Can not find connection named `{connectionName}`");
 
             Settings.DbContextConnectionString = ConfigurationManager.ConnectionStrings[connectionName].ConnectionString;
 
