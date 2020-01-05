@@ -12,7 +12,7 @@ namespace DbLocalizationProvider.Storage.SqlServer
 {
     public static class ConfigurationContextExtensions
     {
-        public static void UseEntityFramework(this ConfigurationContext context, string connectionName)
+        public static void UseSqlServer(this ConfigurationContext context, string connectionName)
         {
             if (connectionName == null) throw new ArgumentNullException(nameof(connectionName));
 

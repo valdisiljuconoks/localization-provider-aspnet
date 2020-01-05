@@ -40,7 +40,7 @@ namespace DbLocalizationProvider.MvcSample
                                               ctx.CacheManager.OnRemove += CacheManagerOnOnRemove;
                                               ctx.TypeFactory.ForQuery<AvailableLanguages.Query>().SetHandler<SampleAvailableLanguagesHandler>();
 
-                                              ctx.UseEntityFramework("MyConnectionString");
+                                              ctx.UseSqlServer("MyConnectionString");
                                           });
 
             app.UseDbLocalizationProviderAdminUI("/localization-admin", _ => { _.ShowInvariantCulture = true; });
