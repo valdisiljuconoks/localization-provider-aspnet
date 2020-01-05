@@ -60,6 +60,7 @@
     <Compile Include="ConfigurationContextExtensions.cs" />
     <Compile Include="Handlers\CreateNewResourceHandler.cs" />
     <Compile Include="Handlers\CreateOrUpdateTranslationHandler.cs" />
+    <Compile Include="Handlers\DeleteAllResourcesHandler.cs" />
     <Compile Include="Handlers\DeleteResourceHandler.cs" />
     <Compile Include="Handlers\GetAllResourcesHandler.cs" />
     <Compile Include="Handlers\GetResourceHandler.cs" />

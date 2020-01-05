@@ -24,7 +24,6 @@ namespace DbLocalizationProvider.Storage.SqlServer.Handlers
 
                 if(translation != null)
                 {
-                    // update existing translation
                     translation.Value = command.Translation;
                 }
                 else

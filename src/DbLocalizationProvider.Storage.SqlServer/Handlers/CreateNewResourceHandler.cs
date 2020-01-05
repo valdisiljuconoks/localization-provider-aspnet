@@ -16,16 +16,21 @@ namespace DbLocalizationProvider.Storage.SqlServer.Handlers
 
             using(var db = new LanguageEntities())
             {
-                var existingResource = db.LocalizationResources.FirstOrDefault(r => r.ResourceKey == command.Key);
-                if(existingResource != null) throw new InvalidOperationException($"Resource with key `{command.Key}` already exists");
+                if (command.LocalizationResource != null)
+                {
+                    command.LocalizationResource.ModificationDate = DateTime.UtcNow;
+                    db.LocalizationResources.Add(command.LocalizationResource);
+                }
+                else
+                {
+                    var existingResource = db.LocalizationResources.FirstOrDefault(r => r.ResourceKey == command.Key);
+                    if (existingResource != null) throw new InvalidOperationException($"Resource with key `{command.Key}` already exists");
 
-                db.LocalizationResources.Add(new LocalizationResource(command.Key)
-                                             {
-                                                 ModificationDate = DateTime.UtcNow,
-                                                 FromCode = command.FromCode,
-                                                 IsModified = false,
-                                                 Author = command.UserName
-                                             });
+                    db.LocalizationResources.Add(new LocalizationResource(command.Key)
+                    {
+                        ModificationDate = DateTime.UtcNow, FromCode = command.FromCode, IsModified = false, Author = command.UserName
+                    });
+                }
 
                 db.SaveChanges();
             }
