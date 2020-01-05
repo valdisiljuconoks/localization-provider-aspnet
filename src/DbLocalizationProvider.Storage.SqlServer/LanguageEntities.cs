@@ -4,6 +4,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Annotations;
+using DbLocalizationProvider.Storage.SqlServer.Migrations;
 
 namespace DbLocalizationProvider.Storage.SqlServer
 {
@@ -13,11 +14,11 @@ namespace DbLocalizationProvider.Storage.SqlServer
 
         public LanguageEntities(string connectionString) : base(connectionString)
         {
-            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<LanguageEntities, Configuration>());
-            //Configuration.LazyLoadingEnabled = false;
-            //Configuration.ProxyCreationEnabled = false;
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<LanguageEntities, Configuration>());
+            Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
 
-            //Database.Initialize(false);
+            Database.Initialize(false);
         }
 
         public virtual DbSet<LocalizationResource> LocalizationResources { get; set; }
