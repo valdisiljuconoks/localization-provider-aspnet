@@ -58,7 +58,7 @@
     </Compile>
     <Compile Include="Handlers\AvailableLanguagesHandler.cs" />
     <Compile Include="ConfigurationContextExtensions.cs" />
-    <Compile Include="Handlers\CreateNewResourceHandler.cs" />
+    <Compile Include="Handlers\CreateNewResourcesHandler.cs" />
     <Compile Include="Handlers\CreateOrUpdateTranslationHandler.cs" />
     <Compile Include="Handlers\DeleteAllResourcesHandler.cs" />
     <Compile Include="Handlers\DeleteResourceHandler.cs" />

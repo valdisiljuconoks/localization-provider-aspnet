@@ -73,6 +73,7 @@ namespace DbLocalizationProvider.AspNet.Import
             }
 
             var allCurrentResources = new GetAllResources.Query(true).Execute().ToDictionary(r => r.ResourceKey);
+            var newInserts = new List<LocalizationResource>();
 
             foreach (var localizationResource in newResources)
             {
@@ -84,7 +85,8 @@ namespace DbLocalizationProvider.AspNet.Import
                     if (existingResource == null)
                     {
                         // resource with this key does not exist - so we can just add it
-                        new CreateNewResource.Command(localizationResource).Execute();
+                        newInserts.Add(localizationResource);
+                        //new CreateNewResource.Command(localizationResource).Execute();
                         count++;
                     }
                     else
@@ -100,10 +102,13 @@ namespace DbLocalizationProvider.AspNet.Import
                 {
                     // don't care about state in DB
                     // if we are importing all resources once again - all will be gone anyway
-                    new CreateNewResource.Command(localizationResource).Execute();
+                    //new CreateNewResource.Command(localizationResource).Execute();
+                    newInserts.Add(localizationResource);
                     count++;
                 }
             }
+
+            new CreateNewResources.Command(newInserts).Execute();
 
             var c = new ClearCache.Command();
             c.Execute();
@@ -119,6 +124,8 @@ namespace DbLocalizationProvider.AspNet.Import
             var deletes = 0;
 
             var allCurrentResources = new GetAllResources.Query(true).Execute().ToDictionary(r => r.ResourceKey);
+
+            var newInserts = new List<LocalizationResource>();
 
             // process deletes
             foreach (var delete in changes.Where(c => c.ChangeType == ChangeType.Delete))
@@ -137,7 +144,8 @@ namespace DbLocalizationProvider.AspNet.Import
                 // fix incoming resource translation invariant language (if any)
                 insert.ImportingResource.Translations.ForEach(t => t.Language = t.Language ?? "");
 
-                new CreateNewResource.Command(insert.ImportingResource).Execute();
+                newInserts.Add(insert.ImportingResource);
+                //new CreateNewResource.Command(insert.ImportingResource).Execute();
                 inserts++;
             }
 
@@ -153,7 +161,8 @@ namespace DbLocalizationProvider.AspNet.Import
                     update.ImportingResource.Author = "import";
                     update.ImportingResource.IsModified = false;
 
-                    new CreateNewResource.Command(update.ImportingResource).Execute();
+                    newInserts.Add(update.ImportingResource);
+                    //new CreateNewResource.Command(update.ImportingResource).Execute();
                     inserts++;
                     continue;
                 }

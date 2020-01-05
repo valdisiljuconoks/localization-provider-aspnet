@@ -87,7 +87,16 @@ namespace DbLocalizationProvider.AdminUI
         {
             try
             {
-                var c = new CreateNewResource.Command(resourceKey, HttpContext.User.Identity.Name, false);
+                var c = new CreateNewResources.Command(new List<LocalizationResource>
+                {
+                    new LocalizationResource(resourceKey)
+                    {
+                        Author = HttpContext.User.Identity.Name,
+                        FromCode = false,
+                        IsModified = false,
+                        ModificationDate = DateTime.UtcNow
+                    }
+                });
                 c.Execute();
 
                 return Json("");
