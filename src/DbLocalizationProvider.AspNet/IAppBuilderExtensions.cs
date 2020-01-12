@@ -23,7 +23,7 @@ namespace DbLocalizationProvider
         /// <returns>The same app builder instance to support chaining</returns>
         public static IAppBuilder UseDbLocalizationProvider(this IAppBuilder builder, Action<ConfigurationContext> setup = null)
         {
-            // register default implementations
+            // setup default implementations
             ConfigurationContext.Current.TypeFactory.ForQuery<AvailableLanguages.Query>().SetHandler<DefaultAvailableLanguagesHandler>();
             ConfigurationContext.Current.TypeFactory.ForQuery<GetTranslation.Query>().SetHandler<GetTranslationHandler>();
             ConfigurationContext.Current.TypeFactory.ForQuery<GetAllResources.Query>().DecorateWith<CachedGetAllResourcesHandler>();
@@ -42,47 +42,52 @@ namespace DbLocalizationProvider
                 var sync = new Synchronizer();
                 sync.SyncResources();
             }
-            else
-            {
-                // TODO: add logger adapter and write that sync has been skipped
-            }
 
             // set model metadata providers
             if (ConfigurationContext.Current.ModelMetadataProviders.ReplaceProviders)
             {
-                // set current provider
-                if (ModelMetadataProviders.Current == null)
+
+                if (ConfigurationContext.Current.ModelMetadataProviders.SetupCallback != null)
                 {
-                    if (ConfigurationContext.Current.ModelMetadataProviders.UseCachedProviders)
-                    {
-                        ModelMetadataProviders.Current = new CachedLocalizedMetadataProvider();
-                    }
-                    else
-                    {
-                        ModelMetadataProviders.Current = new LocalizedMetadataProvider();
-                    }
+                    ConfigurationContext.Current.ModelMetadataProviders.SetupCallback();
                 }
                 else
                 {
-                    if (ConfigurationContext.Current.ModelMetadataProviders.UseCachedProviders)
+                    // set current provider
+                    if (ModelMetadataProviders.Current == null)
                     {
-                        ModelMetadataProviders.Current = new CompositeModelMetadataProvider<CachedLocalizedMetadataProvider>(ModelMetadataProviders.Current);
+                        if (ConfigurationContext.Current.ModelMetadataProviders.UseCachedProviders)
+                        {
+                            ModelMetadataProviders.Current = new CachedLocalizedMetadataProvider();
+                        }
+                        else
+                        {
+                            ModelMetadataProviders.Current = new LocalizedMetadataProvider();
+                        }
                     }
                     else
                     {
-                        ModelMetadataProviders.Current = new CompositeModelMetadataProvider<LocalizedMetadataProvider>(ModelMetadataProviders.Current);
+                        if (ConfigurationContext.Current.ModelMetadataProviders.UseCachedProviders)
+                        {
+                            ModelMetadataProviders.Current = new CompositeModelMetadataProvider<CachedLocalizedMetadataProvider>(ModelMetadataProviders.Current);
+                        }
+                        else
+                        {
+                            ModelMetadataProviders.Current = new CompositeModelMetadataProvider<LocalizedMetadataProvider>(ModelMetadataProviders.Current);
+                        }
                     }
-                }
 
-                for (var i = 0; i < ModelValidatorProviders.Providers.Count; i++)
-                {
-                    var provider = ModelValidatorProviders.Providers[i];
-                    if (!(provider is DataAnnotationsModelValidatorProvider)) continue;
+                    for (var i = 0; i < ModelValidatorProviders.Providers.Count; i++)
+                    {
+                        var provider = ModelValidatorProviders.Providers[i];
 
-                    ModelValidatorProviders.Providers.RemoveAt(i);
-                    ModelValidatorProviders.Providers.Insert(i, new LocalizedModelValidatorProvider());
+                        if (!(provider is DataAnnotationsModelValidatorProvider)) continue;
 
-                    break;
+                        ModelValidatorProviders.Providers.RemoveAt(i);
+                        ModelValidatorProviders.Providers.Insert(i, new LocalizedModelValidatorProvider());
+
+                        break;
+                    }
                 }
             }
 
