@@ -1,7 +1,4 @@
-// Copyright (c) Valdis Iljuconoks. All rights reserved.
-// Licensed under Apache-2.0. See the LICENSE file in the project root for more information
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -10,7 +7,6 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using DbLocalizationProvider.AspNet.Import;
 using DbLocalizationProvider.Commands;
 using DbLocalizationProvider.Export;
 using DbLocalizationProvider.Import;
@@ -87,16 +83,7 @@ namespace DbLocalizationProvider.AdminUI
         {
             try
             {
-                var c = new CreateNewResources.Command(new List<LocalizationResource>
-                {
-                    new LocalizationResource(resourceKey)
-                    {
-                        Author = HttpContext.User.Identity.Name,
-                        FromCode = false,
-                        IsModified = false,
-                        ModificationDate = DateTime.UtcNow
-                    }
-                });
+                var c = new CreateNewResource.Command(resourceKey, HttpContext.User.Identity.Name, false);
                 c.Execute();
 
                 return Json("");
@@ -198,16 +185,6 @@ namespace DbLocalizationProvider.AdminUI
             return File(stream, result.FileMimeType, result.FileName);
         }
 
-        [AuthorizeRoles(Mode = UiContextMode.Admin)]
-        public ViewResult ImportResources(bool? showMenu)
-        {
-            return View("ImportResources",
-                        new ImportResourcesViewModel
-                        {
-                            ShowMenu = showMenu ?? false
-                        });
-        }
-
         public ActionResult Tree(bool? showMenu)
         {
             var cookie = new HttpCookie(_viewCcookieName, "tree") { HttpOnly = true };
@@ -224,43 +201,14 @@ namespace DbLocalizationProvider.AdminUI
             return RedirectToAction(showMenu.HasValue && showMenu.Value ? "Main" : "Index");
         }
 
-        [HttpPost]
         [AuthorizeRoles(Mode = UiContextMode.Admin)]
-        [ValidateInput(false)]
-        public ViewResult CommitImportResources(bool? previewImport, bool? showMenu, ICollection<DetectedImportChange> changes)
+        public ViewResult ImportResources(bool? showMenu)
         {
-            var model = new ImportResourcesViewModel
-            {
-                ShowMenu = showMenu ?? false
-            };
-
-            try
-            {
-                // prepare incoming model a bit
-                // if change is selected and translation and/or language is `null` -> most probably this means that translation was empty
-                // but Mvc model binder set it to `null` -> we need to fix this to get functionality to set empty translations via import process
-                var importer = new ResourceImportWorkflow();
-                var detectedImportChanges = changes.Where(c => c.Selected)
-                                                   .ForEach(c =>
-                                                   {
-                                                       c.ImportingResource.Translations.ForEach(t =>
-                                                       {
-                                                           t.Value = t.Value ?? (t.Value = string.Empty);
-                                                           t.Language = t.Language ?? (t.Language = string.Empty);
-                                                       });
-                                                   })
-                                                   .ToList();
-
-                var result = workflow.ImportChanges(detectedImportChanges);
-
-                ViewData["LocalizationProvider_ImportResult"] = string.Join("<br/>", result);
-            }
-            catch (Exception e)
-            {
-                ModelState.AddModelError("importFailed", $"Import failed! Reason: {e.Message}");
-            }
-
-            return View("ImportResources", model);
+            return View("ImportResources",
+                new ImportResourcesViewModel
+                {
+                    ShowMenu = showMenu ?? false
+                });
         }
 
         [HttpPost]
@@ -302,6 +250,44 @@ namespace DbLocalizationProvider.AdminUI
 
                 var result = workflow.Import(parseResult.Resources, previewImport ?? true);
                 ViewData["LocalizationProvider_ImportResult"] = result;
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("importFailed", $"Import failed! Reason: {e.Message}");
+            }
+
+            return View("ImportResources", model);
+        }
+        [HttpPost]
+        [AuthorizeRoles(Mode = UiContextMode.Admin)]
+        [ValidateInput(false)]
+        public ViewResult CommitImportResources(bool? previewImport, bool? showMenu, ICollection<DetectedImportChange> changes)
+        {
+            var model = new ImportResourcesViewModel
+            {
+                ShowMenu = showMenu ?? false
+            };
+
+            try
+            {
+                // prepare incoming model a bit
+                // if change is selected and translation and/or language is `null` -> most probably this means that translation was empty
+                // but Mvc model binder set it to `null` -> we need to fix this to get functionality to set empty translations via import process
+                var importer = new ResourceImportWorkflow();
+                var detectedImportChanges = changes.Where(c => c.Selected)
+                    .ForEach(c =>
+                    {
+                        c.ImportingResource.Translations.ForEach(t =>
+                        {
+                            t.Value = t.Value ?? (t.Value = string.Empty);
+                            t.Language = t.Language ?? (t.Language = string.Empty);
+                        });
+                    })
+                    .ToList();
+
+                var result = importer.ImportChanges(detectedImportChanges);
+
+                ViewData["LocalizationProvider_ImportResult"] = string.Join("<br/>", result);
             }
             catch (Exception e)
             {
