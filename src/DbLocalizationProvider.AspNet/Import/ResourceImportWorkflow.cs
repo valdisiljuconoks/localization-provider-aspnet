@@ -115,6 +115,9 @@ namespace DbLocalizationProvider.Import
 
             foreach(var incomingResource in importingResources.Except(deletes, resourceComparer))
             {
+                // clean up nulls from translations
+                incomingResource.Translations = incomingResource.Translations.Where(t => t != null).ToList();
+
                 var existing = existingResources.FirstOrDefault(r => r.ResourceKey == incomingResource.ResourceKey);
                 if(existing != null)
                 {
