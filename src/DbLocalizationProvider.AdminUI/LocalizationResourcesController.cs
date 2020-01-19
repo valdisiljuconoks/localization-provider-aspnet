@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using DbLocalizationProvider.AspNet.Import;
 using DbLocalizationProvider.Commands;
 using DbLocalizationProvider.Export;
 using DbLocalizationProvider.Import;
@@ -83,7 +84,17 @@ namespace DbLocalizationProvider.AdminUI
         {
             try
             {
-                var c = new CreateNewResource.Command(resourceKey, HttpContext.User.Identity.Name, false);
+                var c = new CreateNewResources.Command(new List<LocalizationResource>
+                {
+                    new LocalizationResource(resourceKey)
+                    {
+                        Author = HttpContext.User.Identity.Name,
+                        FromCode = false,
+                        IsModified = false,
+                        ModificationDate = DateTime.UtcNow
+                    }
+                });
+
                 c.Execute();
 
                 return Json("");
