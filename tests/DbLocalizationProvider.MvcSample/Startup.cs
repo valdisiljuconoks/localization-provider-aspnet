@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.AdminUI;
@@ -24,24 +25,25 @@ namespace DbLocalizationProvider.MvcSample
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en");
 
             app.UseDbLocalizationProvider(ctx =>
-                                          {
-                                              ctx.EnableInvariantCultureFallback = true;
-                                              ctx.DefaultResourceCulture = CultureInfo.InvariantCulture;
-                                              ctx.ModelMetadataProviders.MarkRequiredFields = true;
-                                              ctx.ModelMetadataProviders.RequiredFieldResource = () => HomePageResources.RequiredFieldIndicator;
-                                              ctx.CustomAttributes = new[]
-                                                                     {
-                                                                         new CustomAttributeDescriptor(typeof(HelpTextAttribute), false),
-                                                                         new CustomAttributeDescriptor(typeof(FancyHelpTextAttribute), false),
-                                                                         new CustomAttributeDescriptor(typeof(TableHeaderTitleAttribute))
-                                                                     };
+            {
+                ctx.EnableInvariantCultureFallback = true;
+                ctx.DefaultResourceCulture = CultureInfo.InvariantCulture;
+                ctx.ModelMetadataProviders.MarkRequiredFields = true;
+                ctx.ModelMetadataProviders.RequiredFieldResource = () => HomePageResources.RequiredFieldIndicator;
+                ctx.CustomAttributes = new[]
+                {
+                    new CustomAttributeDescriptor(typeof(HelpTextAttribute), false),
+                    new CustomAttributeDescriptor(typeof(FancyHelpTextAttribute), false),
+                    new CustomAttributeDescriptor(typeof(TableHeaderTitleAttribute))
+                };
 
-                                              ctx.ForeignResources.Add(typeof(ForeignResources));
-                                              ctx.CacheManager.OnRemove += CacheManagerOnOnRemove;
-                                              ctx.TypeFactory.ForQuery<AvailableLanguages.Query>().SetHandler<SampleAvailableLanguagesHandler>();
+                ctx.ForeignResources.Add(typeof(ForeignResources));
+                ctx.CacheManager.OnRemove += CacheManagerOnOnRemove;
 
-                                              ctx.UseSqlServer("MyConnectionString");
-                                          });
+                ctx.UseSqlServer(ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString);
+
+                ctx.TypeFactory.ForQuery<AvailableLanguages.Query>().SetHandler<SampleAvailableLanguagesHandler>();
+            });
 
             app.UseDbLocalizationProviderAdminUI("/localization-admin", _ => { _.ShowInvariantCulture = true; });
 
@@ -58,16 +60,16 @@ namespace DbLocalizationProvider.MvcSample
     public class SampleAvailableLanguagesHandler : IQueryHandler<AvailableLanguages.Query, IEnumerable<CultureInfo>>
     {
         private static readonly List<CultureInfo> _cultureInfos = new List<CultureInfo>
-                                                                  {
-                                                                      new CultureInfo("en"),
-                                                                      new CultureInfo("no"),
-                                                                      new CultureInfo("lv")
-                                                                  };
+        {
+            new CultureInfo("en"), new CultureInfo("no"), new CultureInfo("lv")
+        };
 
         public IEnumerable<CultureInfo> Execute(AvailableLanguages.Query query)
         {
-            if(query.IncludeInvariant && !_cultureInfos.Contains(CultureInfo.InvariantCulture))
+            if (query.IncludeInvariant && !_cultureInfos.Contains(CultureInfo.InvariantCulture))
+            {
                 _cultureInfos.Insert(0, CultureInfo.InvariantCulture);
+            }
 
             return _cultureInfos;
         }

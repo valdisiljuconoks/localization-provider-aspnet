@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E1AD382E-CF73-4008-94BE-80F2DA58EE6B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-items", "{E1AD382E-CF73-4008-94BE-80F2DA58EE6B}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		_config.yml = _config.yml
@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{805807CA-32A9-4098-8A88-96A6562EC482}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{805807CA-32A9-4098-8A88-96A6562EC482}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbLocalizationProvider.AspNet", "src\DbLocalizationProvider.AspNet\DbLocalizationProvider.AspNet.csproj", "{BFFF1D76-E64F-47BE-B77E-E0873977B3B3}"
 EndProject
@@ -39,9 +39,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbLocalizationProvider.AspN
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbLocalizationProvider.JsResourceHandler", "src\DbLocalizationProvider.JsResourceHandler\DbLocalizationProvider.JsResourceHandler.csproj", "{4CE9BFFA-754B-435C-A11C-F0C1A6E236F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbLocalizationProvider.Storage.MsSql", "src\DbLocalizationProvider.Storage.SqlServer\DbLocalizationProvider.Storage.SqlServer.csproj", "{27481E9D-74BA-4182-93A5-61FF969AB666}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{0243949F-EBCB-47F6-9008-905AD6987AE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbLocalizationProvider.Storage.MsSql.Tests", "tests\DbLocalizationProvider.Storage.SqlServer.Tests\DbLocalizationProvider.Storage.SqlServer.Tests.csproj", "{D99587DD-E34F-4655-963F-53671865DED1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbLocalizationProvider.Storage.SqlServer", "lib\localization-provider\src\DbLocalizationProvider.Storage.SqlServer\DbLocalizationProvider.Storage.SqlServer.csproj", "{BDB6B761-D0DD-4DA2-948F-F11D58C70A8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,25 +89,23 @@ Global
 		{4CE9BFFA-754B-435C-A11C-F0C1A6E236F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CE9BFFA-754B-435C-A11C-F0C1A6E236F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CE9BFFA-754B-435C-A11C-F0C1A6E236F0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{27481E9D-74BA-4182-93A5-61FF969AB666}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{27481E9D-74BA-4182-93A5-61FF969AB666}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{27481E9D-74BA-4182-93A5-61FF969AB666}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{27481E9D-74BA-4182-93A5-61FF969AB666}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D99587DD-E34F-4655-963F-53671865DED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D99587DD-E34F-4655-963F-53671865DED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D99587DD-E34F-4655-963F-53671865DED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D99587DD-E34F-4655-963F-53671865DED1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDB6B761-D0DD-4DA2-948F-F11D58C70A8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDB6B761-D0DD-4DA2-948F-F11D58C70A8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDB6B761-D0DD-4DA2-948F-F11D58C70A8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDB6B761-D0DD-4DA2-948F-F11D58C70A8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{3B7F3677-B2E7-4275-B4A5-DC539E90C8A4} = {0243949F-EBCB-47F6-9008-905AD6987AE0}
+		{28910BE9-70C9-4A1D-A12D-57FFB0464432} = {0243949F-EBCB-47F6-9008-905AD6987AE0}
 		{9467E0EE-9750-4211-8964-F8731C09BFC0} = {805807CA-32A9-4098-8A88-96A6562EC482}
 		{78C3B303-08D5-4F40-AE7D-16A23D9E8694} = {805807CA-32A9-4098-8A88-96A6562EC482}
 		{7A0103A4-9273-4EDD-8FCC-118E230638A7} = {805807CA-32A9-4098-8A88-96A6562EC482}
 		{7C04A49C-39C4-4F42-8ACD-90DBCC385FAE} = {E1AD382E-CF73-4008-94BE-80F2DA58EE6B}
 		{31E60906-0D56-465A-B9C6-3C6DB2E0EB59} = {805807CA-32A9-4098-8A88-96A6562EC482}
-		{D99587DD-E34F-4655-963F-53671865DED1} = {805807CA-32A9-4098-8A88-96A6562EC482}
+		{BDB6B761-D0DD-4DA2-948F-F11D58C70A8E} = {0243949F-EBCB-47F6-9008-905AD6987AE0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBE709DD-8006-400C-89BA-8F1247C17346}
