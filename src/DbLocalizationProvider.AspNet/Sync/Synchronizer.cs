@@ -14,8 +14,20 @@ namespace DbLocalizationProvider.AspNet.Sync
 {
     public class Synchronizer
     {
+        private static readonly ThreadSafeSingleShotFlag _synced = false;
+
+        public void UpdateStorageSchema()
+        {
+            if (!_synced)
+            {
+                new UpdateSchema.Command().Execute();
+            }
+        }
+
         public void SyncResources()
         {
+            UpdateStorageSchema();
+
             var discoveredTypes = TypeDiscoveryHelper.GetTypes(
                 t => t.GetCustomAttribute<LocalizedResourceAttribute>() != null,
                 t => t.GetCustomAttribute<LocalizedModelAttribute>() != null);
