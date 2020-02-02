@@ -5,10 +5,10 @@ using System;
 using System.Web.Mvc;
 using DbLocalizationProvider.AspNet.Cache;
 using DbLocalizationProvider.AspNet.Queries;
-using DbLocalizationProvider.AspNet.Sync;
 using DbLocalizationProvider.Cache;
 using DbLocalizationProvider.DataAnnotations;
 using DbLocalizationProvider.Queries;
+using DbLocalizationProvider.Sync;
 using Owin;
 
 namespace DbLocalizationProvider
