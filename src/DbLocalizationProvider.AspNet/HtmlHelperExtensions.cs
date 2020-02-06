@@ -13,6 +13,13 @@ namespace DbLocalizationProvider
 {
     public static class HtmlHelperExtensions
     {
+        public static string GetString(this HtmlHelper helper, Expression<Func<object>> model, params object[] formatArguments)
+        {
+            if(model == null) throw new ArgumentNullException(nameof(model));
+
+            return LocalizationProvider.Current.GetStringByCulture(model, CultureInfo.CurrentUICulture, formatArguments);
+        }
+
         public static MvcHtmlString Translate(this HtmlHelper helper, Expression<Func<object>> model, params object[] formatArguments)
         {
             if(model == null) throw new ArgumentNullException(nameof(model));
