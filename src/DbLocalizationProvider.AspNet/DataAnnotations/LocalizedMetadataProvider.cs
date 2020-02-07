@@ -26,10 +26,9 @@ namespace DbLocalizationProvider.DataAnnotations
             if(containerType == null) return data;
             if(containerType.GetCustomAttribute<LocalizedModelAttribute>() == null) return data;
 
-            data.DisplayName = !ConfigurationContext.Current.ResourceLookupFilter(data.DisplayName)
-                ? ModelMetadataLocalizationHelper.GetTranslation(containerType, propertyName)
-                : ModelMetadataLocalizationHelper.GetTranslation(data.DisplayName);
-
+            data.DisplayName = ConfigurationContext.Current.ResourceLookupFilter(data.DisplayName)
+                ? ModelMetadataLocalizationHelper.GetTranslation(data.DisplayName)
+                : ModelMetadataLocalizationHelper.GetTranslation(containerType, propertyName);
 
             // TODO: extract this as decorator
             if(data.IsRequired
