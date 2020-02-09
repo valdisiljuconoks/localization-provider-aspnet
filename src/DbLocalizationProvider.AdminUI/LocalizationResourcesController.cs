@@ -91,6 +91,7 @@ namespace DbLocalizationProvider.AdminUI
                         Author = HttpContext.User.Identity.Name,
                         FromCode = false,
                         IsModified = false,
+                        IsHidden = false,
                         ModificationDate = DateTime.UtcNow
                     }
                 });
@@ -136,7 +137,12 @@ namespace DbLocalizationProvider.AdminUI
                                  [Bind(Prefix = "value")] string newValue,
                                  [Bind(Prefix = "name")] string language)
         {
-            var c = new CreateOrUpdateTranslation.Command(resourceKey, new CultureInfo(language), newValue);
+            var c = new CreateOrUpdateTranslation.Command(resourceKey,
+                language.Equals("invariant", StringComparison.InvariantCultureIgnoreCase)
+                    ? CultureInfo.InvariantCulture
+                    : new CultureInfo(language),
+                newValue);
+
             c.Execute();
 
             return Json("");
