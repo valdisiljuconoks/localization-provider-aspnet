@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using DbLocalizationProvider.Commands;
@@ -83,6 +84,10 @@ namespace DbLocalizationProvider.AdminUI
         {
             try
             {
+                // validate resource key
+                var whitelist = new Regex("^[.@+\\\"\\=\\/\\[\\]a-zA-Z0-9]+$");
+                if (!whitelist.IsMatch(resourceKey)) throw new ArgumentException("Invalid resource key value");
+
                 var c = new CreateNewResource.Command(resourceKey, HttpContext.User.Identity.Name, false);
                 c.Execute();
 
