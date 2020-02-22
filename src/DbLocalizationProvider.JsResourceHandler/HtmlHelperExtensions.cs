@@ -1,4 +1,4 @@
-﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
@@ -12,8 +12,22 @@ using ExpressionHelper = DbLocalizationProvider.Internal.ExpressionHelper;
 
 namespace DbLocalizationProvider.JsResourceHandler
 {
+    /// <summary>
+    /// Analyzer is happy now and soon to we will be friends again..
+    /// </summary>
     public static class HtmlHelperExtensions
     {
+        /// <summary>
+        /// Gets the translated model.
+        /// </summary>
+        /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <param name="helper">The helper.</param>
+        /// <param name="containerType">Type of the container.</param>
+        /// <param name="language">The language.</param>
+        /// <param name="alias">The alias.</param>
+        /// <param name="debug">if set to <c>true</c> [debug].</param>
+        /// <param name="camelCase">if set to <c>true</c> [camel case].</param>
+        /// <returns></returns>
         public static MvcHtmlString GetTranslations<TModel>(
             this HtmlHelper<TModel> helper,
             Type containerType,
@@ -25,6 +39,17 @@ namespace DbLocalizationProvider.JsResourceHandler
             return GetTranslations((HtmlHelper)helper, containerType, language, alias, debug, camelCase);
         }
 
+        /// <summary>
+        /// Gets the translated model.
+        /// </summary>
+        /// <param name="helper">The helper.</param>
+        /// <param name="containerType">Type of the container.</param>
+        /// <param name="language">The language.</param>
+        /// <param name="alias">Alias to use when assigning value to `window` global object.</param>
+        /// <param name="debug">if set to <c>true</c> json is humanly formatted so someone can really read it if needed.</param>
+        /// <param name="camelCase">if set to <c>true</c> returned json is in camelCase.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">containerType</exception>
         public static MvcHtmlString GetTranslations(
             this HtmlHelper helper,
             Type containerType,
@@ -39,6 +64,17 @@ namespace DbLocalizationProvider.JsResourceHandler
             return GenerateScriptTag(language, alias, debug, ResourceKeyBuilder.BuildResourceKey(containerType), camelCase);
         }
 
+        /// <summary>
+        /// Gets the translated model.
+        /// </summary>
+        /// <param name="helper">The helper.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="language">The language.</param>
+        /// <param name="alias">Alias to use when assigning value to `window` global object.</param>
+        /// <param name="debug">if set to <c>true</c> json is humanly formatted so someone can really read it if needed.</param>
+        /// <param name="camelCase">if set to <c>true</c> returned json is in camelCase.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">model</exception>
         public static MvcHtmlString GetTranslations(
             this HtmlHelper helper,
             Expression<Func<object>> model,

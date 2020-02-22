@@ -13,6 +13,9 @@ using Owin;
 
 namespace DbLocalizationProvider
 {
+    /// <summary>
+    /// Static class description no one reads
+    /// </summary>
     public static class IAppBuilderExtensions
     {
         /// <summary>

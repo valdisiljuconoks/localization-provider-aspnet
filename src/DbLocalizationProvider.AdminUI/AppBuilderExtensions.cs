@@ -11,8 +11,19 @@ using Owin;
 
 namespace DbLocalizationProvider.AdminUI
 {
+    /// <summary>
+    /// Static class description no one reads..
+    /// </summary>
     public static class AppBuilderExtensions
     {
+        /// <summary>
+        /// Use this method to map AdminUI to particular path.
+        /// </summary>
+        /// <param name="builder">The application builder.</param>
+        /// <param name="path">The path to map AdminUI.</param>
+        /// <param name="setup">pass in lambda to setup and configure AdminUI</param>
+        /// <param name="additionalSetup">The additional setup callback if you need to. Usually not used</param>
+        /// <returns>The same app builder to support API call chaining</returns>
         public static IAppBuilder UseDbLocalizationProviderAdminUI(this IAppBuilder builder, string path, Action<UiConfigurationContext> setup = null, Action<IAppBuilder> additionalSetup = null)
         {
             builder.Map(path, b => b.MapAdminUI(setup, additionalSetup));
@@ -20,6 +31,13 @@ namespace DbLocalizationProvider.AdminUI
             return builder;
         }
 
+        /// <summary>
+        /// Maps the admin UI.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="setup">The setup.</param>
+        /// <param name="additionalSetup">The additional setup.</param>
+        /// <returns></returns>
         internal static IAppBuilder MapAdminUI(this IAppBuilder builder, Action<UiConfigurationContext> setup = null, Action<IAppBuilder> additionalSetup = null)
         {
             setup?.Invoke(UiConfigurationContext.Current);
