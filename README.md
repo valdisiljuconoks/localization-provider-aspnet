@@ -17,6 +17,47 @@ Giving you main following features:
 ## What's new in v6?
 Please [refer to this post](https://blog.tech-fellow.net/2020/02/21/localization-provider-major-6/) to read more about new features in v6.
 
+### Breaking Changes
+
+* Mapping of the AdminUI has changed.
+
+Old code:
+
+```csharp
+public class Startup
+{
+    public void Configuration(IAppBuilder app)
+    {
+        ...
+        app.Map("/localization-admin",
+                b => b.UseDbLocalizationProviderAdminUI(_ =>
+                {
+                    _.ShowInvariantCulture = true;
+                    ...
+                }));
+    }
+}
+```
+
+Should be changed to:
+
+```csharp
+public class Startup
+{
+    public void Configuration(IAppBuilder app)
+    {
+        ...
+        app.UseDbLocalizationProviderAdminUI(
+            "/localization-admin",
+            _ =>
+            {
+                _.ShowInvariantCulture = true;
+                ...
+            });
+    }
+}
+```
+
 ## Project Structure
 Database localization provider is split into main [abstraction projects](https://github.com/valdisiljuconoks/LocalizationProvider) and Asp.Net support project (this).
 
