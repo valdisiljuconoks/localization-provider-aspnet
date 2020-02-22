@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using DbLocalizationProvider.AspNet.Import;
 using DbLocalizationProvider.Commands;
 using DbLocalizationProvider.Export;
 using DbLocalizationProvider.Import;
@@ -73,7 +74,7 @@ namespace DbLocalizationProvider.AdminUI
             // build tree
             var builder = new ResourceTreeBuilder();
             var sorter = new ResourceTreeSorter();
-            result.Tree = sorter.Sort(builder.BuildTree(allResources, ConfigurationContext.Current.ModelMetadataProviders.EnableLegacyMode()));
+            result.Tree = sorter.Sort(builder.BuildTree(allResources, ConfigurationContext.Current.EnableLegacyMode()));
 
             return result;
         }
@@ -86,9 +87,20 @@ namespace DbLocalizationProvider.AdminUI
             {
                 // validate resource key
                 var whitelist = new Regex("^[.@+\\\"\\=\\/\\[\\]a-zA-Z0-9]+$");
-                if (!whitelist.IsMatch(resourceKey)) throw new ArgumentException("Invalid resource key value");
+                if(!whitelist.IsMatch(resourceKey)) throw new ArgumentException("Invalid resource key value");
 
-                var c = new CreateNewResource.Command(resourceKey, HttpContext.User.Identity.Name, false);
+                var c = new CreateNewResources.Command(new List<LocalizationResource>
+                {
+                    new LocalizationResource(resourceKey)
+                    {
+                        Author = HttpContext.User.Identity.Name,
+                        FromCode = false,
+                        IsModified = false,
+                        IsHidden = false,
+                        ModificationDate = DateTime.UtcNow
+                    }
+                });
+
                 c.Execute();
 
                 return Json("");
@@ -130,7 +142,12 @@ namespace DbLocalizationProvider.AdminUI
                                  [Bind(Prefix = "value")] string newValue,
                                  [Bind(Prefix = "name")] string language)
         {
-            var c = new CreateOrUpdateTranslation.Command(resourceKey, new CultureInfo(language), newValue);
+            var c = new CreateOrUpdateTranslation.Command(resourceKey,
+                language.Equals("invariant", StringComparison.InvariantCultureIgnoreCase)
+                    ? CultureInfo.InvariantCulture
+                    : new CultureInfo(language),
+                newValue);
+
             c.Execute();
 
             return Json("");

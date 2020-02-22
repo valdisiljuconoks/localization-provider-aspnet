@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Licensed under Apache-2.0. See the LICENSE file in the project root for more information
+
+using System.Web.Mvc;
 
 namespace DbLocalizationProvider.AdminUI
 {
@@ -18,7 +21,7 @@ namespace DbLocalizationProvider.AdminUI
             var editors = string.Join(",", UiConfigurationContext.Current.AuthorizedEditorRoles);
 
             var rolesToCheck = string.Join(",", string.Join(",", admins, editors));
-            switch (Mode)
+            switch(Mode)
             {
                 case UiContextMode.Admin:
                     rolesToCheck = admins;
