@@ -68,7 +68,8 @@ namespace DbLocalizationProvider.AdminUI
                        AdminMode = isAdmin,
                        IsTreeView = isTreeView,
                        IsTreeViewEnabled = !UiConfigurationContext.Current.IsTreeViewDisabled,
-                       IsTableViewEnabled = !UiConfigurationContext.Current.IsTableViewDisabled
+                       IsTableViewEnabled = !UiConfigurationContext.Current.IsTableViewDisabled,
+                       IsRemoveTranslationButtonDisabled = UiConfigurationContext.Current.DisableRemoveTranslationButton
             };
 
             // build tree

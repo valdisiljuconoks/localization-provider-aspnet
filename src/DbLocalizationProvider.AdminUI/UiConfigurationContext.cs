@@ -76,6 +76,11 @@ namespace DbLocalizationProvider.AdminUI
         internal bool IsTableViewDisabled { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether Remove translation button should be disabled.
+        /// </summary>
+        public bool DisableRemoveTranslationButton { get; set; }
+
+        /// <summary>
         /// Wanna customize anything here? Call this method.
         /// </summary>
         /// <param name="configCallback"></param>

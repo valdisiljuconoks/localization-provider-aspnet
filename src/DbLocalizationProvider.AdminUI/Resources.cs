@@ -30,6 +30,8 @@ namespace DbLocalizationProvider.AdminUI
         public static string CollapseAll => "Collapse All";
         public static string ChooseLanguage => "Choose Language";
         public static string Close => "Close";
+        public static string ResourceKeyRequired => "Resource key is required!";
+        public static string TranslationRequiredForInvariantCulture => "Don't be lazy, fill in at least invariant culture translation!";
 
         [LocalizedResource]
         [Hidden]

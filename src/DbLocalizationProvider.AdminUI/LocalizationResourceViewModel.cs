@@ -41,5 +41,7 @@ namespace DbLocalizationProvider.AdminUI
         public bool IsTreeViewEnabled { get; set; }
 
         public bool IsTableViewEnabled { get; set; }
+
+        public bool IsRemoveTranslationButtonDisabled { get; set; }
     }
 }
