@@ -2,6 +2,7 @@
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
+using System.Diagnostics;
 using System.Web.Mvc;
 using DbLocalizationProvider.AspNet.Cache;
 using DbLocalizationProvider.AspNet.Queries;
@@ -26,6 +27,9 @@ namespace DbLocalizationProvider
         /// <returns>The same app builder instance to support chaining</returns>
         public static IAppBuilder UseDbLocalizationProvider(this IAppBuilder builder, Action<ConfigurationContext> setup = null)
         {
+            var sw = new Stopwatch();
+            sw.Start();
+
             // setup default implementations
             ConfigurationContext.Current.TypeFactory.ForQuery<AvailableLanguages.Query>().SetHandler<DefaultAvailableLanguagesHandler>();
             ConfigurationContext.Current.TypeFactory.ForQuery<GetTranslation.Query>().SetHandler<GetTranslationHandler>();
@@ -97,6 +101,9 @@ namespace DbLocalizationProvider
             // in cases when there has been already a call to LocalizationProvider.Current (some static weird things)
             // and only then setup configuration is ran - here we need to reset instance once again with new settings
             LocalizationProvider.Initialize();
+
+            sw.Stop();
+            ConfigurationContext.Current.Logger?.Debug($"DbLocalizationProvider overall initialization took: {sw.ElapsedMilliseconds}ms");
 
             return builder;
         }
