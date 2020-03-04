@@ -118,8 +118,12 @@
     <Compile Include="AppBuilderExtensions.cs" />
     <Compile Include="AuthorizeRolesAttribute.cs" />
     <Compile Include="DirtyList.cs" />
+    <Compile Include="Events.cs" />
     <Compile Include="IDirtyList.cs" />
+    <Compile Include="Infrastructure\RawBodyBinder.cs" />
     <Compile Include="Models\CreateOrUpdateTranslationRequestModel.cs" />
+    <Compile Include="Models\CreateResourceRequestModel.cs" />
+    <Compile Include="Models\TranslationRequestModel.cs" />
     <Compile Include="PreviewImportResourcesViewModel.cs" />
     <Compile Include="ResourceListView.cs" />
     <Compile Include="ResourcesApiController.cs" />
@@ -153,7 +157,6 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="ClientResources\libs\bootstrap-editable.css" />
   </ItemGroup>

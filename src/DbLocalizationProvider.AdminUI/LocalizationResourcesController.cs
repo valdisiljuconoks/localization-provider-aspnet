@@ -1,3 +1,6 @@
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Licensed under Apache-2.0. See the LICENSE file in the project root for more information
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,6 +11,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using DbLocalizationProvider.AdminUI.Infrastructure;
+using DbLocalizationProvider.AdminUI.Models;
 using DbLocalizationProvider.AspNet.Import;
 using DbLocalizationProvider.Commands;
 using DbLocalizationProvider.Export;
@@ -82,27 +87,41 @@ namespace DbLocalizationProvider.AdminUI
 
         [HttpPost]
         [ValidateInput(false)]
-        public JsonResult Create([Bind(Prefix = "pk")] string resourceKey)
+        public JsonResult Create([ModelBinder(typeof(RawBodyBinder))] CreateResourceRequestModel model)
         {
             try
             {
+                var resourceKey = model.Key;
+
                 // validate resource key
                 var whitelist = new Regex("^[.@+\\\"\\=\\/\\[\\]a-zA-Z0-9]+$");
                 if(!whitelist.IsMatch(resourceKey)) throw new ArgumentException("Invalid resource key value");
 
-                var c = new CreateNewResources.Command(new List<LocalizationResource>
+                var resource = new LocalizationResource(resourceKey)
                 {
-                    new LocalizationResource(resourceKey)
+                    Author = HttpContext.User.Identity.Name,
+                    FromCode = false,
+                    IsModified = false,
+                    IsHidden = false,
+                    ModificationDate = DateTime.UtcNow,
+                };
+
+                // fill in translations
+                model.Translations.ForEach(t =>
+                {
+                    resource.Translations.Add(new LocalizationResourceTranslation
                     {
-                        Author = HttpContext.User.Identity.Name,
-                        FromCode = false,
-                        IsModified = false,
-                        IsHidden = false,
-                        ModificationDate = DateTime.UtcNow
-                    }
+                        Language = t.Language.Equals("invariant", StringComparison.InvariantCultureIgnoreCase) ? string.Empty : t.Language,
+                        Value = t.Translation
+                    });
                 });
 
+                var c = new CreateNewResources.Command(new List<LocalizationResource> { resource });
                 c.Execute();
+
+                // raise new resources created event
+                // TODO: maybe this is not the best place for event
+                UiConfigurationContext.Current.Events.InvokeNewResourceCreated(resourceKey);
 
                 return Json("");
             }

@@ -81,6 +81,11 @@ namespace DbLocalizationProvider.AdminUI
         public bool DisableRemoveTranslationButton { get; set; }
 
         /// <summary>
+        /// You can use this portal to capture various events during  resource management lifecycle
+        /// </summary>
+        public Events Events { get; } = new Events();
+
+        /// <summary>
         /// Wanna customize anything here? Call this method.
         /// </summary>
         /// <param name="configCallback"></param>
