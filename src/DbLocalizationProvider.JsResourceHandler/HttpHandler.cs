@@ -1,4 +1,4 @@
-﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
@@ -79,11 +79,9 @@ namespace DbLocalizationProvider.JsResourceHandler
         public string GetJson(string filename, HttpContext context, string languageName, bool debugMode, bool camelCase)
         {
             var settings = new JsonSerializerSettings();
-            if(camelCase)
-                settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
-            if(debugMode)
-                settings.Formatting = Formatting.Indented;
+            if(camelCase) settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            if(debugMode) settings.Formatting = Formatting.Indented;
 
             return JsonConvert.SerializeObject(_converter.GetJson(filename, languageName, camelCase), settings);
         }

@@ -8,7 +8,7 @@ using DbLocalizationProvider.Queries;
 
 namespace DbLocalizationProvider.AspNet.Queries
 {
-    public class GetTranslationHandler : GetTranslation.GetTranslationHandlerBase, IQueryHandler<GetTranslation.Query, string>
+    public class GetTranslationHandler : IQueryHandler<GetTranslation.Query, string>
     {
         public string Execute(GetTranslation.Query query)
         {
@@ -19,9 +19,11 @@ namespace DbLocalizationProvider.AspNet.Queries
             var cacheKey = CacheKeyHelper.BuildKey(key);
             var localizationResource = ConfigurationContext.Current.CacheManager.Get(cacheKey) as LocalizationResource;
 
-            if(localizationResource != null) return GetTranslationFromAvailableList(localizationResource.Translations, language, query.UseFallback)?.Value;
+            if(localizationResource != null)
+            {
+                return localizationResource.Translations.GetValueWithFallback(language, ConfigurationContext.Current.FallbackCultures);
+            }
 
-            LocalizationResourceTranslation localization = null;
             LocalizationResource resource = null;
 
             try
@@ -38,12 +40,13 @@ namespace DbLocalizationProvider.AspNet.Queries
                 //resource = new GetResourceHandler().Execute(new GetResource.Query(query.Key));
             }
 
-            if(resource == null) resource = LocalizationResource.CreateNonExisting(key);
-            else localization = GetTranslationFromAvailableList(resource.Translations, language, query.UseFallback);
+            string localization = null;
+            if (resource == null) resource = LocalizationResource.CreateNonExisting(key);
+            else localization = resource.Translations.GetValueWithFallback(language, ConfigurationContext.Current.FallbackCultures);
 
             ConfigurationContext.Current.CacheManager.Insert(cacheKey, resource, true);
 
-            return localization?.Value;
+            return localization;
         }
     }
 }
