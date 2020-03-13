@@ -43,11 +43,8 @@ namespace DbLocalizationProvider
             if (setup != null) ConfigurationContext.Setup(setup);
 
             // if we need to sync - then it's good time to do it now
-            if (ConfigurationContext.Current.DiscoverAndRegisterResources)
-            {
-                var sync = new Synchronizer();
-                sync.SyncResources();
-            }
+            var sync = new Synchronizer();
+            sync.SyncResources(ConfigurationContext.Current.DiscoverAndRegisterResources);
 
             // set model metadata providers
             if (ConfigurationContext.Current.ModelMetadataProviders.ReplaceProviders)
