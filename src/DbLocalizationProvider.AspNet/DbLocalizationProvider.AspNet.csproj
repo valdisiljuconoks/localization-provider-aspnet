@@ -96,7 +96,6 @@
     <Compile Include="Queries\CachedGetAllResourcesHandler.cs" />
     <Compile Include="Queries\DefaultAvailableLanguagesHandler.cs" />
     <Compile Include="Queries\GetAllTranslationsHandler.cs" />
-    <Compile Include="Queries\GetTranslationHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
