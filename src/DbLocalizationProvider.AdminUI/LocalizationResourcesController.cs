@@ -96,6 +96,7 @@ namespace DbLocalizationProvider.AdminUI
                 // validate resource key
                 var whitelist = new Regex("^[.@+\\\"\\=\\/\\[\\]a-zA-Z0-9]+$");
                 if(!whitelist.IsMatch(resourceKey)) throw new ArgumentException("Invalid resource key value");
+                if(!model.Translations.Any()) throw new InvalidOperationException("At least single translations is required!");
 
                 var resource = new LocalizationResource(resourceKey)
                 {
@@ -115,6 +116,16 @@ namespace DbLocalizationProvider.AdminUI
                         Value = t.Translation
                     });
                 });
+
+                // check if we have invariant translation; if not - fill in from 1st translation
+                if (resource.Translations.FindByLanguage(CultureInfo.InvariantCulture) == null)
+                {
+                    resource.Translations.Add(new LocalizationResourceTranslation
+                    {
+                        Language = CultureInfo.InvariantCulture.Name,
+                        Value = resource.Translations.FirstOrDefault()?.Value ?? "N/A"
+                    });
+                }
 
                 var c = new CreateNewResources.Command(new List<LocalizationResource> { resource });
                 c.Execute();
