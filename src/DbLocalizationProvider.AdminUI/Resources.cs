@@ -1,4 +1,4 @@
-﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using DbLocalizationProvider.Abstractions;
@@ -31,7 +31,7 @@ namespace DbLocalizationProvider.AdminUI
         public static string ChooseLanguage => "Choose Language";
         public static string Close => "Close";
         public static string ResourceKeyRequired => "Resource key is required!";
-        public static string TranslationRequiredForInvariantCulture => "Don't be lazy, fill in at least invariant culture translation!";
+        public static string TranslationRequired => "Don't be lazy, fill in translation for at least single language!";
 
         [LocalizedResource]
         [Hidden]
