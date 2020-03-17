@@ -3,6 +3,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Web.Mvc;
 using DbLocalizationProvider.AspNet.Cache;
 using DbLocalizationProvider.AspNet.Queries;
@@ -30,36 +31,41 @@ namespace DbLocalizationProvider
             var sw = new Stopwatch();
             sw.Start();
 
-            // setup default implementations
-            ConfigurationContext.Current.TypeFactory.ForQuery<AvailableLanguages.Query>().SetHandler<DefaultAvailableLanguagesHandler>();
-            ConfigurationContext.Current.TypeFactory.ForQuery<GetAllResources.Query>().DecorateWith<CachedGetAllResourcesHandler>();
-            ConfigurationContext.Current.TypeFactory.ForQuery<GetAllTranslations.Query>().SetHandler<GetAllTranslationsHandler>();
-            ConfigurationContext.Current.TypeFactory.ForQuery<DetermineDefaultCulture.Query>().SetHandler<DetermineDefaultCulture.Handler>();
-            ConfigurationContext.Current.TypeFactory.ForCommand<ClearCache.Command>().SetHandler<ClearCacheHandler>();
+            var ctx = ConfigurationContext.Current;
 
-            ConfigurationContext.Current.CacheManager = new HttpCacheManager();
+            // setup default implementations
+            ctx.TypeFactory.ForQuery<AvailableLanguages.Query>().SetHandler<DefaultAvailableLanguagesHandler>();
+            ctx.TypeFactory.ForQuery<GetAllResources.Query>().DecorateWith<CachedGetAllResourcesHandler>();
+            ctx.TypeFactory.ForQuery<GetAllTranslations.Query>().SetHandler<GetAllTranslationsHandler>();
+            ctx.TypeFactory.ForQuery<DetermineDefaultCulture.Query>().SetHandler<DetermineDefaultCulture.Handler>();
+            ctx.TypeFactory.ForCommand<ClearCache.Command>().SetHandler<ClearCacheHandler>();
+
+            ctx.CacheManager = new HttpCacheManager();
 
             // custom callback invoke here (before rest of the config is finished)
             if (setup != null) ConfigurationContext.Setup(setup);
 
+            // also we need to make sure that invariant culture is last in the list of fallback to invariant is true
+            if (ctx.EnableInvariantCultureFallback) ctx.FallbackCultures.Then(CultureInfo.InvariantCulture);
+
             // if we need to sync - then it's good time to do it now
             var sync = new Synchronizer();
-            sync.SyncResources(ConfigurationContext.Current.DiscoverAndRegisterResources);
+            sync.SyncResources(ctx.DiscoverAndRegisterResources);
 
             // set model metadata providers
-            if (ConfigurationContext.Current.ModelMetadataProviders.ReplaceProviders)
+            if (ctx.ModelMetadataProviders.ReplaceProviders)
             {
 
-                if (ConfigurationContext.Current.ModelMetadataProviders.SetupCallback != null)
+                if (ctx.ModelMetadataProviders.SetupCallback != null)
                 {
-                    ConfigurationContext.Current.ModelMetadataProviders.SetupCallback();
+                    ctx.ModelMetadataProviders.SetupCallback();
                 }
                 else
                 {
                     // set current provider
                     if (ModelMetadataProviders.Current == null)
                     {
-                        if (ConfigurationContext.Current.ModelMetadataProviders.UseCachedProviders)
+                        if (ctx.ModelMetadataProviders.UseCachedProviders)
                         {
                             ModelMetadataProviders.Current = new CachedLocalizedMetadataProvider();
                         }
@@ -70,7 +76,7 @@ namespace DbLocalizationProvider
                     }
                     else
                     {
-                        if (ConfigurationContext.Current.ModelMetadataProviders.UseCachedProviders)
+                        if (ctx.ModelMetadataProviders.UseCachedProviders)
                         {
                             ModelMetadataProviders.Current = new CompositeModelMetadataProvider<CachedLocalizedMetadataProvider>(ModelMetadataProviders.Current);
                         }
@@ -95,7 +101,7 @@ namespace DbLocalizationProvider
             }
 
             sw.Stop();
-            ConfigurationContext.Current.Logger?.Debug($"DbLocalizationProvider overall initialization took: {sw.ElapsedMilliseconds}ms");
+            ctx.Logger?.Debug($"DbLocalizationProvider overall initialization took: {sw.ElapsedMilliseconds}ms");
 
             return builder;
         }

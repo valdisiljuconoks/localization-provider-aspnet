@@ -28,6 +28,7 @@ namespace DbLocalizationProvider.MvcSample
             {
                 ctx.EnableInvariantCultureFallback = true;
                 ctx.DefaultResourceCulture = CultureInfo.InvariantCulture;
+                ctx.EnableLegacyMode = () => true;
                 ctx.ModelMetadataProviders.MarkRequiredFields = true;
                 ctx.ModelMetadataProviders.RequiredFieldResource = () => HomePageResources.RequiredFieldIndicator;
                 ctx.CustomAttributes = new[]
@@ -46,11 +47,6 @@ namespace DbLocalizationProvider.MvcSample
             });
 
             app.UseDbLocalizationProviderAdminUI("/localization-admin", _ => { _.ShowInvariantCulture = true; });
-
-            //app.Map("/localization-admin", b => b.UseDbLocalizationProviderAdminUI(_ => { _.ShowInvariantCulture = true; }));
-
-            var inst2 = LocalizationProvider.Current;
-
             app.UseDbLocalizationProviderJsHandler();
         }
 

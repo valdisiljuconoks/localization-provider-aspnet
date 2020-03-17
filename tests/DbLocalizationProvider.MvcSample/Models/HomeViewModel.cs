@@ -41,6 +41,8 @@ namespace DbLocalizationProvider.MvcSample.Models
             };
         }
 
+        public string Id { get; set; }
+
         [Display(Name = "The user name:", Description = "")]
         [Required]
         [UIHint("Username")]
@@ -58,6 +60,11 @@ namespace DbLocalizationProvider.MvcSample.Models
 
         [UseResource(typeof(CommonResources), nameof(CommonResources.Ok))]
         public string Ok { get; set; }
+
+        [ResourceKey("/test/test1")]
+        [TranslationForCulture("Testing legacy property (EN)", "en")]
+        [Display(Name = "/test/test1")]
+        public string LegacyResource { get; set; } = "Testing legacy property (INV)";
     }
 
     [LocalizedModel]

@@ -23,17 +23,17 @@ namespace DbLocalizationProvider.DataAnnotations
             var theAttributes = attributes.ToList();
             var data = base.CreateMetadata(theAttributes, containerType, modelAccessor, modelType, propertyName);
 
-            if(containerType == null) return data;
-            if(containerType.GetCustomAttribute<LocalizedModelAttribute>() == null) return data;
+            if (containerType == null) return data;
+            if (containerType.GetCustomAttribute<LocalizedModelAttribute>() == null) return data;
 
-            data.DisplayName = !ConfigurationContext.Current.ResourceLookupFilter(data.DisplayName)
+            data.DisplayName = data.DisplayName != null && !ConfigurationContext.Current.ResourceLookupFilter(data.DisplayName)
                 ? ModelMetadataLocalizationHelper.GetTranslation(data.DisplayName)
                 : ModelMetadataLocalizationHelper.GetTranslation(containerType, propertyName);
 
             // TODO: extract this as decorator
-            if(data.IsRequired
-               && ConfigurationContext.Current.ModelMetadataProviders.MarkRequiredFields
-               && ConfigurationContext.Current.ModelMetadataProviders.RequiredFieldResource != null)
+            if (data.IsRequired
+                && ConfigurationContext.Current.ModelMetadataProviders.MarkRequiredFields
+                && ConfigurationContext.Current.ModelMetadataProviders.RequiredFieldResource != null)
             {
                 data.DisplayName += LocalizationProvider.Current.GetStringByCulture(
                     ConfigurationContext.Current.ModelMetadataProviders.RequiredFieldResource,
@@ -41,7 +41,7 @@ namespace DbLocalizationProvider.DataAnnotations
             }
 
             var displayAttribute = theAttributes.OfType<DisplayAttribute>().FirstOrDefault();
-            if(displayAttribute?.Description != null)
+            if (displayAttribute?.Description != null)
             {
                 data.Description = ModelMetadataLocalizationHelper.GetTranslation(containerType, $"{propertyName}-Description");
             }

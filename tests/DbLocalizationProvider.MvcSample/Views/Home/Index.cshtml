@@ -18,11 +18,12 @@
     <h1>@Html.Translate(() => HomePageResources.Header)</h1>
     <h3>FromTranslate&lt;T&gt;(): @ViewData["FromTranslateObject"]</h3>
     <h3>GetString(TranslatedResourceClass.SomeProperty): @LocalizationProvider.Current.GetString(() => resourceClassInstance.SomeProperty)</h3>
-    <h4>@Html.TranslateFor(m => m.CustomMessage)</h4>
+    <h4>Html.TranslateFor(m => m.CustomMessage): @Html.TranslateFor(m => m.CustomMessage)</h4>
 </div>
 <div>
     @Html.ValidationSummary()
     <form method="post">
+            @Html.HiddenFor(m => m.Id)
         <div>
             @Html.LabelFor(m => m.Message)
             @Html.EditorFor(m => m.Message)
@@ -55,7 +56,10 @@
         <div>
             City Type: @Html.Translate(Model.Address.CityType)
         </div>
-        <input type="submit" />
+        <div>
+            Model.LegacyResource (/test/test): @Html.TranslateFor(m => m.LegacyResource)
+        </div>
+        <input type="submit"/>
     </form>
 </div>
 <div>
