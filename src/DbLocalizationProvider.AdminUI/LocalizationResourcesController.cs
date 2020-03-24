@@ -94,7 +94,7 @@ namespace DbLocalizationProvider.AdminUI
                 var resourceKey = model.Key;
 
                 // validate resource key
-                var whitelist = new Regex("^[.@+\\\"\\=\\/\\[\\]a-zA-Z0-9]+$");
+                var whitelist = ConfigurationContext.Current.ResourceKeyNameFilter ?? new Regex(".");
                 if(!whitelist.IsMatch(resourceKey)) throw new ArgumentException("Invalid resource key value");
                 if(!model.Translations.Any()) throw new InvalidOperationException("At least single translations is required!");
 
