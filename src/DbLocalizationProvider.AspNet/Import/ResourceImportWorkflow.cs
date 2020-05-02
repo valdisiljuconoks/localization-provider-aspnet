@@ -89,7 +89,6 @@ namespace DbLocalizationProvider.AspNet.Import
                     {
                         // resource with this key does not exist - so we can just add it
                         newInserts.Add(localizationResource);
-                        //new CreateNewResource.Command(localizationResource).Execute();
                         count++;
                     }
                     else
@@ -105,7 +104,6 @@ namespace DbLocalizationProvider.AspNet.Import
                 {
                     // don't care about state in DB
                     // if we are importing all resources once again - all will be gone anyway
-                    //new CreateNewResource.Command(localizationResource).Execute();
                     newInserts.Add(localizationResource);
                     count++;
                 }
@@ -143,12 +141,12 @@ namespace DbLocalizationProvider.AspNet.Import
                 // fix incoming incomplete resource from web
                 insert.ImportingResource.Author = "import";
                 insert.ImportingResource.IsModified = false;
+                insert.ImportingResource.IsHidden = false;
 
                 // fix incoming resource translation invariant language (if any)
                 insert.ImportingResource.Translations.ForEach(t => t.Language = t.Language ?? "");
 
                 newInserts.Add(insert.ImportingResource);
-                //new CreateNewResource.Command(insert.ImportingResource).Execute();
                 inserts++;
             }
 
@@ -163,9 +161,9 @@ namespace DbLocalizationProvider.AspNet.Import
                     // resource with this key does not exist - so we can just add it
                     update.ImportingResource.Author = "import";
                     update.ImportingResource.IsModified = false;
+                    update.ImportingResource.IsModified = false;
 
                     newInserts.Add(update.ImportingResource);
-                    //new CreateNewResource.Command(update.ImportingResource).Execute();
                     inserts++;
                     continue;
                 }
@@ -178,6 +176,7 @@ namespace DbLocalizationProvider.AspNet.Import
                 updates++;
             }
 
+            new CreateNewResources.Command(newInserts).Execute();
             var clearCommand = new ClearCache.Command();
             clearCommand.Execute();
 
