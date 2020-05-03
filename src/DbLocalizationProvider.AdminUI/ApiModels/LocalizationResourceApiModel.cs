@@ -39,5 +39,7 @@ namespace DbLocalizationProvider.AdminUI.ApiModels
         public IEnumerable<CultureApiModel> Languages { get; }
 
         public bool AdminMode { get; set; }
+
+        public bool HideDeleteButton { get; set; }
     }
 }

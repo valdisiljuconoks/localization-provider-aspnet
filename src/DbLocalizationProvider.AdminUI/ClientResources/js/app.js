@@ -18,6 +18,7 @@
                 vm.resources = undefined;
                 vm.languages = undefined;
                 vm.adminMode = undefined;
+                vm.hideDeleteButton = undefined;
 
                 vm.fetch = fetch;
 
@@ -58,6 +59,7 @@
                                 vm.resources = response.Resources;
                                 vm.languages = response.Languages;
                                 vm.adminMode = response.AdminMode;
+                                vm.hideDeleteButton = response.HideDeleteButton;
                             } catch (e) {
                                 // error may occur when service returns html for login page instead of json (unauthorized access, session expired, etc)
                                 alert(e);

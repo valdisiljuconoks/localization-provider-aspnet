@@ -56,7 +56,7 @@
                         <th>Resource Key</th>
                         <th ng-repeat="lang in vm.languages">{{lang.Display}}</th>
                         <th>FromCode</th>
-                        <th>Delete</th>
+                        <th ng-if="!vm.hideDeleteButton">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,7 +67,7 @@
                             <span ng-show="lang.Code==''">{{getTranslation(resource, lang)}}</span>
                         </td>
                         <td>{{resource.SyncedFromCode}}</td>
-                        <td><button class="btn btn-danger" id="deleteResource" ng-disabled="!vm.AllowDelete">x</button></td>
+                        <td ng-if="!vm.hideDeleteButton"><button class="btn btn-danger" id="deleteResource" ng-disabled="!vm.AllowDelete">x</button></td>
                     </tr>
                 </tbody>
             </table>

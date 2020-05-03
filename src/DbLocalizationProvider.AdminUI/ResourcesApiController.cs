@@ -1,4 +1,4 @@
-﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
@@ -35,8 +35,8 @@ namespace DbLocalizationProvider.AdminUI
 
         private LocalizationResourceApiModel PrepareViewModel()
         {
-            var availableLanguagesQuery =
-                new AvailableLanguages.Query {IncludeInvariant = UiConfigurationContext.Current.ShowInvariantCulture};
+            var context = UiConfigurationContext.Current;
+            var availableLanguagesQuery = new AvailableLanguages.Query { IncludeInvariant = context.ShowInvariantCulture };
             var languages = availableLanguagesQuery.Execute();
 
             var getResourcesQuery = new GetAllResources.Query(true);
@@ -45,16 +45,23 @@ namespace DbLocalizationProvider.AdminUI
             var user = RequestContext.Principal;
             var isAdmin = false;
 
-            if(user != null) isAdmin = user.Identity.IsAuthenticated && UiConfigurationContext.Current.AuthorizedAdminRoles.Any(r => user.IsInRole(r));
+            if (user != null)
+            {
+                isAdmin = user.Identity.IsAuthenticated && context.AuthorizedAdminRoles.Any(r => user.IsInRole(r));
+            }
 
-            return new LocalizationResourceApiModel(resources, languages) {AdminMode = isAdmin};
+            return new LocalizationResourceApiModel(resources, languages)
+            {
+                AdminMode = isAdmin,
+                HideDeleteButton = context.HideDeleteButton
+            };
         }
 
         private IEnumerable<string> GetSelectedLanguages()
         {
             var cookie = Request.Headers.GetCookies(CookieName).FirstOrDefault();
 
-            return cookie?[CookieName].Value?.Split(new[] {"|"}, StringSplitOptions.RemoveEmptyEntries);
+            return cookie?[CookieName].Value?.Split(new[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

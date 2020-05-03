@@ -46,7 +46,12 @@ namespace DbLocalizationProvider.MvcSample
                 ctx.TypeFactory.ForQuery<AvailableLanguages.Query>().SetHandler<SampleAvailableLanguagesHandler>();
             });
 
-            app.UseDbLocalizationProviderAdminUI("/localization-admin", _ => { _.ShowInvariantCulture = true; });
+            app.UseDbLocalizationProviderAdminUI("/localization-admin",
+                _ =>
+                {
+                    _.ShowInvariantCulture = true;
+                    _.HideDeleteButton = false;
+                });
             app.UseDbLocalizationProviderJsHandler();
         }
 
