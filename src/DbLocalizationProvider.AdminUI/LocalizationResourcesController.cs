@@ -74,7 +74,8 @@ namespace DbLocalizationProvider.AdminUI
                        IsTreeView = isTreeView,
                        IsTreeViewEnabled = !UiConfigurationContext.Current.IsTreeViewDisabled,
                        IsTableViewEnabled = !UiConfigurationContext.Current.IsTableViewDisabled,
-                       IsRemoveTranslationButtonDisabled = UiConfigurationContext.Current.DisableRemoveTranslationButton
+                       IsRemoveTranslationButtonDisabled = UiConfigurationContext.Current.DisableRemoveTranslationButton,
+                       IsDeleteButtonVisible = !UiConfigurationContext.Current.HideDeleteButton
             };
 
             // build tree
@@ -152,8 +153,14 @@ namespace DbLocalizationProvider.AdminUI
         {
             try
             {
-                var c = new DeleteResource.Command(resourceKey);
-                c.Execute();
+                var user = HttpContext.User;
+                var isAdmin = user.Identity.IsAuthenticated && UiConfigurationContext.Current.AuthorizedAdminRoles.Any(r => user.IsInRole(r));
+
+                if (isAdmin && !UiConfigurationContext.Current.HideDeleteButton)
+                {
+                    var c = new DeleteResource.Command(resourceKey);
+                    c.Execute();
+                }
 
                 return Redirect(returnUrl);
             }

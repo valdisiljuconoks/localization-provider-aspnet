@@ -9,13 +9,15 @@ namespace DbLocalizationProvider.AdminUI
 {
     public class LocalizationResourceViewModel
     {
-        public LocalizationResourceViewModel(List<ResourceListItem> resources, IEnumerable<CultureInfo> languages,
-            IEnumerable<string> selectedLanguages, int maxLength)
+        public LocalizationResourceViewModel(List<ResourceListItem> resources,
+            IEnumerable<CultureInfo> languages,
+            IEnumerable<string> selectedLanguages,
+            int maxLength)
         {
             Resources = resources;
             Languages = languages;
             SelectedLanguages = selectedLanguages?.Select(l => new CultureInfo(l == "__invariant" ? string.Empty : l))
-                                    .Where(sl => languages.Any(al => sl.EnglishName == al.EnglishName)) ?? languages;
+                                                 .Where(sl => languages.Any(al => sl.EnglishName == al.EnglishName)) ?? languages;
 
             Resources.ForEach(r =>
             {
@@ -43,5 +45,7 @@ namespace DbLocalizationProvider.AdminUI
         public bool IsTableViewEnabled { get; set; }
 
         public bool IsRemoveTranslationButtonDisabled { get; set; }
+
+        public bool IsDeleteButtonVisible { get; set; }
     }
 }

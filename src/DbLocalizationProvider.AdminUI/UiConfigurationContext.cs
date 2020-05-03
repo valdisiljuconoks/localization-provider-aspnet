@@ -86,6 +86,11 @@ namespace DbLocalizationProvider.AdminUI
         public Events Events { get; } = new Events();
 
         /// <summary>
+        /// If you don't need to remove resource ever - set this to <code>true</code>
+        /// </summary>
+        public bool HideDeleteButton { get; set; }
+
+        /// <summary>
         /// Wanna customize anything here? Call this method.
         /// </summary>
         /// <param name="configCallback"></param>
