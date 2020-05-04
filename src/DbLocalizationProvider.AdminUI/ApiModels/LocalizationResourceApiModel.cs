@@ -41,5 +41,7 @@ namespace DbLocalizationProvider.AdminUI.ApiModels
         public bool AdminMode { get; set; }
 
         public bool HideDeleteButton { get; set; }
+
+        public bool IsRemoveTranslationButtonDisabled { get; set; }
     }
 }

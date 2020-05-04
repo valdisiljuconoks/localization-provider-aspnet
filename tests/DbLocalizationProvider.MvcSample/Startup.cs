@@ -51,6 +51,7 @@ namespace DbLocalizationProvider.MvcSample
                 {
                     _.ShowInvariantCulture = true;
                     _.HideDeleteButton = false;
+                    _.DisableRemoveTranslationButton = false;
                 });
             app.UseDbLocalizationProviderJsHandler();
         }

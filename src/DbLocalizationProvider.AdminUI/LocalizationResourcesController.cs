@@ -68,14 +68,14 @@ namespace DbLocalizationProvider.AdminUI
             }
 
             var result = new LocalizationResourceViewModel(allResources, languages, GetSelectedLanguages(), _maxLength)
-                   {
-                       ShowMenu = showMenu,
-                       AdminMode = isAdmin,
-                       IsTreeView = isTreeView,
-                       IsTreeViewEnabled = !UiConfigurationContext.Current.IsTreeViewDisabled,
-                       IsTableViewEnabled = !UiConfigurationContext.Current.IsTableViewDisabled,
-                       IsRemoveTranslationButtonDisabled = UiConfigurationContext.Current.DisableRemoveTranslationButton,
-                       IsDeleteButtonVisible = !UiConfigurationContext.Current.HideDeleteButton
+            {
+                ShowMenu = showMenu,
+                AdminMode = isAdmin,
+                IsTreeView = isTreeView,
+                IsTreeViewEnabled = !UiConfigurationContext.Current.IsTreeViewDisabled,
+                IsTableViewEnabled = !UiConfigurationContext.Current.IsTableViewDisabled,
+                IsRemoveTranslationButtonDisabled = UiConfigurationContext.Current.DisableRemoveTranslationButton,
+                IsDeleteButtonVisible = !UiConfigurationContext.Current.HideDeleteButton
             };
 
             // build tree

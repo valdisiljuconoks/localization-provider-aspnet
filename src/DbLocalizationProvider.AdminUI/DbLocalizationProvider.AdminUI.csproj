@@ -123,6 +123,7 @@
     <Compile Include="Infrastructure\RawBodyBinder.cs" />
     <Compile Include="Models\CreateOrUpdateTranslationRequestModel.cs" />
     <Compile Include="Models\CreateResourceRequestModel.cs" />
+    <Compile Include="Models\RemoveTranslationRequestModel.cs" />
     <Compile Include="Models\TranslationRequestModel.cs" />
     <Compile Include="PreviewImportResourcesViewModel.cs" />
     <Compile Include="ResourceListView.cs" />

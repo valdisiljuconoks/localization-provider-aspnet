@@ -33,6 +33,15 @@ namespace DbLocalizationProvider.AdminUI
             return Ok();
         }
 
+        [HttpPost]
+        public IHttpActionResult Remove(RemoveTranslationRequestModel model)
+        {
+            var cmd = new RemoveTranslation.Command(model.Key, new CultureInfo(model.Language));
+            cmd.Execute();
+
+            return Ok();
+        }
+
         private LocalizationResourceApiModel PrepareViewModel()
         {
             var context = UiConfigurationContext.Current;
@@ -53,7 +62,8 @@ namespace DbLocalizationProvider.AdminUI
             return new LocalizationResourceApiModel(resources, languages)
             {
                 AdminMode = isAdmin,
-                HideDeleteButton = context.HideDeleteButton
+                HideDeleteButton = context.HideDeleteButton,
+                IsRemoveTranslationButtonDisabled = UiConfigurationContext.Current.DisableRemoveTranslationButton
             };
         }
 

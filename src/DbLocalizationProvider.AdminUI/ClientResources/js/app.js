@@ -18,6 +18,7 @@
                 vm.resources = undefined;
                 vm.languages = undefined;
                 vm.adminMode = undefined;
+                vm.disableRemoveTranslationButton = undefined;
                 vm.hideDeleteButton = undefined;
 
                 vm.fetch = fetch;
@@ -25,7 +26,8 @@
                 vm.open = function (resource, lang) {
 
                     var selectedResource = resource,
-                        selectedLanguage = lang;
+                        selectedLanguage = lang,
+                        disableRemoveTranslation = vm.disableRemoveTranslationButton;
 
                     var modalInstance = $uibModal.open({
                         templateUrl: 'popup-content.html',
@@ -35,18 +37,33 @@
                             resource: function () { return selectedResource; },
                             translation: function() {
                                 var translation = $scope.getTranslation(selectedResource, selectedLanguage);
-                                return translation == "N/A" ? "" : translation;
-                            }
+                                return translation === "N/A" ? "" : translation;
+                            },
+                            disableRemoveButton: function() { return disableRemoveTranslation; }
                         }
                     });
 
                     modalInstance.result.then(
-                        function (translation) {
-                            $http.post('api/update', { key: selectedResource.Key, language: selectedLanguage.Code, newTranslation: translation })
-                            .success(function () {
-                                    // TODO: show notification
-                                    vm.fetch();
-                                });
+                        function (result) {
+                            if (result.event === 'ok') {
+                                $http.post('api/update',
+                                        {
+                                            key: selectedResource.Key,
+                                            language: selectedLanguage.Code,
+                                            newTranslation: result.translation
+                                        })
+                                    .success(function() {
+                                        // TODO: show notification
+                                        vm.fetch();
+                                    });
+                            }
+                            else if (result.event === 'remove') {
+                                $http.post('api/remove', { key: selectedResource.Key, language: selectedLanguage.Code })
+                                     .success(function() {
+                                        // TODO: show notification
+                                        vm.fetch();
+                                     });
+                            }
                         });
                 };
 
@@ -59,6 +76,7 @@
                                 vm.resources = response.Resources;
                                 vm.languages = response.Languages;
                                 vm.adminMode = response.AdminMode;
+                                vm.disableRemoveTranslationButton = response.IsRemoveTranslationButtonDisabled;
                                 vm.hideDeleteButton = response.HideDeleteButton;
                             } catch (e) {
                                 // error may occur when service returns html for login page instead of json (unauthorized access, session expired, etc)
@@ -70,17 +88,24 @@
     ]);
 
 
-    angular.module('resourceUIApp').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, resource, translation) {
+    angular.module('resourceUIApp').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, resource, translation, disableRemoveButton) {
 
         $scope.resource = resource;
         $scope.translation = translation;
+        $scope.disableRemoveButton = disableRemoveButton;
 
         $scope.ok = function () {
-            $uibModalInstance.close($scope.translation);
+            $uibModalInstance.close({ translation: $scope.translation, event: 'ok' });
         };
 
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
+        };
+
+        $scope.remove = function () {
+            if (confirm('Do you want to remove translation?')) {
+                $uibModalInstance.close({ event: 'remove' });
+            }
         };
     });
 })();

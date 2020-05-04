@@ -61,6 +61,7 @@ namespace DbLocalizationProvider.AdminUI
             // explicitly registering required routes in order to avoid double calls for register attribute based routes
             config.Routes.MapHttpRoute("resources-get", "api/get", new {controller = "ResourcesApi", action = "Get"});
             config.Routes.MapHttpRoute("resources-update", "api/update", new {controller = "ResourcesApi", action = "Update"});
+            config.Routes.MapHttpRoute("resources-remove", "api/remove", new {controller = "ResourcesApi", action = "Remove"});
 
             builder.UseWebApi(config);
             builder.UseStageMarker(PipelineStage.MapHandler);
