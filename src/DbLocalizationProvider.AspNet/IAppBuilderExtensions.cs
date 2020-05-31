@@ -45,8 +45,14 @@ namespace DbLocalizationProvider
             // custom callback invoke here (before rest of the config is finished)
             if (setup != null) ConfigurationContext.Setup(setup);
 
-            // also we need to make sure that invariant culture is last in the list of fallback to invariant is true
-            if (ctx.EnableInvariantCultureFallback) ctx.FallbackCultures.Then(CultureInfo.InvariantCulture);
+            // also we need to make sure that invariant culture is last in the list if fallback to invariant is true
+            if (ctx.EnableInvariantCultureFallback)
+            {
+                foreach (var fallback in ConfigurationContext.Current.FallbackList)
+                {
+                    fallback.Value.Add(CultureInfo.InvariantCulture);
+                }
+            }
 
             // if we need to sync - then it's good time to do it now
             var sync = new Synchronizer();
