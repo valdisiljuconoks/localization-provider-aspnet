@@ -32,6 +32,8 @@ namespace DbLocalizationProvider.AdminUI
         public static string Close => "Close";
         public static string ResourceKeyRequired => "Resource key is required!";
         public static string TranslationRequired => "Don't be lazy, fill in translation for at least single language!";
+        public static string CleanCache = "Clean Cache";
+        public static string CleanCacheConfirmation = "Wanna start with clean cache state?";
 
         [LocalizedResource]
         [Hidden]

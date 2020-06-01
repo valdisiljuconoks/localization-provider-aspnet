@@ -14,6 +14,7 @@ using System.Web.Mvc;
 using DbLocalizationProvider.AdminUI.Infrastructure;
 using DbLocalizationProvider.AdminUI.Models;
 using DbLocalizationProvider.AspNet.Import;
+using DbLocalizationProvider.Cache;
 using DbLocalizationProvider.Commands;
 using DbLocalizationProvider.Export;
 using DbLocalizationProvider.Import;
@@ -258,7 +259,14 @@ namespace DbLocalizationProvider.AdminUI
             var cookie = new HttpCookie(_viewCcookieName, "table") { HttpOnly = true };
             Response.Cookies.Add(cookie);
 
-            return RedirectToAction(showMenu.HasValue && showMenu.Value ? "Main" : "Index");
+            return RedirectToAction(showMenu.HasValue && showMenu.Value ? nameof(Main) : nameof(Index));
+        }
+
+        public ActionResult CleanCache(bool? showMenu)
+        {
+            new ClearCache.Command().Execute();
+
+            return RedirectToAction(showMenu.HasValue && showMenu.Value ? nameof(Main) : nameof(Index));
         }
 
         [AuthorizeRoles(Mode = UiContextMode.Admin)]
@@ -318,6 +326,7 @@ namespace DbLocalizationProvider.AdminUI
 
             return View("ImportResources", model);
         }
+
         [HttpPost]
         [AuthorizeRoles(Mode = UiContextMode.Admin)]
         [ValidateInput(false)]
