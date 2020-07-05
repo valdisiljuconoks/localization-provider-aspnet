@@ -1,4 +1,4 @@
-﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System.Collections.Generic;
@@ -19,23 +19,19 @@ namespace DbLocalizationProvider.AspNet.Queries
 
         public IEnumerable<LocalizationResource> Execute(GetAllResources.Query query)
         {
-            if(query.ForceReadFromDb)
-                return _inner.Execute(query);
-
-            // get keys for known resources
-            var keys = ConfigurationContext.Current.BaseCacheManager.KnownResourceKeys.Keys;
+            if (query.ForceReadFromDb) return _inner.Execute(query);
+            var keys = ConfigurationContext.Current.BaseCacheManager.KnownKeys;
 
             // if keys = 0, execute inner query to actually get resources from the db
             // this is usually called during initialization when cache is not yet filled up
-            if(keys.Count == 0)
-                return _inner.Execute(query);
+            if (keys.Count == 0) return _inner.Execute(query);
 
             var result = new List<LocalizationResource>();
 
-            foreach(var key in keys)
+            foreach (var key in keys)
             {
                 var cacheKey = CacheKeyHelper.BuildKey(key);
-                if(ConfigurationContext.Current.CacheManager.Get(cacheKey) is LocalizationResource localizationResource)
+                if (ConfigurationContext.Current.CacheManager.Get(cacheKey) is LocalizationResource localizationResource)
                 {
                     result.Add(localizationResource);
                 }
@@ -43,7 +39,7 @@ namespace DbLocalizationProvider.AspNet.Queries
                 {
                     // failed to get from cache, should call database
                     var resourceFromDb = new GetResource.Query(key).Execute();
-                    if(resourceFromDb != null)
+                    if (resourceFromDb != null)
                     {
                         ConfigurationContext.Current.CacheManager.Insert(cacheKey, resourceFromDb, true);
                         result.Add(resourceFromDb);

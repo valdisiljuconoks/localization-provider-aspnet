@@ -20,6 +20,11 @@
     <h3>GetString(TranslatedResourceClass.SomeProperty): @LocalizationProvider.Current.GetString(() => resourceClassInstance.SomeProperty)</h3>
     <h4>Html.TranslateFor(m => m.CustomMessage): @Html.TranslateFor(m => m.CustomMessage)</h4>
 </div>
+<hr/>
+<h2>Case Sensitivity</h2>
+<div>
+    LocalizationProvider.Current.GetString("DBLOCALIZATIONPROVIDER.MVCSAMPLE.RESOURCES.HOMEPAGERESOURCES.HEADER") - @LocalizationProvider.Current.GetString("DBLOCALIZATIONPROVIDER.MVCSAMPLE.RESOURCES.HOMEPAGERESOURCES.HEADER")
+</div>
 <div>
     @Html.ValidationSummary()
     <form method="post">
@@ -86,7 +91,7 @@
     Placeholder value is set by JS ($t('CommonResources.Ok')): <span id="placeholderForJS"></span>
 </div>
 
-@Html.GetTranslations(typeof(CommonResources))
+@Html.GetTranslations(typeof(CommonResources), UICulture)
 
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {

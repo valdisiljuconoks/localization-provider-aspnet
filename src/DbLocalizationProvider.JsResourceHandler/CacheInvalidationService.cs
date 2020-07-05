@@ -1,6 +1,7 @@
-﻿// Copyright (c) Valdis Iljuconoks. All rights reserved.
+// Copyright (c) Valdis Iljuconoks. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
+using System;
 using System.Collections.Generic;
 using System.Web;
 using DbLocalizationProvider.Cache;
@@ -12,18 +13,23 @@ namespace DbLocalizationProvider.JsResourceHandler
         internal static void CacheManagerOnOnRemove(CacheEventArgs cacheEventArgs)
         {
             var existingKeys = HttpContext.Current.Cache.GetEnumerator();
-            var entriesToRemove = new List<string>();
+            var keysToRemove = new List<string>();
 
-            while(existingKeys.MoveNext())
+            while (existingKeys.MoveNext())
             {
                 var key = existingKeys.Key?.ToString();
                 var existingKey = CacheKeyHelper.GetContainerName(key);
-                if(existingKey != null && cacheEventArgs.ResourceKey.StartsWith(existingKey))
-                    entriesToRemove.Add(key);
+                if (existingKey != null
+                    && cacheEventArgs.ResourceKey.StartsWith(existingKey, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    keysToRemove.Add(key);
+                }
             }
 
-            foreach(var entry in entriesToRemove)
-                ConfigurationContext.Current.CacheManager.Remove(entry);
+            foreach (var key in keysToRemove)
+            {
+                ConfigurationContext.Current.CacheManager.Remove(key);
+            }
         }
     }
 }

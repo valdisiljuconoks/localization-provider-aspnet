@@ -48,7 +48,8 @@ namespace DbLocalizationProvider.JsResourceHandler
             }
             else
             {
-                if(context.Request.Headers.AllKeys.Contains("X-Requested-With") && context.Request.Headers["X-Requested-With"].Equals("XMLHttpRequest", StringComparison.InvariantCultureIgnoreCase))
+                if(context.Request.Headers.AllKeys.Contains("X-Requested-With")
+                   && context.Request.Headers["X-Requested-With"].Equals("XMLHttpRequest", StringComparison.InvariantCultureIgnoreCase))
                 {
                     windowAlias = false;
                 }
