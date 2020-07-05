@@ -30,26 +30,28 @@ namespace DbLocalizationProvider.Xliff
             var result = new List<LocalizationResource>();
             var languages = new List<string>();
 
-            foreach(var file in doc.Files)
+            foreach (var file in doc.Files)
             {
-                foreach(var container in file.Containers.OfType<Unit>())
+                foreach (var container in file.Containers.OfType<Unit>())
                 {
-                    foreach(var resource in container.Resources)
+                    foreach (var resource in container.Resources)
                     {
-                        result.Add(new LocalizationResource(XmlConvert.DecodeName(resource.Id))
-                                   {
-                                       Translations = new List<LocalizationResourceTranslation>
-                                                      {
-                                                          new LocalizationResourceTranslation
-                                                          {
-                                                              Language = resource.Target.Language,
-                                                              Value = resource.Target.Text.OfType<CDataTag>().FirstOrDefault()?.Text
-                                                          }
-                                                      }
-                                   });
+                        var targetLanguage = resource.Target.Language;
+                        var targetCulture = new CultureInfo(targetLanguage).Name;
 
-                        if(!languages.Contains(resource.Target.Language))
-                            languages.Add(resource.Target.Language);
+                        result.Add(new LocalizationResource(XmlConvert.DecodeName(resource.Id))
+                        {
+                            Translations = new List<LocalizationResourceTranslation>
+                            {
+                                new LocalizationResourceTranslation
+                                {
+                                    Language = targetCulture,
+                                    Value = resource.Target.Text.OfType<CDataTag>().FirstOrDefault()?.Text
+                                }
+                            }
+                        });
+
+                        if (!languages.Contains(targetCulture)) languages.Add(targetCulture);
                     }
                 }
             }

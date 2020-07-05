@@ -34,7 +34,7 @@ namespace DbLocalizationProvider.AdminUI
         private bool _showInvariantCulture;
         private readonly int _maxLength;
         private const string _cookieName = ".DbLocalizationProvider-SelectedLanguages";
-        private const string _viewCcookieName = ".DbLocalizationProvider-DefaultView";
+        private const string _viewCookieName = ".DbLocalizationProvider-DefaultView";
 
         public LocalizationResourcesController()
         {
@@ -63,9 +63,9 @@ namespace DbLocalizationProvider.AdminUI
 
             // cookies override default view from config
             var isTreeView = UiConfigurationContext.Current.DefaultView == ResourceListView.Tree;
-            if(Request.Cookies[_viewCcookieName] != null)
+            if(Request.Cookies[_viewCookieName] != null)
             {
-                isTreeView = UiConfigurationContext.Current.IsTableViewDisabled || Request.Cookies[_viewCcookieName]?.Value == "tree";
+                isTreeView = UiConfigurationContext.Current.IsTableViewDisabled || Request.Cookies[_viewCookieName]?.Value == "tree";
             }
 
             var result = new LocalizationResourceViewModel(allResources, languages, GetSelectedLanguages(), _maxLength)
@@ -248,7 +248,7 @@ namespace DbLocalizationProvider.AdminUI
 
         public ActionResult Tree(bool? showMenu)
         {
-            var cookie = new HttpCookie(_viewCcookieName, "tree") { HttpOnly = true };
+            var cookie = new HttpCookie(_viewCookieName, "tree") { HttpOnly = true };
             Response.Cookies.Add(cookie);
 
             return RedirectToAction(showMenu.HasValue && showMenu.Value ? "Main" : "Index");
@@ -256,7 +256,7 @@ namespace DbLocalizationProvider.AdminUI
 
         public ActionResult Table(bool? showMenu)
         {
-            var cookie = new HttpCookie(_viewCcookieName, "table") { HttpOnly = true };
+            var cookie = new HttpCookie(_viewCookieName, "table") { HttpOnly = true };
             Response.Cookies.Add(cookie);
 
             return RedirectToAction(showMenu.HasValue && showMenu.Value ? nameof(Main) : nameof(Index));
