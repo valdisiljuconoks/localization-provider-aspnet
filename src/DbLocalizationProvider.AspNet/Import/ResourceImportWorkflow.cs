@@ -103,7 +103,7 @@ namespace DbLocalizationProvider.AspNet.Import
                 else
                 {
                     // don't care about state in DB
-                    // if we are importing all resources once again - all will be gone anyway
+                    // if we are importing all resources once again - previous will be gone anyways
                     newInserts.Add(localizationResource);
                     count++;
                 }

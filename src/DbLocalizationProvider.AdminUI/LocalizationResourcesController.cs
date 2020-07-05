@@ -316,7 +316,7 @@ namespace DbLocalizationProvider.AdminUI
                     return View("ImportPreview", previewModel);
                 }
 
-                var result = workflow.Import(parseResult.Resources, previewImport ?? true);
+                var result = workflow.Import(parseResult.Resources, true);
                 ViewData["LocalizationProvider_ImportResult"] = result;
             }
             catch (Exception e)
