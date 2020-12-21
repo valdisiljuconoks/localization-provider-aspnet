@@ -58,6 +58,11 @@ namespace DbLocalizationProvider
             var sync = new Synchronizer();
             sync.SyncResources(ctx.DiscoverAndRegisterResources);
 
+            if (ctx.ManualResourceProvider != null)
+            {
+                sync.RegisterManually(ctx.ManualResourceProvider.GetResources());
+            }
+
             // set model metadata providers
             if (ctx.ModelMetadataProviders.ReplaceProviders)
             {
