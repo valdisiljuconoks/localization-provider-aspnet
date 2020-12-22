@@ -53,7 +53,7 @@ namespace DbLocalizationProvider.DataAnnotations
             if(containerType?.GetCustomAttribute<LocalizedModelAttribute>() == null)
                 return prototype;
 
-            var translation = ModelMetadataLocalizationHelper.GetTranslation(containerType, propertyName);
+            var translation = AspNet.DataAnnotations.ModelMetadataLocalizationHelper.GetTranslation(containerType, propertyName);
             prototype.DisplayName = translation;
 
             if(prototype.IsRequired
@@ -72,7 +72,7 @@ namespace DbLocalizationProvider.DataAnnotations
 
             if(!string.IsNullOrEmpty(displayAttribute?.Description))
             {
-                prototype.Description = ModelMetadataLocalizationHelper.GetTranslation(containerType, $"{propertyName}-Description");
+                prototype.Description = AspNet.DataAnnotations.ModelMetadataLocalizationHelper.GetTranslation(containerType, $"{propertyName}-Description");
             }
 
             return prototype;

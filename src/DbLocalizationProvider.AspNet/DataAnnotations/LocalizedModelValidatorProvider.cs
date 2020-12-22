@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
-using DbLocalizationProvider.Internal;
 
 namespace DbLocalizationProvider.DataAnnotations
 {
@@ -28,7 +27,7 @@ namespace DbLocalizationProvider.DataAnnotations
             foreach (var attribute in attributes.OfType<ValidationAttribute>())
             {
                 var resourceKey = ResourceKeyBuilder.BuildResourceKey(metadata.ContainerType, metadata.PropertyName, attribute);
-                var translation = ModelMetadataLocalizationHelper.GetTranslation(resourceKey);
+                var translation = AspNet.DataAnnotations.ModelMetadataLocalizationHelper.GetTranslation(resourceKey);
                 if(!string.IsNullOrEmpty(translation))
                 {
                     attribute.ErrorMessage = translation;

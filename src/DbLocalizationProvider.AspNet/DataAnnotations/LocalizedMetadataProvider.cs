@@ -27,8 +27,8 @@ namespace DbLocalizationProvider.DataAnnotations
             if (containerType.GetCustomAttribute<LocalizedModelAttribute>() == null) return data;
 
             data.DisplayName = data.DisplayName != null && !ConfigurationContext.Current.ResourceLookupFilter(data.DisplayName)
-                ? ModelMetadataLocalizationHelper.GetTranslation(data.DisplayName)
-                : ModelMetadataLocalizationHelper.GetTranslation(containerType, propertyName);
+                ? AspNet.DataAnnotations.ModelMetadataLocalizationHelper.GetTranslation(data.DisplayName)
+                : AspNet.DataAnnotations.ModelMetadataLocalizationHelper.GetTranslation(containerType, propertyName);
 
             // TODO: extract this as decorator
             if (data.IsRequired
@@ -43,7 +43,7 @@ namespace DbLocalizationProvider.DataAnnotations
             var displayAttribute = theAttributes.OfType<DisplayAttribute>().FirstOrDefault();
             if (displayAttribute?.Description != null)
             {
-                data.Description = ModelMetadataLocalizationHelper.GetTranslation(containerType, $"{propertyName}-Description");
+                data.Description = AspNet.DataAnnotations.ModelMetadataLocalizationHelper.GetTranslation(containerType, $"{propertyName}-Description");
             }
 
             return data;
