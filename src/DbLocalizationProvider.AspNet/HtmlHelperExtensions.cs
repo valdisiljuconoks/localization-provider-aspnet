@@ -6,10 +6,9 @@ using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Web.Mvc;
-using DbLocalizationProvider.Internal;
 using ExpressionHelper = DbLocalizationProvider.Internal.ExpressionHelper;
 
-namespace DbLocalizationProvider
+namespace DbLocalizationProvider.AspNet
 {
     /// <summary>
     /// Html helper to help you generate some markup

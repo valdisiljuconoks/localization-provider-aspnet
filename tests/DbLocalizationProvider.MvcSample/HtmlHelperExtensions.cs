@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using DbLocalizationProvider.AspNet;
 
 namespace DbLocalizationProvider.MvcSample
 {

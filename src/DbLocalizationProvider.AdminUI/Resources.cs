@@ -9,6 +9,8 @@ namespace DbLocalizationProvider.AdminUI
     [Hidden]
     public class Resources
     {
+        public static string CleanCache = "Clean Cache";
+        public static string CleanCacheConfirmation = "Wanna start with clean cache state?";
         public static string Header => "Localization Resources";
         public static string AvailableLanguages => "Available Languages";
         public static string Save => "Save";
@@ -32,8 +34,6 @@ namespace DbLocalizationProvider.AdminUI
         public static string Close => "Close";
         public static string ResourceKeyRequired => "Resource key is required!";
         public static string TranslationRequired => "Don't be lazy, fill in translation for at least single language!";
-        public static string CleanCache = "Clean Cache";
-        public static string CleanCacheConfirmation = "Wanna start with clean cache state?";
 
         [LocalizedResource]
         [Hidden]
@@ -44,7 +44,10 @@ namespace DbLocalizationProvider.AdminUI
             public static string ImportPreview => "Preview import (do not commit)";
             public static string ImportHeader => "Import Localization Resources";
             public static string ImportCommitReview => "Please review your pending changes:";
-            public static string ImportIntro => "Import localization resources exported from other EPiServer or translation application.";
+
+            public static string ImportIntro =>
+                "Import localization resources exported from other EPiServer or translation application.";
+
             public static string SourceLanguage => "Source Language";
             public static string TargetLanguage => "Target Language";
             public static string SelectFile => "Select file to upload";

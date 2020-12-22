@@ -8,8 +8,17 @@ namespace DbLocalizationProvider.AdminUI
 {
     public class ResourceTreeItem
     {
-        public ResourceTreeItem(long id, long? parentId, string keyFragment, string resourceKey, bool isLeaf,
-            ICollection<ResourceItem> translations, bool allowDelete, bool isHidden, bool isModified, string path)
+        public ResourceTreeItem(
+            long id,
+            long? parentId,
+            string keyFragment,
+            string resourceKey,
+            bool isLeaf,
+            ICollection<ResourceItem> translations,
+            bool allowDelete,
+            bool isHidden,
+            bool isModified,
+            string path)
         {
             Id = id;
             ParentId = parentId;

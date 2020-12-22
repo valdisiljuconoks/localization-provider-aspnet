@@ -19,7 +19,7 @@ namespace DbLocalizationProvider.AdminUI
             {
                 var separator = ".";
                 var isLegacyResource = false;
-                if(resource.Key.StartsWith("/") && isLegacyModeEnabled)
+                if (resource.Key.StartsWith("/") && isLegacyModeEnabled)
                 {
                     separator = "/";
                     isLegacyResource = true;
@@ -31,13 +31,16 @@ namespace DbLocalizationProvider.AdminUI
 
                 // e.g.: MyNamespace.MyProject.AnotherResource
                 // or   /MyNamespace/MyProject/AnotherResource
-                for(var ix = 0; ix < defragmented.Length; ix++)
+                for (var ix = 0; ix < defragmented.Length; ix++)
                 {
                     path = !string.IsNullOrEmpty(path) ? string.Join(separator, path, defragmented[ix]) : defragmented[ix];
 
-                    if(ix > 0) parentPath = !string.IsNullOrEmpty(parentPath)
-                                         ? string.Join(separator, parentPath, defragmented[ix - 1])
-                                         : defragmented[ix - 1];
+                    if (ix > 0)
+                    {
+                        parentPath = !string.IsNullOrEmpty(parentPath)
+                            ? string.Join(separator, parentPath, defragmented[ix - 1])
+                            : defragmented[ix - 1];
+                    }
 
                     // try to find myself
                     var existing = result.FirstOrDefault(v => v.Path == path);
@@ -45,7 +48,7 @@ namespace DbLocalizationProvider.AdminUI
                     // try to find parent
                     var existingParent = result.FirstOrDefault(v => v.Path == parentPath);
 
-                    if(existing == null)
+                    if (existing == null)
                     {
                         result.Add(new ResourceTreeItem(_id,
                                                         existingParent?.Id,
@@ -70,14 +73,21 @@ namespace DbLocalizationProvider.AdminUI
 
         private string[] SplitResourceKey(ResourceListItem resource, bool isLegacyResource)
         {
-            if(!isLegacyResource) return resource.Key.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries);
+            if (!isLegacyResource)
+            {
+                return resource.Key.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries);
+            }
 
             var key = resource.Key.Remove(0, 1);
 
             return key.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
         }
 
-        private void UpdateResourceVisibility(ResourceListItem resource, string[] defragmented, bool isLegacyModeEnabled, ref List<ResourceTreeItem> result)
+        private void UpdateResourceVisibility(
+            ResourceListItem resource,
+            string[] defragmented,
+            bool isLegacyModeEnabled,
+            ref List<ResourceTreeItem> result)
         {
             var separator = isLegacyModeEnabled ? "/" : ".";
 
@@ -85,7 +95,10 @@ namespace DbLocalizationProvider.AdminUI
             {
                 var path = string.Join(separator, defragmented.Take(ix));
                 var item = result.FirstOrDefault(r => r.Path == path);
-                if(item != null && !resource.IsHidden) item.IsHidden = resource.IsHidden;
+                if (item != null && !resource.IsHidden)
+                {
+                    item.IsHidden = resource.IsHidden;
+                }
             }
         }
     }

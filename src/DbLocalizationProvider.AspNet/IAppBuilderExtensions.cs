@@ -6,14 +6,14 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Web.Mvc;
 using DbLocalizationProvider.AspNet.Cache;
+using DbLocalizationProvider.AspNet.DataAnnotations;
 using DbLocalizationProvider.AspNet.Queries;
 using DbLocalizationProvider.Cache;
-using DbLocalizationProvider.DataAnnotations;
 using DbLocalizationProvider.Queries;
 using DbLocalizationProvider.Sync;
 using Owin;
 
-namespace DbLocalizationProvider
+namespace DbLocalizationProvider.AspNet
 {
     /// <summary>
     /// Static class description no one reads

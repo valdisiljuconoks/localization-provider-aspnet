@@ -21,7 +21,7 @@ namespace DbLocalizationProvider.AdminUI
             var editors = string.Join(",", UiConfigurationContext.Current.AuthorizedEditorRoles);
 
             var rolesToCheck = string.Join(",", string.Join(",", admins, editors));
-            switch(Mode)
+            switch (Mode)
             {
                 case UiContextMode.Admin:
                     rolesToCheck = admins;

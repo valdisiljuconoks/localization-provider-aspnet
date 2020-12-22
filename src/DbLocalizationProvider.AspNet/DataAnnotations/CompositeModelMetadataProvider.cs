@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace DbLocalizationProvider.DataAnnotations
+namespace DbLocalizationProvider.AspNet.DataAnnotations
 {
     public class CompositeModelMetadataProvider<TProvider> : ModelMetadataProvider where TProvider : ModelMetadataProvider, new()
     {

@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using DbLocalizationProvider.Abstractions;
 
-namespace DbLocalizationProvider.DataAnnotations
+namespace DbLocalizationProvider.AspNet.DataAnnotations
 {
     public class LocalizedMetadataProvider : DataAnnotationsModelMetadataProvider
     {

@@ -9,7 +9,9 @@ namespace DbLocalizationProvider.AdminUI
 {
     public class PreviewImportResourcesViewModel
     {
-        public PreviewImportResourcesViewModel(IEnumerable<DetectedImportChange> changes, bool showMenu,
+        public PreviewImportResourcesViewModel(
+            IEnumerable<DetectedImportChange> changes,
+            bool showMenu,
             IEnumerable<CultureInfo> languages)
         {
             Changes = changes;

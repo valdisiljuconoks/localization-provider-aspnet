@@ -24,7 +24,11 @@ namespace DbLocalizationProvider.AdminUI
         /// <param name="setup">pass in lambda to setup and configure AdminUI</param>
         /// <param name="additionalSetup">The additional setup callback if you need to. Usually not used</param>
         /// <returns>The same app builder to support API call chaining</returns>
-        public static IAppBuilder UseDbLocalizationProviderAdminUI(this IAppBuilder builder, string path, Action<UiConfigurationContext> setup = null, Action<IAppBuilder> additionalSetup = null)
+        public static IAppBuilder UseDbLocalizationProviderAdminUI(
+            this IAppBuilder builder,
+            string path,
+            Action<UiConfigurationContext> setup = null,
+            Action<IAppBuilder> additionalSetup = null)
         {
             builder.Map(path, b => b.MapAdminUI(setup, additionalSetup));
 
@@ -38,7 +42,10 @@ namespace DbLocalizationProvider.AdminUI
         /// <param name="setup">The setup.</param>
         /// <param name="additionalSetup">The additional setup.</param>
         /// <returns></returns>
-        internal static IAppBuilder MapAdminUI(this IAppBuilder builder, Action<UiConfigurationContext> setup = null, Action<IAppBuilder> additionalSetup = null)
+        internal static IAppBuilder MapAdminUI(
+            this IAppBuilder builder,
+            Action<UiConfigurationContext> setup = null,
+            Action<IAppBuilder> additionalSetup = null)
         {
             setup?.Invoke(UiConfigurationContext.Current);
             additionalSetup?.Invoke(builder);
@@ -46,22 +53,26 @@ namespace DbLocalizationProvider.AdminUI
             builder.UseFileServer(new FileServerOptions
             {
                 EnableDefaultFiles = true,
-                DefaultFilesOptions = {DefaultFileNames = {"index.html"}},
-                FileSystem = new EmbeddedResourceFileSystem(typeof(AppBuilderExtensions).Assembly, "DbLocalizationProvider.AdminUI")
+                DefaultFilesOptions = { DefaultFileNames = { "index.html" } },
+                FileSystem = new EmbeddedResourceFileSystem(
+                    typeof(AppBuilderExtensions).Assembly,
+                    "DbLocalizationProvider.AdminUI")
             });
 
             builder.UseFileServer(new FileServerOptions
             {
                 RequestPath = new PathString("/res"),
-                FileSystem = new EmbeddedResourceFileSystem(typeof(AppBuilderExtensions).Assembly, "DbLocalizationProvider.AdminUI.ClientResources")
+                FileSystem = new EmbeddedResourceFileSystem(
+                    typeof(AppBuilderExtensions).Assembly,
+                    "DbLocalizationProvider.AdminUI.ClientResources")
             });
 
             var config = new HttpConfiguration();
 
             // explicitly registering required routes in order to avoid double calls for register attribute based routes
-            config.Routes.MapHttpRoute("resources-get", "api/get", new {controller = "ResourcesApi", action = "Get"});
-            config.Routes.MapHttpRoute("resources-update", "api/update", new {controller = "ResourcesApi", action = "Update"});
-            config.Routes.MapHttpRoute("resources-remove", "api/remove", new {controller = "ResourcesApi", action = "Remove"});
+            config.Routes.MapHttpRoute("resources-get", "api/get", new { controller = "ResourcesApi", action = "Get" });
+            config.Routes.MapHttpRoute("resources-update", "api/update", new { controller = "ResourcesApi", action = "Update" });
+            config.Routes.MapHttpRoute("resources-remove", "api/remove", new { controller = "ResourcesApi", action = "Remove" });
 
             builder.UseWebApi(config);
             builder.UseStageMarker(PipelineStage.MapHandler);

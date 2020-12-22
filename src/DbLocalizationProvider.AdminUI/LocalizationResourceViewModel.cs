@@ -9,7 +9,8 @@ namespace DbLocalizationProvider.AdminUI
 {
     public class LocalizationResourceViewModel
     {
-        public LocalizationResourceViewModel(List<ResourceListItem> resources,
+        public LocalizationResourceViewModel(
+            List<ResourceListItem> resources,
             IEnumerable<CultureInfo> languages,
             IEnumerable<string> selectedLanguages,
             int maxLength)
@@ -17,7 +18,8 @@ namespace DbLocalizationProvider.AdminUI
             Resources = resources;
             Languages = languages;
             SelectedLanguages = selectedLanguages?.Select(l => new CultureInfo(l == "__invariant" ? string.Empty : l))
-                                                 .Where(sl => languages.Any(al => sl.EnglishName == al.EnglishName)) ?? languages;
+                                    .Where(sl => languages.Any(al => sl.EnglishName == al.EnglishName))
+                                ?? languages;
 
             Resources.ForEach(r =>
             {

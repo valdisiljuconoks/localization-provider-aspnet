@@ -13,12 +13,21 @@ namespace DbLocalizationProvider.AdminUI
 
         public DirtyList(params T[] items)
         {
-            if(items != null) _actualList.AddRange(items.ToList());
+            if (items != null)
+            {
+                _actualList.AddRange(items.ToList());
+            }
         }
 
-        public IEnumerator<T> GetEnumerator() => _actualList.GetEnumerator();
+        public IEnumerator<T> GetEnumerator()
+        {
+            return _actualList.GetEnumerator();
+        }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
         public void Add(T item)
         {
@@ -32,14 +41,20 @@ namespace DbLocalizationProvider.AdminUI
             IsDirty = true;
         }
 
-        public bool Contains(T item) => _actualList.Contains(item);
+        public bool Contains(T item)
+        {
+            return _actualList.Contains(item);
+        }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
             _actualList.CopyTo(array, arrayIndex);
         }
 
-        public bool Remove(T item) => _actualList.Remove(item);
+        public bool Remove(T item)
+        {
+            return _actualList.Remove(item);
+        }
 
         public int Count => _actualList.Count;
 

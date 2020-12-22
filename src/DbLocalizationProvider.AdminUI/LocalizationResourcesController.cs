@@ -31,10 +31,10 @@ namespace DbLocalizationProvider.AdminUI
     [AuthorizeRoles]
     public class LocalizationResourcesController : Controller
     {
-        private bool _showInvariantCulture;
-        private readonly int _maxLength;
         private const string _cookieName = ".DbLocalizationProvider-SelectedLanguages";
         private const string _viewCookieName = ".DbLocalizationProvider-DefaultView";
+        private readonly int _maxLength;
+        private readonly bool _showInvariantCulture;
 
         public LocalizationResourcesController()
         {
@@ -59,13 +59,15 @@ namespace DbLocalizationProvider.AdminUI
             var allResources = GetAllResources();
 
             var user = HttpContext.User;
-            var isAdmin = user.Identity.IsAuthenticated && UiConfigurationContext.Current.AuthorizedAdminRoles.Any(r => user.IsInRole(r));
+            var isAdmin = user.Identity.IsAuthenticated
+                          && UiConfigurationContext.Current.AuthorizedAdminRoles.Any(r => user.IsInRole(r));
 
             // cookies override default view from config
             var isTreeView = UiConfigurationContext.Current.DefaultView == ResourceListView.Tree;
-            if(Request.Cookies[_viewCookieName] != null)
+            if (Request.Cookies[_viewCookieName] != null)
             {
-                isTreeView = UiConfigurationContext.Current.IsTableViewDisabled || Request.Cookies[_viewCookieName]?.Value == "tree";
+                isTreeView = UiConfigurationContext.Current.IsTableViewDisabled
+                             || Request.Cookies[_viewCookieName]?.Value == "tree";
             }
 
             var result = new LocalizationResourceViewModel(allResources, languages, GetSelectedLanguages(), _maxLength)
@@ -97,8 +99,15 @@ namespace DbLocalizationProvider.AdminUI
 
                 // validate resource key
                 var whitelist = ConfigurationContext.Current.ResourceKeyNameFilter ?? new Regex(".");
-                if(!whitelist.IsMatch(resourceKey)) throw new ArgumentException("Invalid resource key value");
-                if(!model.Translations.Any()) throw new InvalidOperationException("At least single translations is required!");
+                if (!whitelist.IsMatch(resourceKey))
+                {
+                    throw new ArgumentException("Invalid resource key value");
+                }
+
+                if (!model.Translations.Any())
+                {
+                    throw new InvalidOperationException("At least single translations is required!");
+                }
 
                 var resource = new LocalizationResource(resourceKey)
                 {
@@ -106,7 +115,7 @@ namespace DbLocalizationProvider.AdminUI
                     FromCode = false,
                     IsModified = false,
                     IsHidden = false,
-                    ModificationDate = DateTime.UtcNow,
+                    ModificationDate = DateTime.UtcNow
                 };
 
                 // fill in translations
@@ -114,7 +123,11 @@ namespace DbLocalizationProvider.AdminUI
                 {
                     resource.Translations.Add(new LocalizationResourceTranslation
                     {
-                        Language = t.Language.Equals("invariant", StringComparison.InvariantCultureIgnoreCase) ? string.Empty : t.Language,
+                        Language = t.Language.Equals(
+                            "invariant",
+                            StringComparison.InvariantCultureIgnoreCase)
+                            ? string.Empty
+                            : t.Language,
                         Value = t.Translation
                     });
                 });
@@ -140,11 +153,8 @@ namespace DbLocalizationProvider.AdminUI
             }
             catch (Exception e)
             {
-                Response.StatusCode = (int) HttpStatusCode.InternalServerError;
-                return Json(new JsonServiceResult
-                            {
-                                Message = e.Message
-                            });
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Json(new JsonServiceResult { Message = e.Message });
             }
         }
 
@@ -155,7 +165,8 @@ namespace DbLocalizationProvider.AdminUI
             try
             {
                 var user = HttpContext.User;
-                var isAdmin = user.Identity.IsAuthenticated && UiConfigurationContext.Current.AuthorizedAdminRoles.Any(r => user.IsInRole(r));
+                var isAdmin = user.Identity.IsAuthenticated
+                              && UiConfigurationContext.Current.AuthorizedAdminRoles.Any(r => user.IsInRole(r));
 
                 if (isAdmin && !UiConfigurationContext.Current.HideDeleteButton)
                 {
@@ -167,25 +178,24 @@ namespace DbLocalizationProvider.AdminUI
             }
             catch (Exception e)
             {
-                Response.StatusCode = (int) HttpStatusCode.InternalServerError;
-                return Json(new JsonServiceResult
-                            {
-                                Message = e.Message
-                            });
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Json(new JsonServiceResult { Message = e.Message });
             }
         }
 
         [HttpPost]
         [ValidateInput(false)]
-        public JsonResult Update([Bind(Prefix = "pk")] string resourceKey,
-                                 [Bind(Prefix = "value")] string newValue,
-                                 [Bind(Prefix = "name")] string language)
+        public JsonResult Update(
+            [Bind(Prefix = "pk")] string resourceKey,
+            [Bind(Prefix = "value")] string newValue,
+            [Bind(Prefix = "name")] string language)
         {
             var c = new CreateOrUpdateTranslation.Command(resourceKey,
-                language.Equals("invariant", StringComparison.InvariantCultureIgnoreCase)
-                    ? CultureInfo.InvariantCulture
-                    : new CultureInfo(language),
-                newValue);
+                                                          language.Equals("invariant",
+                                                                          StringComparison.InvariantCultureIgnoreCase)
+                                                              ? CultureInfo.InvariantCulture
+                                                              : new CultureInfo(language),
+                                                          newValue);
 
             c.Execute();
 
@@ -194,8 +204,9 @@ namespace DbLocalizationProvider.AdminUI
 
         [HttpPost]
         [ValidateInput(false)]
-        public JsonResult Remove([Bind(Prefix = "pk")] string resourceKey,
-                                 [Bind(Prefix = "name")] string language)
+        public JsonResult Remove(
+            [Bind(Prefix = "pk")] string resourceKey,
+            [Bind(Prefix = "name")] string language)
         {
             var c = new RemoveTranslation.Command(resourceKey, new CultureInfo(language));
             c.Execute();
@@ -218,18 +229,22 @@ namespace DbLocalizationProvider.AdminUI
             var resources = new GetAllResources.Query(true).Execute();
             var languages = new AvailableLanguages.Query().Execute();
 
-            foreach(var resource in resources)
+            foreach (var resource in resources)
             {
                 var exportableTranslations = new List<LocalizationResourceTranslation>();
                 var invariantTranslation = resource.Translations.FindByLanguage(CultureInfo.InvariantCulture);
-                if(invariantTranslation != null)
+                if (invariantTranslation != null)
+                {
                     exportableTranslations.Add(invariantTranslation);
+                }
 
-                foreach(var language in languages)
+                foreach (var language in languages)
                 {
                     var t = resource.Translations.FindByLanguage(language);
-                    if(t != null)
+                    if (t != null)
+                    {
                         exportableTranslations.Add(t);
+                    }
                 }
 
                 resource.Translations = exportableTranslations;
@@ -273,10 +288,7 @@ namespace DbLocalizationProvider.AdminUI
         public ViewResult ImportResources(bool? showMenu)
         {
             return View("ImportResources",
-                new ImportResourcesViewModel
-                {
-                    ShowMenu = showMenu ?? false
-                });
+                        new ImportResourcesViewModel { ShowMenu = showMenu ?? false });
         }
 
         [HttpPost]
@@ -285,7 +297,7 @@ namespace DbLocalizationProvider.AdminUI
         public ViewResult ImportResources(bool? previewImport, HttpPostedFileBase importFile, bool? showMenu)
         {
             var model = new ImportResourcesViewModel { ShowMenu = showMenu ?? false };
-            if(importFile == null || importFile.ContentLength == 0)
+            if (importFile == null || importFile.ContentLength == 0)
             {
                 return View("ImportResources", model);
             }
@@ -293,7 +305,7 @@ namespace DbLocalizationProvider.AdminUI
             var fileInfo = new FileInfo(importFile.FileName);
             var potentialParser = ConfigurationContext.Current.Import.Providers.FindByExtension(fileInfo.Extension);
 
-            if(potentialParser == null)
+            if (potentialParser == null)
             {
                 ModelState.AddModelError("file", $"Unknown file extension - `{fileInfo.Extension}`");
                 return View("ImportResources", model);
@@ -332,10 +344,7 @@ namespace DbLocalizationProvider.AdminUI
         [ValidateInput(false)]
         public ViewResult CommitImportResources(bool? previewImport, bool? showMenu, ICollection<DetectedImportChange> changes)
         {
-            var model = new ImportResourcesViewModel
-            {
-                ShowMenu = showMenu ?? false
-            };
+            var model = new ImportResourcesViewModel { ShowMenu = showMenu ?? false };
 
             try
             {
@@ -369,10 +378,7 @@ namespace DbLocalizationProvider.AdminUI
         private IEnumerable<string> GetSelectedLanguages()
         {
             var cookie = Request.Cookies[_cookieName];
-            return cookie?.Value?.Split(new[]
-                                        {
-                                            "|"
-                                        },
+            return cookie?.Value?.Split(new[] { "|" },
                                         StringSplitOptions.RemoveEmptyEntries);
         }
 
@@ -385,9 +391,10 @@ namespace DbLocalizationProvider.AdminUI
             {
                 result.Add(new ResourceListItem(resource.ResourceKey,
                                                 resource.Translations
-                                                        .Select(t => new ResourceItem(resource.ResourceKey,
-                                                                                      t.Value,
-                                                                                      new CultureInfo(t.Language))).ToList(),
+                                                    .Select(t => new ResourceItem(resource.ResourceKey,
+                                                                                  t.Value,
+                                                                                  new CultureInfo(t.Language)))
+                                                    .ToList(),
                                                 !resource.FromCode,
                                                 resource.IsHidden.HasValue && resource.IsHidden.Value,
                                                 resource.IsModified.HasValue && resource.IsModified.Value));
@@ -398,10 +405,7 @@ namespace DbLocalizationProvider.AdminUI
 
         private void WriteSelectedLanguages(IEnumerable<string> languages)
         {
-            var cookie = new HttpCookie(_cookieName, string.Join("|", languages ?? new[] { string.Empty }))
-                         {
-                             HttpOnly = true
-                         };
+            var cookie = new HttpCookie(_cookieName, string.Join("|", languages ?? new[] { string.Empty })) { HttpOnly = true };
             Response.Cookies.Add(cookie);
         }
     }

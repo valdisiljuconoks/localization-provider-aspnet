@@ -32,31 +32,6 @@ namespace DbLocalizationProvider.AdminUI
         public ResourceListView DefaultView { get; set; } = ResourceListView.Table;
 
         /// <summary>
-        /// If you wanna get rid of some view (table OR tree) this is the method. You cannot disable all views - will receive exception.
-        /// </summary>
-        /// <param name="view"></param>
-        public void DisableView(ResourceListView view)
-        {
-            if(view == ResourceListView.None) throw new ArgumentException("Cannot disable `None` view");
-
-            if(view == ResourceListView.Table)
-            {
-                if(IsTreeViewDisabled) throw new ArgumentException("Cannot disable both views");
-
-                IsTableViewDisabled = true;
-            }
-
-
-            if(view == ResourceListView.Tree)
-            {
-                if(IsTableViewDisabled) throw new ArgumentException("Cannot disable both views");
-
-                IsTreeViewDisabled = true;
-            }
-
-        }
-
-        /// <summary>
         /// Tree view will be expanded by default.
         /// </summary>
         public bool TreeViewExpandedByDefault { get; set; } = true;
@@ -89,6 +64,39 @@ namespace DbLocalizationProvider.AdminUI
         /// If you don't need to remove resource ever - set this to <code>true</code>
         /// </summary>
         public bool HideDeleteButton { get; set; }
+
+        /// <summary>
+        /// If you wanna get rid of some view (table OR tree) this is the method. You cannot disable all views - will receive exception.
+        /// </summary>
+        /// <param name="view"></param>
+        public void DisableView(ResourceListView view)
+        {
+            if (view == ResourceListView.None)
+            {
+                throw new ArgumentException("Cannot disable `None` view");
+            }
+
+            if (view == ResourceListView.Table)
+            {
+                if (IsTreeViewDisabled)
+                {
+                    throw new ArgumentException("Cannot disable both views");
+                }
+
+                IsTableViewDisabled = true;
+            }
+
+
+            if (view == ResourceListView.Tree)
+            {
+                if (IsTableViewDisabled)
+                {
+                    throw new ArgumentException("Cannot disable both views");
+                }
+
+                IsTreeViewDisabled = true;
+            }
+        }
 
         /// <summary>
         /// Wanna customize anything here? Call this method.

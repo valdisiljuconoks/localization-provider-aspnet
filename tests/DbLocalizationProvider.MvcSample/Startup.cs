@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Globalization;
 using DbLocalizationProvider.Abstractions;
 using DbLocalizationProvider.AdminUI;
+using DbLocalizationProvider.AspNet;
 using DbLocalizationProvider.Cache;
 using DbLocalizationProvider.JsResourceHandler;
 using DbLocalizationProvider.MvcSample;

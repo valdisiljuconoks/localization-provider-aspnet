@@ -7,7 +7,11 @@ namespace DbLocalizationProvider.AdminUI
 {
     public class ResourceListItem
     {
-        public ResourceListItem(string key, ICollection<ResourceItem> translations, bool allowDelete, bool isHidden,
+        public ResourceListItem(
+            string key,
+            ICollection<ResourceItem> translations,
+            bool allowDelete,
+            bool isHidden,
             bool isModified)
         {
             Key = key;
