@@ -1,4 +1,5 @@
-﻿using System.Web;
+using System.Web;
+using DbLocalizationProvider.Abstractions;
 
 namespace DbLocalizationProvider.MvcSample.Resources
 {

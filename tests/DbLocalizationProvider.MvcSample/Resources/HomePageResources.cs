@@ -1,4 +1,6 @@
-﻿namespace DbLocalizationProvider.MvcSample.Resources
+using DbLocalizationProvider.Abstractions;
+
+namespace DbLocalizationProvider.MvcSample.Resources
 {
     [LocalizedResource]
     public class HomePageResources
