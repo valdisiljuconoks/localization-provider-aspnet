@@ -54,9 +54,18 @@ namespace DbLocalizationProvider
                 }
             }
 
+            // if we do have a before sync callback
+            // hook in there and wait for the signal to continue
+            if (ctx.SynchronizationCoordinator.BeforeSyncCallback != null)
+            {
+                ctx.SynchronizationCoordinator.BeforeSyncCallback();
+            }
+
             // if we need to sync - then it's good time to do it now
             var sync = new Synchronizer();
             sync.SyncResources(ctx.DiscoverAndRegisterResources);
+
+            ctx.SynchronizationCoordinator.SyncCompleted();
 
             if (ctx.ManualResourceProvider != null)
             {
