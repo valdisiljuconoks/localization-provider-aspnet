@@ -11,11 +11,11 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>LocalizationProvider support package for Asp.Net</description>
     <releaseNotes>Every release is like new day. This is the way how we can fix bugs made in previous releases.</releaseNotes>
-    <copyright>Copyright 2020 (c) Valdis Iljuconoks, Tech Fellow</copyright>
+    <copyright>Copyright 2021 (c) Valdis Iljuconoks, Tech Fellow</copyright>
     <tags>Localization Provider DbLocalization DbLocalizationProvider LocalizationProvider AspNet Asp.Net</tags>
     <dependencies>
-      <dependency id="LocalizationProvider.Abstractions" version="[6.4.0]" />
-      <dependency id="LocalizationProvider" version="[6.4.0]" />
+      <dependency id="LocalizationProvider.Abstractions" version="[6.5.0]" />
+      <dependency id="LocalizationProvider" version="[6.5.0]" />
     </dependencies>
   </metadata>
 </package>
