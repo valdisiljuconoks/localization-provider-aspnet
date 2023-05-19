@@ -91,6 +91,16 @@ namespace DbLocalizationProvider.AdminUI
         public bool HideDeleteButton { get; set; }
 
         /// <summary>
+        /// Set this configuration flag to <c>true</c> if you have really huge list of resources and AdminUI behaves like snail.
+        /// </summary>
+        public bool EnableDbSearch { get; set; }
+
+        /// <summary>
+        /// If <see cref="EnableDbSearch"/> is set to <c>true</c>, this value will be used to control page size in AdminUI.
+        /// </summary>
+        public int PageSize { get; set; } = 100;
+
+        /// <summary>
         /// Wanna customize anything here? Call this method.
         /// </summary>
         /// <param name="configCallback"></param>
