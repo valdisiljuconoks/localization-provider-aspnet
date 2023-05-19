@@ -34,6 +34,8 @@ namespace DbLocalizationProvider.AdminUI
         public static string TranslationRequired => "Don't be lazy, fill in translation for at least single language!";
         public static string CleanCache = "Clean Cache";
         public static string CleanCacheConfirmation = "Wanna start with clean cache state?";
+        public static string TotalRowCount = "Total resources:";
+        public static string SearchQueryPlaceholder = "Type your search phrase here...";
 
         [LocalizedResource]
         [Hidden]

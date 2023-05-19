@@ -76,7 +76,8 @@ namespace DbLocalizationProvider.AdminUI
                 IsTreeViewEnabled = !UiConfigurationContext.Current.IsTreeViewDisabled,
                 IsTableViewEnabled = !UiConfigurationContext.Current.IsTableViewDisabled,
                 IsRemoveTranslationButtonDisabled = UiConfigurationContext.Current.DisableRemoveTranslationButton,
-                IsDeleteButtonVisible = !UiConfigurationContext.Current.HideDeleteButton
+                IsDeleteButtonVisible = !UiConfigurationContext.Current.HideDeleteButton,
+                IsDbSearchEnabled = UiConfigurationContext.Current.EnableDbSearch
             };
 
             // build tree
