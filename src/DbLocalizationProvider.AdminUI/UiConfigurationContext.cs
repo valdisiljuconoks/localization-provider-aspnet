@@ -31,6 +31,10 @@ namespace DbLocalizationProvider.AdminUI
         /// </summary>
         public ResourceListView DefaultView { get; set; } = ResourceListView.Table;
 
+        public bool EnableDbSearch { get; set; }
+
+        public int PageSize { get; set; } = 10;
+
         /// <summary>
         /// If you wanna get rid of some view (table OR tree) this is the method. You cannot disable all views - will receive exception.
         /// </summary>

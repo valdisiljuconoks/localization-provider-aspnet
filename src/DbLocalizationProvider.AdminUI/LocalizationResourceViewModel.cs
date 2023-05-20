@@ -44,8 +44,14 @@ namespace DbLocalizationProvider.AdminUI
 
         public bool IsTableViewEnabled { get; set; }
 
+        public bool IsDbSearchEnabled { get; set; }
+
         public bool IsRemoveTranslationButtonDisabled { get; set; }
 
         public bool IsDeleteButtonVisible { get; set; }
+
+        public string Query { get; set; }
+
+        public long TotalRowCount { get; set; }
     }
 }

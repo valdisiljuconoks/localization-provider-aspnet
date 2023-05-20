@@ -14,7 +14,9 @@ namespace DbLocalizationProvider.AdminUI
         public static string Save => "Save";
         public static string Back => "Back";
         public static string Export => "Export";
-        public static string SearchPlaceholder => "Enter Search Query";
+        public static string SearchPlaceholder => "Enter Search Query to search in the result";
+        public static string SearchQueryPlaceholder => "Enter Search Query to search in the database";
+        public static string TotalRowCount => "Total row count:";
         public static string New => "New Resource";
         public static string ShowEmpty => "Show Empty Resources";
         public static string ShowHidden => "Show Hidden Resources";
