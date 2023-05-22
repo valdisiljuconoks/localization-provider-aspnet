@@ -42,21 +42,22 @@ namespace DbLocalizationProvider.AdminUI
             _maxLength = UiConfigurationContext.Current.MaxResourceKeyDisplayLength;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string query)
         {
-            return View(PrepareViewModel(false));
+            return View(PrepareViewModel(false, query));
         }
 
-        public ActionResult Main()
+        public ActionResult Main(string query)
         {
-            return View("Index", PrepareViewModel(true));
+            return View("Index", PrepareViewModel(true, query));
         }
 
-        private LocalizationResourceViewModel PrepareViewModel(bool showMenu)
+        private LocalizationResourceViewModel PrepareViewModel(bool showMenu, string query = "")
         {
             var availableLanguagesQuery = new AvailableLanguages.Query { IncludeInvariant = _showInvariantCulture };
             var languages = availableLanguagesQuery.Execute();
-            var allResources = GetAllResources();
+            long? rowCount;
+            var allResources = GetAllResources(query, out rowCount);
 
             var user = HttpContext.User;
             var isAdmin = user.Identity.IsAuthenticated && UiConfigurationContext.Current.AuthorizedAdminRoles.Any(r => user.IsInRole(r));
@@ -77,7 +78,9 @@ namespace DbLocalizationProvider.AdminUI
                 IsTableViewEnabled = !UiConfigurationContext.Current.IsTableViewDisabled,
                 IsRemoveTranslationButtonDisabled = UiConfigurationContext.Current.DisableRemoveTranslationButton,
                 IsDeleteButtonVisible = !UiConfigurationContext.Current.HideDeleteButton,
-                IsDbSearchEnabled = UiConfigurationContext.Current.EnableDbSearch
+                IsDbSearchEnabled = UiConfigurationContext.Current.EnableDbSearch,
+                Query = query,
+                TotalRowCount = rowCount ?? 0
             };
 
             // build tree
@@ -377,21 +380,37 @@ namespace DbLocalizationProvider.AdminUI
                                         StringSplitOptions.RemoveEmptyEntries);
         }
 
-        private List<ResourceListItem> GetAllResources()
+        private List<ResourceListItem> GetAllResources(string query, out long? rowCount)
         {
             var result = new List<ResourceListItem>();
-            var resources = new GetAllResources.Query(true).Execute().OrderBy(r => r.ResourceKey);
+            List<LocalizationResource> resources;
+
+            rowCount = 0;
+            if (UiConfigurationContext.Current.EnableDbSearch)
+            {
+                var queryResult = new GetSearchResources.Query(query, 1, UiConfigurationContext.Current.PageSize, true).Execute();
+                rowCount = queryResult.RowCount;
+                resources = queryResult.Result
+                                       .OrderBy(r => r.ResourceKey)
+                                       .ToList();
+            }
+            else
+            {
+                resources = new GetAllResources.Query(true)
+                            .Execute()
+                            .OrderBy(r => r.ResourceKey)
+                            .ToList();
+            }
 
             foreach (var resource in resources)
             {
                 result.Add(new ResourceListItem(resource.ResourceKey,
-                                                resource.Translations
-                                                        .Select(t => new ResourceItem(resource.ResourceKey,
-                                                                                      t.Value,
-                                                                                      new CultureInfo(t.Language))).ToList(),
-                                                !resource.FromCode,
-                                                resource.IsHidden.HasValue && resource.IsHidden.Value,
-                                                resource.IsModified.HasValue && resource.IsModified.Value));
+                    resource.Translations
+                            .Select(t => new ResourceItem(resource.ResourceKey, t.Value, new CultureInfo(t.Language)))
+                            .ToList(),
+                    !resource.FromCode,
+                    resource.IsHidden.HasValue && resource.IsHidden.Value,
+                    resource.IsModified.HasValue && resource.IsModified.Value));
             }
 
             return result;

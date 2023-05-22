@@ -14,7 +14,7 @@ namespace DbLocalizationProvider.AdminUI
         public static string Save => "Save";
         public static string Back => "Back";
         public static string Export => "Export";
-        public static string SearchPlaceholder => "Enter Search Query";
+        public static string SearchPlaceholder => "Filter in results...";
         public static string New => "New Resource";
         public static string ShowEmpty => "Show Empty Resources";
         public static string ShowHidden => "Show Hidden Resources";
@@ -35,7 +35,7 @@ namespace DbLocalizationProvider.AdminUI
         public static string CleanCache = "Clean Cache";
         public static string CleanCacheConfirmation = "Wanna start with clean cache state?";
         public static string TotalRowCount = "Total resources:";
-        public static string SearchQueryPlaceholder = "Type your search phrase here...";
+        public static string SearchQueryPlaceholder = "Type your search phrase here to get more precise results...";
 
         [LocalizedResource]
         [Hidden]

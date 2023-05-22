@@ -50,7 +50,7 @@ namespace DbLocalizationProvider.AdminUI
 
         public bool IsDbSearchEnabled { get; set; }
 
-        public int TotalRowCount { get; set; }
+        public long TotalRowCount { get; set; }
 
         public string Query { get; set; }
     }
